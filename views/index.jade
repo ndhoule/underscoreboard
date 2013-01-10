@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  #editor1
+  #editor2
+  script
+    // Create the first editor
+    var editor1 = ace.edit("editor1");
+    editor1.setTheme("ace/theme/monokai");
+    editor1.getSession().setMode("ace/mode/javascript");
+    // Create the second editor
+    var editor2 = ace.edit("editor2");
+    editor2.setTheme("ace/theme/monokai");
+    editor2.getSession().setMode("ace/mode/javascript");
+  iframe#editor1-tests
+  iframe#editor2-tests

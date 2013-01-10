@@ -9,6 +9,6 @@ var Editor = new Schema({
 
 mongoose.model('Editor', Editor);
 
-mongoose.connect('mongodb://localhost/express-todo');
+mongoose.connect('mongodb://localhost/express-underscoreboard');
 
 exports.Editor = Editor;

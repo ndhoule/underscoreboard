@@ -5,9 +5,22 @@ block content
   #editor2
   script
     // Create the first editor
+    var myUser = Math.random();
     var editor1 = ace.edit("editor1");
     editor1.setTheme("ace/theme/monokai");
     editor1.getSession().setMode("ace/mode/javascript");
+    editor1.on("change", function(){
+      $.ajax({
+        url: "/users/" + myUser + "/code",
+        type: "POST",
+        success: function(){
+          console.log("Success");
+        },
+        error: function(){
+          console.log("Failed");
+        }
+      });
+    });
     // Create the second editor
     var editor2 = ace.edit("editor2");
     editor2.setTheme("ace/theme/monokai");

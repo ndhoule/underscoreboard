@@ -1,9 +1,21 @@
 doctype 5
 html
   head
-    title= title
-    link(rel='stylesheet', href='css/style.css')
-    script(src='js/ace/ace.js')
+    title=title
+    meta(name='description', content='#{description}')
+    meta(name='author', content='#{author}')
+    link(rel='stylesheet', href='/css/base.css')
+    link(rel='stylesheet', href='/css/skeleton.css')
+    link(rel='stylesheet', href='/css/layout.css')
+    link(rel='shortcut icon', href='img/favicon.ico')
+    link(rel='apple-touch-icon', href='img/apple-touch-icon.png')
+    link(rel='apple-touch-icon', sizes='72x72', href='img/apple-touch-icon-72x72.png')
+    link(rel='apple-touch-icon', sizes='114x114', href='img/apple-touch-icon-114x114.png')
+    script(src='/js/ace/ace.js')
+    script(src='/socket.io/socket.io.js'')
     script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js')
+    // if lt IE 9
+      script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
   body
     block content
+

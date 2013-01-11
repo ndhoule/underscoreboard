@@ -1,11 +1,18 @@
-var express = require('express'),
-    routes = require('./routes'),
-    http = require('http'),
-    path = require('path');
+/*jshint laxcomma:true, node:true, es5:true */
+"use strict";
 
-require('./db');
 
-var app = express();
+var express = require('express')
+  , routes = require('./routes')
+  , http = require('http')
+  , path = require('path')
+  , io = require('socket.io');
+
+// Create a server and attach socket.io to it
+var app = express()
+  , server = http.createServer(app)
+  , io = io.listen(server, {origins: '*:*', log: false});
+
 
 app.configure(function() {
   app.set('port', process.env.PORT || 3000);
@@ -19,18 +26,23 @@ app.configure(function() {
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.configure('development', function() {
-  app.use(express.errorHandler({ dumpExceptions : true, showStack : true }));
-});
-
-app.configure('production', function() {
-  app.use(express.errorHandler());
-});
-
 app.get('/', routes.index);
-app.post('/users/:id/code', routes.code);
 
-
-http.createServer(app).listen(app.get('port'), function() {
-  console.log("Express server listening on port " + app.get('port'));
+io.configure(function (){
+  io.set('authorization', function (handshakeData, cb) {
+    cb(null, true);
+  });
 });
+
+io.sockets.on('connection', function (socket) {
+  socket.on('message', function(message) {
+    routes.code(message);
+  });
+});
+
+
+
+server.listen(app.get('port'), function() {
+  console.log("Underscoreboard server listening on port " + app.get('port'));
+});
+

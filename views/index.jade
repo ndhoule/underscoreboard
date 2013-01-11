@@ -3,36 +3,7 @@ extends layout
 block content
   #editor1
   #editor2
-  script
-
-    // Generate uid
-    var uid = Math.random();
-    // Instantiate both editor sessions
-    var editor1 = ace.edit("editor1");
-    editor1.setTheme("ace/theme/monokai");
-    editor1.getSession().setMode("ace/mode/javascript");
-    var editor2 = ace.edit("editor2");
-    editor2.setTheme("ace/theme/monokai");
-    editor2.getSession().setMode("ace/mode/javascript");
-
-    // Lay down dat socket.io connection
-
-    var sio = io.connect();
-
-    sio.on('error', function (e){
-      console.error('Unable to create Socket.io connection. Error: ', e);
-    });
-
-    sio.on('connect', function (){
-      console.info('Socket.io connection established');
-    });
-
-
-    // Client event listener
-    editor1.on("change", function(){
-      sio.send(editor1.getValue());
-    });
-
-  iframe#editor1-tests
-  iframe#editor2-tests
+  script(src='/js/main.js')
+  #editor1-tests
+  #editor2-tests
 

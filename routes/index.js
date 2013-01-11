@@ -3,7 +3,7 @@
 
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Underscoreboard.js', description: 'A simple, outcode-your-friends game', author: 'Nathan Houle' });
+  res.render('index', { title: 'Underscoreboard.js' });
 };
 
 exports.code = function(message){

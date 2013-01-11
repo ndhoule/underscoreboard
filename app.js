@@ -34,13 +34,15 @@ io.configure(function (){
   });
 });
 
-io.sockets.on('connection', function (socket) {
-  socket.on('message', function(message) {
-    routes.code(message);
+io.sockets.on('connection', function (client) {
+  client.on('editorContents', function(message) {
+    client.broadcast.emit('replaceEditor', message);
+  });
+
+  client.on('disconnect',function(){
+    console.log('Server has disconnected');
   });
 });
-
-
 
 server.listen(app.get('port'), function() {
   console.log("Underscoreboard server listening on port " + app.get('port'));

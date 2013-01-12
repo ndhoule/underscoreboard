@@ -1,6 +1,5 @@
-/*jshint laxcomma:true, node:true, es5:true */
+/*jshint node:true, laxcomma:true*/
 "use strict";
-
 
 var express = require('express')
   , routes = require('./routes')

@@ -78,7 +78,6 @@ jasmine.HtmlReporter = function(_doc) {
 
     createReporterDom(runner.env.versionString());
     doc.body.appendChild(dom.reporter);
-    setExceptionHandling();
 
     reporterView = new jasmine.HtmlReporter.ReporterView(dom);
     reporterView.addSpecs(specs, self.specFilter);
@@ -147,55 +146,13 @@ jasmine.HtmlReporter = function(_doc) {
 
   function createReporterDom(version) {
     dom.reporter = self.createDom('div', { id: 'HTMLReporter', className: 'jasmine_reporter' },
-      dom.banner = self.createDom('div', { className: 'banner' },
-        self.createDom('span', { className: 'title' }, "Jasmine "),
-        self.createDom('span', { className: 'version' }, version)),
-
-      dom.symbolSummary = self.createDom('ul', {className: 'symbolSummary'}),
-      dom.alert = self.createDom('div', {className: 'alert'},
-        self.createDom('span', { className: 'exceptions' },
-          self.createDom('label', { className: 'label', 'for': 'no_try_catch' }, 'No try/catch'),
-          self.createDom('input', { id: 'no_try_catch', type: 'checkbox' }))),
+      dom.alert = self.createDom('div', {className: 'alert'}),
       dom.results = self.createDom('div', {className: 'results'},
         dom.summary = self.createDom('div', { className: 'summary' }),
         dom.details = self.createDom('div', { id: 'details' }))
     );
   }
 
-  function noTryCatch() {
-    return window.location.search.match(/catch=false/);
-  }
-
-  function searchWithCatch() {
-    var params = jasmine.HtmlReporter.parameters(window.document);
-    var removed = false;
-    var i = 0;
-
-    while (!removed && i < params.length) {
-      if (params[i].match(/catch=/)) {
-        params.splice(i, 1);
-        removed = true;
-      }
-      i++;
-    }
-    if (jasmine.CATCH_EXCEPTIONS) {
-      params.push("catch=false");
-    }
-
-    return params.join("&");
-  }
-
-  function setExceptionHandling() {
-    var chxCatch = document.getElementById('no_try_catch');
-
-    if (noTryCatch()) {
-      chxCatch.setAttribute('checked', true);
-      jasmine.CATCH_EXCEPTIONS = false;
-    }
-    chxCatch.onclick = function() {
-      window.location.search = searchWithCatch();
-    };
-  }
 };
 jasmine.HtmlReporter.parameters = function(doc) {
   var paramStr = doc.location.search.substring(1);
@@ -212,9 +169,6 @@ jasmine.HtmlReporter.sectionLink = function(sectionName) {
 
   if (sectionName) {
     params.push('spec=' + encodeURIComponent(sectionName));
-  }
-  if (!jasmine.CATCH_EXCEPTIONS) {
-    params.push("catch=false");
   }
   if (params.length > 0) {
     link += params.join("&");
@@ -311,17 +265,6 @@ jasmine.HtmlReporter.ReporterView = function(dom) {
     }
     this.runningAlert.innerHTML = "Running " + this.completeSpecCount + " of " + specPluralizedFor(this.totalSpecCount);
 
-    // skipped specs UI
-    if (isUndefined(this.skippedAlert)) {
-      this.skippedAlert = this.createDom('a', { href: jasmine.HtmlReporter.sectionLink(), className: "skippedAlert bar" });
-    }
-
-    this.skippedAlert.innerHTML = "Skipping " + this.skippedCount + " of " + specPluralizedFor(this.totalSpecCount) + " - run all";
-
-    if (this.skippedCount === 1 && isDefined(dom.alert)) {
-      dom.alert.appendChild(this.skippedAlert);
-    }
-
     // passing specs UI
     if (isUndefined(this.passedAlert)) {
       this.passedAlert = this.createDom('span', { href: jasmine.HtmlReporter.sectionLink(), className: "passingAlert bar" });
@@ -347,15 +290,11 @@ jasmine.HtmlReporter.ReporterView = function(dom) {
   this.complete = function() {
     dom.alert.removeChild(this.runningAlert);
 
-    this.skippedAlert.innerHTML = "Ran " + this.runningSpecCount + " of " + specPluralizedFor(this.totalSpecCount) + " - run all";
-
     if (this.failedCount === 0) {
       dom.alert.appendChild(this.createDom('span', {className: 'passingAlert bar'}, "Passing " + specPluralizedFor(this.passedCount)));
     } else {
       showDetails();
     }
-
-    dom.banner.appendChild(this.createDom('span', {className: 'duration'}, "finished in " + ((new Date().getTime() - this.startedAt.getTime()) / 1000) + "s"));
   };
 
   return this;
@@ -392,9 +331,6 @@ jasmine.HtmlReporter.SpecView = function(spec, dom, views) {
   this.dom = dom;
   this.views = views;
 
-  this.symbol = this.createDom('li', { className: 'pending' });
-  this.dom.symbolSummary.appendChild(this.symbol);
-
   this.summary = this.createDom('div', { className: 'specSummary' },
     this.createDom('a', {
       className: 'description',
@@ -417,8 +353,6 @@ jasmine.HtmlReporter.SpecView.prototype.status = function() {
 };
 
 jasmine.HtmlReporter.SpecView.prototype.refresh = function() {
-  this.symbol.className = this.status();
-
   switch (this.status()) {
     case 'skipped':
       break;
@@ -524,9 +458,6 @@ jasmine.TrivialReporter.prototype.reportRunnerStarting = function(runner) {
 
   this.outerDiv = this.createDom('div', { id: 'TrivialReporter', className: 'jasmine_reporter' },
       this.createDom('div', { className: 'banner' },
-        this.createDom('div', { className: 'logo' },
-            this.createDom('span', { className: 'title' }, "Jasmine"),
-            this.createDom('span', { className: 'version' }, runner.env.versionString())),
         this.createDom('div', { className: 'options' },
             "Show ",
             showPassed = this.createDom('input', { id: "__jasmine_TrivialReporter_showPassed__", type: 'checkbox' }),

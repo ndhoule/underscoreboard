@@ -63,36 +63,38 @@
     position: absolute;
     top: 0;
     right: 50%;
-    bottom: 20%;
+    bottom: 30%;
     left: 0;
-    overflow:hidden;
+    overflow: hidden;
   }
 
   #editor2 {
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 20%;
+    bottom: 30%;
     left: 50%;
-    overflow:hidden;
+    overflow: hidden;
   }
 
   #editor1-tests {
     position: absolute;
-    top: 80%;
+    top: 70%;
     right: 50%;
     bottom: 0;
     left: 0;
-    border:2px solid green;
+    width: 50%;
+    height: 30%;
   }
 
   #editor2-tests {
     position: absolute;
-    top: 80%;
+    top: 70%;
     right: 0;
     bottom: 0;
     left: 50%;
-    border:2px solid green;
+    width: 50%;
+    height: 30%;
   }
 
 /* #Typography

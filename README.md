@@ -65,7 +65,8 @@ Demo
 ----
 
 Real talk, girl--if a project doesn't include a live demo, almost nobody's
-gonna check it out. You can find a working demo at <http://www.underscoreboard.com>.
+gonna check it out. Once I've got it to the point where I'm comfortable hosting
+it on a server I control, you'll be able to find a working demo at <http://underscoreboard.com>.
 
 
 License

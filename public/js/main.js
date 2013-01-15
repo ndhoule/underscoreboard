@@ -1,6 +1,13 @@
 /*global 'ace':false, 'io':false, 'setTimeout':false, 'document':false, 'window':false, 'console':false*/
 
-(function(){
+require.config({
+  paths: {
+    ace: '/js/lib/ace',
+    io : '/socket.io/socket.io.js'
+  }
+});
+
+require(['jquery', 'io', 'ace/ace'], function($, io, ace) {
   "use strict";
 
   var createEditor = function(div, editable){
@@ -49,5 +56,4 @@
     socket.emit('editorContents', editor1.getValue());
     setTimeout(update, 1200);
   });
-
-})();
+});

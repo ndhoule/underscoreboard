@@ -1,8 +1,18 @@
 extends layout
 
+block navbar
+  nav
+    ul
+      li
+        a(href="#") something rad
+    ul.right
+      li
+        a(href="#") log in
+
 block content
-  #editor1
-  #editor2
-  iframe#editor1-tests(src='/js/jasmine/SpecRunner.html?spec=each')
-  iframe#editor2-tests
+  section.main
+    #editor1
+    #editor2
+    iframe#editor1-tests(src='/js/jasmine/SpecRunner.html?spec=each')
+    iframe#editor2-tests
 

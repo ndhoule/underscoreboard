@@ -30,12 +30,12 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io'], function (http, 
   });
 
   io.sockets.on('connection', function (client) {
-    client.on('editorContents', function(message) {
-      client.broadcast.emit('replaceEditor', message);
+    client.on('editorChange', function(message) {
+      client.broadcast.emit('updateEditor', message);
     });
 
     client.on('disconnect',function(){
-      console.log('Server has disconnected');
+      console.log('Client has disconnected');
     });
   });
 

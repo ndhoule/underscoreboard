@@ -11,10 +11,9 @@ require.config({
 });
 
 
-require(['domReady', 'io', 'createEditor'], function(domReady, io, createEditor) {
+require(['domReady', 'createEditor', 'io'], function(domReady, createEditor, io) {
   "use strict";
-  domReady(function () {
-
+  domReady(function() {
     var updateCount = 0;
 
     var update = function(){
@@ -32,6 +31,7 @@ require(['domReady', 'io', 'createEditor'], function(domReady, io, createEditor)
     // TODO: Make editor naming scheme more consistent across files
     window.xeditor1 = editors.p;
 
+
     var socket = io.connect();
 
     socket.on('error', function(e){
@@ -42,13 +42,13 @@ require(['domReady', 'io', 'createEditor'], function(domReady, io, createEditor)
       console.info('Socket.io connection established');
     });
 
-    socket.on('replaceEditor', function(message){
+    socket.on('updateEditor', function(message){
       editors.o.setValue(message);
     });
 
-    editors.p.on("change", function(){
+    editors.p.on('change', function(){
       updateCount++;
-      socket.emit('editorContents', editors.p.getValue());
+      socket.emit('editorChange', editors.p.getValue());
       setTimeout(update, 1200);
     });
 

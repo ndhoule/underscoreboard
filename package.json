@@ -9,9 +9,7 @@
     "express": "3.0.6",
     "jade": "*",
     "connect": "~2.7.2",
-    "socket.io": "~0.9.13"
-  },
-  "devDependencies": {
+    "socket.io": "~0.9.13",
     "requirejs": "~2.1.2"
   }
 }

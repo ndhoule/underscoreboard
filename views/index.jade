@@ -2,19 +2,19 @@ extends layout
 
 block navbar
   nav
-    ul
+    ul.inline
       li
-        a(href="#") current function
+        h6.inline {current function}
         a(href="#") reset
         a(href="#") vote to skip
-    ul.right
+    ul.right.inline
       li
         a(href="#") log in
 
 block content
   section.main
-    #editor1
-    #editor2
+    #editor-p
+    #editor-o
     iframe#tests(src='/js/jasmine/SpecRunner.html?spec=each')
     //-iframe#editor2-tests
 

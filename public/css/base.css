@@ -73,18 +73,16 @@
   }
 
   nav > ul {
-    display: inline-block;
-    clear: none;
     padding: 0 20px;
   }
 
   nav li > a {
     /* TODO: Ghetto alert, fix this */
-    color: white !important;
-    padding-right: 20px;
+    color: rgba(243, 240, 229, 1.0) !important;
+    padding-left: 20px;
   }
 
-  #editor1 {
+  #editor-p {
     position: absolute;
     top: 40px;
     overflow: hidden;
@@ -94,7 +92,7 @@
     border-right: 2px solid rgba(255, 255, 255, 0.2);
   }
 
-  #editor2 {
+  #editor-o {
     position: absolute;
     top: 40px;
     overflow: hidden;
@@ -116,10 +114,14 @@
     float: right;
   }
 
+  .inline {
+    display: inline-block;
+  }
+
 /* #Typography
 ================================================== */
   h1, h2, h3, h4, h5, h6 {
-    color: #181818;
+    color: rgba(243, 240, 229, 1.0);
     font-family: "Georgia", "Times New Roman", serif;
     font-weight: normal; }
   h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { font-weight: inherit; }

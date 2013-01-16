@@ -23,8 +23,8 @@ require(['domReady', 'createEditor', 'io'], function(domReady, createEditor, io)
     };
 
     var editors = {};
-    editors.p = createEditor('editor1');
-    editors.o = createEditor('editor2', true);
+    editors.p = createEditor('editor-p');
+    editors.o = createEditor('editor-o', true);
 
     // Declare a global to make the player's editor available to the jasmine iframe.
     // TODO: Make this less ugly, maybe by passing this information through sockets.

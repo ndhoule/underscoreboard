@@ -1,16 +1,19 @@
+/*jshint laxcomma:true*/
 /*global 'ace':false, 'io':false, 'setTimeout':false, 'document':false, 'window':false, 'console':false*/
 
 require.config({
   paths: {
-    ace     : '/js/lib/ace',
-    io      : '/socket.io/socket.io.js',
-    domReady: '/js/lib/domReady'
+    ace         : '/js/lib/ace'
+  , io          : '/socket.io/socket.io'
+  , domReady    : '/js/lib/domReady'
+  , createEditor: '/js/createEditor'
   }
 });
 
-require(['domReady', 'jquery', 'io', 'ace/ace'], function(domReady, $, io, ace) {
+require(['domReady', 'jquery', 'io', 'createEditor'], function(domReady, $, io, createEditor) {
   "use strict";
   domReady(function () {
+
     var updateCount = 0;
 
     var update = function(){
@@ -19,25 +22,15 @@ require(['domReady', 'jquery', 'io', 'ace/ace'], function(domReady, $, io, ace) 
       }
     };
 
-    var createEditor = function(div, editable){
-      var editor = ace.edit(div);
-      if (editable !== true) {
-        editor.setReadOnly(true);
-      }
-      editor.setTheme("ace/theme/monokai");
-      editor.getSession().setMode("ace/mode/javascript");
-      editor.getSession().setTabSize(2);
-      return editor;
-    };
+    var editors = {};
+    editors.p = createEditor('editor1');
+    editors.o = createEditor('editor2', true);
 
+    // Declare a global to make the player's editor available to the jasmine iframe.
+    // TODO: Make this less ugly, maybe by passing this information through sockets.
+    // TODO: Make editor naming scheme more consistent across files
+    window.xeditor1 = editors.p;
 
-    /* CONSUMPTION CODE */
-    // Instantiate editor sessions
-    var editor1 = createEditor('editor1', true);
-    var editor2 = createEditor('editor2');
-    window.xeditor1 = editor1;
-
-    // Lay down dat socket.io connection
     var socket = io.connect();
 
     socket.on('error', function(e){
@@ -49,12 +42,12 @@ require(['domReady', 'jquery', 'io', 'ace/ace'], function(domReady, $, io, ace) 
     });
 
     socket.on('replaceEditor', function(message){
-      editor2.setValue(message);
+      editors.o.setValue(message);
     });
 
-    editor1.on("change", function(){
+    editors.p.on("change", function(){
       updateCount++;
-      socket.emit('editorContents', editor1.getValue());
+      socket.emit('editorContents', editors.p.getValue());
       setTimeout(update, 1200);
     });
 

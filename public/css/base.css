@@ -81,6 +81,7 @@
   nav li > a {
     /* TODO: Ghetto alert, fix this */
     color: white !important;
+    padding-right: 20px;
   }
 
   #editor1 {

@@ -10,7 +10,8 @@ require.config({
   }
 });
 
-require(['domReady', 'jquery', 'io', 'createEditor'], function(domReady, $, io, createEditor) {
+
+require(['domReady', 'io', 'createEditor'], function(domReady, io, createEditor) {
   "use strict";
   domReady(function () {
 

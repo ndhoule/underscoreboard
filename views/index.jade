@@ -6,7 +6,7 @@ block navbar
       li
         a(href="#") current function
         a(href="#") reset
-        a(href="#") forfeit
+        a(href="#") vote to skip
     ul.right
       li
         a(href="#") log in
@@ -15,6 +15,6 @@ block content
   section.main
     #editor1
     #editor2
-    iframe#editor1-tests(src='/js/jasmine/SpecRunner.html?spec=each')
-    iframe#editor2-tests
+    iframe#tests(src='/js/jasmine/SpecRunner.html?spec=each')
+    //-iframe#editor2-tests
 

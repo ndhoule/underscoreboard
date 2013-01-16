@@ -18,7 +18,7 @@ require(['domReady', 'createEditor', 'io'], function(domReady, createEditor, io)
 
     var update = function(){
       if (--updateCount === 0) {
-        document.getElementById('editor1-tests').contentDocument.location.reload(true);
+        document.getElementById('tests').contentDocument.location.reload(true);
       }
     };
 

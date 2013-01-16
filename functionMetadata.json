@@ -1,0 +1,71 @@
+each: {
+  aliases: {'forEach'}
+},
+
+map: {
+  aliases: {'collect'}
+},
+
+reduce: {
+  aliases: {'inject', 'foldl'}
+},
+
+select: {
+  aliases: {'filter'}
+},
+
+reject: {
+  aliases: {}
+},
+
+any: {
+  aliases: {'some'}
+},
+
+uniq: {
+  aliases: {'unique'}
+},
+
+once: {
+  aliases: {}
+},
+
+memoize: {
+  aliases: {}
+},
+
+delay: {
+  aliases: {}
+},
+
+extend: {
+  aliases: {}
+},
+
+defaults: {
+  aliases: {}
+},
+
+sortBy: {
+  aliases: {'sortBy'}
+},
+
+zip: {
+  aliases: {}
+},
+
+contains: {
+  aliases: {'include'}
+},
+
+pluck: {
+  aliases: {}
+},
+
+last: {
+  aliases: {}
+},
+
+first: {
+  aliases: {'head', 'take'}
+}

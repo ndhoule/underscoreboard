@@ -1,4 +1,5 @@
 /* Based on qunit tests written by
+ * Jeremy Ashkenas <https://github.com/jashkenas/> and modified by
  * Jonas Huckstein <https://github.com/jonashuckestein/>
  */
 

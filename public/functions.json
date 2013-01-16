@@ -1,0 +1,320 @@
+{
+    "each": {
+        "id": 0,
+        "aliases": [
+            "forEach"
+        ],
+        "desc": [
+            "// Call iterator(value, key, obj) for each element of obj.",
+            "// The end result should provide interface of (value, key, obj).",
+            "//",
+            "// E.g.:",
+            "// _.each(obj, function(value, key, obj){",
+            "//   console.log (value, key, obj);",
+            "// };"
+        ],
+        "boiler": [
+            "var each = function(obj, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "map": {
+        "id": 1,
+        "aliases": [
+            "collect"
+        ],
+        "desc": [
+            "// Return the results of applying an iterator to each element of an array."
+        ],
+        "boiler": [
+            "var map = function(arr, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "reduce": {
+        "id": 2,
+        "aliases": [
+            "inject",
+            "foldl"
+        ],
+        "desc": [
+            "// Reduces an array or object to a single value by repetitively calling",
+            "// iterator(previousValue, item) for each item. previousValue should be",
+            "// the return value of the previous iterator call.",
+            "//",
+            "// Optionally, you may pass in an initialValue that is passed to the first",
+            "// iterator call. If no value is passed in, initialValue should default to 0.",
+            "//",
+            "// Example:",
+            "//   var numbers = [1,2,3];",
+            "//   var sum = _.reduce(numbers, function(previous_value, item){",
+            "//     return previous_value + item;",
+            "//   }, 0); // should be 6"
+        ],
+        "boiler": [
+            "var reduce = function(obj, iterator, initialValue){",
+            "  ",
+            "};"
+        ]
+    },
+    "select": {
+        "id": 3,
+        "aliases": [
+            "filter"
+        ],
+        "desc": [
+            "// Return all elements of an array that pass a truth test.",
+            "// Returns an array."
+        ],
+        "boiler": [
+            "var select = function(arr, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "reject": {
+        "id": 4,
+        "aliases": [],
+        "desc": [
+            "// Return all elements of an array that don't pass a truth test.",
+            "// Returns an array."
+        ],
+        "boiler": [
+            "var reject = function(arr, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "any": {
+        "id": 5,
+        "aliases": [
+            "some"
+        ],
+        "desc": [
+            "// Determines whether any of the elements in an object matches a truth test.",
+            "// Returns boolean true or false."
+        ],
+        "boiler": [
+            "var any = function(obj, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "uniq": {
+        "id": 6,
+        "aliases": [
+            "unique"
+        ],
+        "desc": [
+            "// Produce a duplicate-free version of the input array.",
+            "// Returns an array."
+        ],
+        "boiler": [
+            "var uniq = function(array){",
+            "  ",
+            "};"
+        ]
+    },
+    "once": {
+        "id": 7,
+        "aliases": [],
+        "desc": [
+            "// Return a function that can be called at most one time.",
+            "// Subsequent calls should return the previously returned value."
+        ],
+        "boiler": [
+            "var once = function(func){",
+            "  ",
+            "};"
+        ]
+    },
+    "memoize": {
+        "id": 8,
+        "aliases": [],
+        "desc": [
+            "// Memoize an expensive function by storing its results. You may assume",
+            "// that the function takes only one argument and that it is a primitive.",
+            "//",
+            "// Memoize should return a function that, when called, will check if it has",
+            "// already computed the result for the given argument and return that value",
+            "// instead if possible."
+        ],
+        "boiler": [
+            "var memoize = function(func){",
+            "  ",
+            "};"
+        ]
+    },
+    "delay": {
+        "id": 9,
+        "aliases": [],
+        "desc": [
+            "// Delays a function for the given number of milliseconds, and then calls",
+            "// it with the arguments supplied.",
+            "//",
+            "// The arguments for the original function are passed after the wait",
+            "// parameter. For example _.delay(someFunction, 500, 'a', 'b') will",
+            "// call someFunction('a', 'b') after 500ms."
+        ],
+        "boiler": [
+            "var delay = function(func, wait){",
+            "  ",
+            "};"
+        ]
+    },
+    "extend": {
+        "id": 10,
+        "aliases": [],
+        "desc": [
+            "// Extend a given object with all the properties of the passed in object(s).",
+            "//",
+            "// Example:",
+            "//   var obj1 = {key1: 'something'};",
+            "//   _.extend(obj1, {",
+            "//     key2: 'something new',",
+            "//     key3: 'something else new'",
+            "//   }, {",
+            "//     bla: 'even more stuff'",
+            "//   }); // obj1 now contains key1, key2, key3 and bla"
+        ],
+        "boiler": [
+            "var extend = function(){",
+            "  ",
+            "};"
+        ]
+    },
+    "defaults": {
+        "id": 11,
+        "aliases": [],
+        "desc": [
+            "// Like extend, but doesn't ever overwrite a key that already",
+            "// exists in obj"
+        ],
+        "boiler": [
+            "var defaults = function(){",
+            "  ",
+            "};"
+        ]
+    },
+    "sortBy": {
+        "id": 12,
+        "aliases": [],
+        "desc": [
+            "// Sort the object's values by a criterion produced by an iterator.",
+            "// If iterator is a string, sort objects by that property with the name",
+            "// of that string. For example, _.sortBy(people, 'name') should sort",
+            "// an array of people by their name."
+        ],
+        "boiler": [
+            "var sortBy = function(obj, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "zip": {
+        "id": 13,
+        "aliases": [],
+        "desc": [
+            "// Zip together two or more arrays with elements of the same index",
+            "// going together.",
+            "//",
+            "// Example:",
+            "// _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3]]"
+        ],
+        "boiler": [
+            "var zip = function(){",
+            "  ",
+            "};"
+        ]
+    },
+    "contains": {
+        "id": 14,
+        "aliases": [
+            "include"
+        ],
+        "desc": [
+            "// Using `===`, determine if the array or object contains a given value."
+        ],
+        "boiler": [
+            "var contains = function(obj, target){",
+            "  ",
+            "};"
+        ]
+    },
+    "pluck": {
+        "id": 15,
+        "aliases": [],
+        "desc": [
+            "// Takes an array of objects and a property. Returns an array of values that",
+            "// live at the user-defined key (property)."
+        ],
+        "boiler": [
+            "var pluck = function(arr, prop){",
+            "  ",
+            "};"
+        ]
+    },
+    "last": {
+        "id": 16,
+        "aliases": [],
+        "desc": [
+            "// Return an array of the last n elements of an array. If n is undefined,",
+            "// return the last element in the array."
+        ],
+        "boiler": [
+            "var last = function(arr, n){",
+            "  ",
+            "};"
+        ]
+    },
+    "first": {
+        "id": 17,
+        "aliases": [
+            "head",
+            "take"
+        ],
+        "desc": [
+            "// Return an array of the first n elements of an array. If n is undefined,",
+            "// return the first element in the array."
+        ],
+        "boiler": [
+            "var first = function(){",
+            "  ",
+            "};"
+        ]
+    },
+    "every": {
+        "id": 18,
+        "aliases": [
+            "all"
+        ],
+        "desc": [
+            "// Determines whether all of the elements in an object match a truth test.",
+            "// Returns boolean true or false."
+        ],
+        "boiler": [
+            "var every = function(obj, iterator){",
+            "  ",
+            "};"
+        ]
+    },
+    "flatten": {
+        "id": 19,
+        "aliases": [
+            "all"
+        ],
+        "desc": [
+            "// Flattens a multidimensional array to a one-dimensional array that",
+            "// contains all the elements of all the nested arrays.",
+            "//",
+            "// Hint: Use Array.isArray to check if something is an array"
+        ],
+        "boiler": [
+            "var flatten = function(nestedArray, result) {",
+            "  ",
+            "};"
+        ]
+    }
+}

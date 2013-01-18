@@ -2353,7 +2353,7 @@ function HTML(runner, root) {
       var el = fragment('<li class="test pass pending"><h2>%e</h2></li>', test.title);
     } else {
       var el = fragment('<li class="test fail"><h2>%e</h2></li>', test.title, encodeURIComponent(test.fullTitle()));
-      var str = test.err.stack || test.err.toString();
+      var str = test.err.toString();
 
       // FF / Opera do not add the message
       if (!~str.indexOf(test.err.message)) {
@@ -2369,7 +2369,7 @@ function HTML(runner, root) {
         str += "\n(" + test.err.sourceURL + ":" + test.err.line + ")";
       }
 
-      //el.appendChild(fragment('<pre class="error">%e</pre>', str));
+      el.appendChild(fragment('<pre class="error">%e</pre>', str));
     }
 
     // toggle code

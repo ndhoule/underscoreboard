@@ -4,7 +4,7 @@
  */
 
 
-describe("each", function() {
+describe("_.each", function() {
   it("should provide value and iteration count", function() {
     _.each([1, 2, 3], function(num, i) {
       expect(num).to.equal(i + 1);
@@ -33,7 +33,7 @@ describe("each", function() {
   });
 });
 
-describe("contains", function() {
+describe("_.contains", function() {
   it("should return true if a collection contains a user-specified value", function() {
     expect(_.contains([1,2,3], 2)).to.equal(true);
     expect(_.contains({moe:1, larry:3, curly:9}, 3)).to.equal(true);
@@ -44,7 +44,7 @@ describe("contains", function() {
   });
 });
 
-describe("map", function() {
+describe("_.map", function() {
   it("should apply a function to every value in an array", function() {
     var doubled = _.map([1, 2, 3], function(num){ return num * 2; });
     expect(doubled.join(', ')).to.equal('2, 4, 6');
@@ -57,7 +57,7 @@ describe("map", function() {
   });
 });
 
-describe("pluck", function() {
+describe("_.pluck", function() {
   it("should return values contained at a user-defined property", function() {
     var people = [{name : 'moe', age : 30}, {name : 'curly', age : 50}];
     expect(_.pluck(people, 'name').join(', ')).to.equal('moe, curly');
@@ -65,7 +65,7 @@ describe("pluck", function() {
 });
 
 
-describe("last", function() {
+describe("_.last", function() {
   it("should pull the last element from an array", function() {
     expect(_.last([1,2,3])).to.equal(3);
   });
@@ -92,7 +92,7 @@ describe("last", function() {
 });
 
 
-describe("first", function() {
+describe("_.first", function() {
   it("should be able to pull out the first element of an array", function() {
     expect(_.first([1,2,3])).to.equal(1);
   });
@@ -114,7 +114,7 @@ describe("first", function() {
   });
 });
 
-describe("reduce", function() {
+describe("_.reduce", function() {
   it("should be able to sum up an array", function() {
     var sum = _.reduce([1, 2, 3], function(sum, num){ return sum + num; }, 0);
     expect(sum).to.equal(6);
@@ -128,7 +128,7 @@ describe("reduce", function() {
   });
 });
 
-describe("select", function() {
+describe("_.select", function() {
   it("should select each even number in an array", function() {
     var evens = _.select([1, 2, 3, 4, 5, 6], function(num){ return num % 2 === 0; });
     expect(evens.join(', ')).to.equal('2, 4, 6');
@@ -139,7 +139,7 @@ describe("select", function() {
   });
 });
 
-describe("reject", function() {
+describe("_.reject", function() {
   it("should reject all even numbers", function() {
     var odds = _.reject([1, 2, 3, 4, 5, 6], function(num){ return num % 2 === 0; });
     expect(odds.join(', ')).to.equal('1, 3, 5');
@@ -150,7 +150,7 @@ describe("reject", function() {
   });
 });
 
-describe("every", function() {
+describe("_.every", function() {
   it("should handle an empty set", function() {
     expect( _.every([], function(i){return i;}) ).to.equal(true);
   });
@@ -177,7 +177,7 @@ describe("every", function() {
   });
 });
 
-describe("any", function() {
+describe("_.any", function() {
   var nativeSome;
   beforeEach(function(){
     nativeSome = Array.prototype.some;
@@ -224,7 +224,7 @@ describe("any", function() {
   });
 });
 
-describe("uniq", function() {
+describe("_.uniq", function() {
   // TODO: clarify this -- "should return a list of unique values? consolidate
   // repeated values?"
   it("should return all unique values of an unsorted array", function() {
@@ -244,7 +244,7 @@ describe("uniq", function() {
   });
 });
 
-describe("once", function() {
+describe("_.once", function() {
   it("should only run a user-defined function if it hasn't been run before", function() {
     var num = 0;
     var increment = _.once(function(){ num++; });
@@ -255,7 +255,7 @@ describe("once", function() {
   });
 });
 
-describe("memoize", function() {
+describe("_.memoize", function() {
   // TODO: rewrite to be more clear
   it("a memoized version of fibonacci produces identical results", function() {
     var fib = function(n) {
@@ -276,7 +276,7 @@ describe("memoize", function() {
   });
 });
 
-xdescribe("delay", function() {
+xdescribe("_.delay", function() {
   // TODO: rewrite test descriptions to be more clear
   // TODO: This currently tests whether or not a function gets fired after some
   // amount of time, but it doesn't test whether it is NOT fired before that time.
@@ -307,7 +307,7 @@ xdescribe("delay", function() {
   });
 });
 
-describe("extend", function() {
+describe("_.extend", function() {
   var result;
   afterEach(function(){
     result = null;
@@ -336,7 +336,7 @@ describe("extend", function() {
   });
 });
 
-describe("defaults", function() {
+describe("_.defaults", function() {
   var result, options;
   beforeEach(function(){
     options = {zero: 0, one: 1, empty: "", nan: NaN, string: "string"};
@@ -356,7 +356,7 @@ describe("defaults", function() {
   });
 });
 
-describe("flatten", function() {
+describe("_.flatten", function() {
   it("can flatten nested arrays", function() {
     var nestedArray = [1, [2], [3, [[[4]]]]];
     expect(JSON.stringify(_.flatten(nestedArray))).to.equal('[1,2,3,4]');
@@ -367,7 +367,7 @@ describe("flatten", function() {
   });
 });
 
-describe("sortBy", function() {
+describe("_.sortBy", function() {
   it("should sort by age", function() {
     var people = [{name : 'curly', age : 50}, {name : 'moe', age : 30}];
     people = _.sortBy(people, function(person){ return person.age; });
@@ -406,7 +406,7 @@ describe("sortBy", function() {
   });
 });
 
-describe("zip", function() {
+describe("_.zip", function() {
   it("should zip together arrays of different lengths", function() {
     var names = ['moe', 'larry', 'curly'], ages = [30, 40, 50], leaders = [true];
     var stooges = _.zip(names, ages, leaders);

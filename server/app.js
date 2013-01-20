@@ -26,30 +26,28 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
   // Room prototype
   var Room = function(){
-    var result = Object.create(Room);
-    result.players = result.observers = [];
-    return _.extend(result, Room.methods);
+    return _.extend(Object.create(Room), {
+      users: [],
+
+      isFull: function(){
+        return this.users.length >= 2;
+      },
+
+      addUser: function(user){
+        if (this.isFull()) {
+          throw new Error("Cannot add users to a full room.");
+        }
+        return this.users.push(user);
+      },
+
+      getUsers: function(){
+        return this.users;
+      }
+
+    });
   };
 
   Room.methods = {
-    isFull: function(){
-      return this.players.length >= 2;
-    },
-
-    addUser: function(user){
-      if (this.isFull()) {
-        throw new Error("Cannot add users to a full room.");
-      }
-      return this.players.push(user);
-    },
-
-    getUsers: function(){
-      return this.players;
-    },
-
-    getObservers: function(){
-      return this.observers;
-    }
   };
 
   // Player factory

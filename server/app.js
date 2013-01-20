@@ -45,28 +45,43 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
   // Room constructor function
   var Room = function(){
+    var roomId = makeId(25);
     var users = [];
     return _.extend(Object.create(Room), {
 
+      // Checks if the room is full. Returns true if yes, false if no.
       isFull: function(){
         return users.length >= 2;
       },
 
+      // Adds a user to the room's users array and subscribes them to this
+      // room's broadcasts.
       addUser: function(user){
-        if (this.isFull()) {
-          throw new Error("Cannot add users to a full room.");
-        }
+        // TODO: Fix this security hole--isFull could be redefined by user
+        if (this.isFull()) { throw new Error("Cannot add users to a full room."); }
+
+        io.sockets.join(roomId);
         return users.push(user);
       },
 
+      // Remove a user from the current room.
+      removeUser: function(user){
+        //TODO: Implement garbage collection on rooms
+      },
+
+      // Return an array containing all users in the room.
       getUsers: function(){
         return users;
+      },
+
+      // Emit the contents of a user's editor.
+      sendUpdate: function(){
+        //TODO: Move editor update emit logic here
       }
 
     });
   };
 
-  // Player factory
   var createUser = function(client){
     return {client: client};
   };

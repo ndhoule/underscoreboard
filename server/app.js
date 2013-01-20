@@ -1,4 +1,4 @@
-/*jshint node:true, laxcomma:true, expr:true*/
+/*jshint node:true, laxcomma:true, expr:true, newcap:false*/
 "use strict";
 
 var requirejs = require('requirejs');
@@ -24,7 +24,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   app.get('/', routes.index);
 
 
-  // Room prototype
+  // Room constructor
   var Room = function(){
     var users = [];
     return _.extend(Object.create(Room), {
@@ -45,9 +45,6 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
       }
 
     });
-  };
-
-  Room.methods = {
   };
 
   // Player factory

@@ -4,7 +4,7 @@
 var requirejs = require('requirejs');
 requirejs.config({nodeRequire: require});
 
-requirejs(['http', 'path', 'express', './routes', 'socket.io', './public/functions.json'], function (http, path, express, routes, socketio, underscoreFns) {
+requirejs(['http', 'path', 'express', './routes', 'socket.io', './functions.json'], function (http, path, express, routes, socketio, underscoreFns) {
   var app = express()
     , server = http.createServer(app)
     , io = socketio.listen(server, {origins: '*:*', log: false});
@@ -18,7 +18,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', './public/functio
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, '../client')));
   });
 
   app.get('/', routes.index);

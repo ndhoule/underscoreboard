@@ -1,6 +1,7 @@
 {
     "each": {
         "id": 0,
+        "name": "_.each",
         "aliases": [
             "forEach"
         ],
@@ -21,6 +22,7 @@
     },
     "map": {
         "id": 1,
+        "name": "_.map",
         "aliases": [
             "collect"
         ],
@@ -35,6 +37,7 @@
     },
     "reduce": {
         "id": 2,
+        "name": "_.reduce",
         "aliases": [
             "inject",
             "foldl"
@@ -61,6 +64,7 @@
     },
     "select": {
         "id": 3,
+        "name": "_.select",
         "aliases": [
             "filter"
         ],
@@ -76,6 +80,7 @@
     },
     "reject": {
         "id": 4,
+        "name": "_.reject",
         "aliases": [],
         "desc": [
             "// Return all elements of an array that don't pass a truth test.",
@@ -89,6 +94,7 @@
     },
     "any": {
         "id": 5,
+        "name": "_.any",
         "aliases": [
             "some"
         ],
@@ -104,6 +110,7 @@
     },
     "uniq": {
         "id": 6,
+        "name": "_.uniq",
         "aliases": [
             "unique"
         ],
@@ -119,6 +126,7 @@
     },
     "once": {
         "id": 7,
+        "name": "_.once",
         "aliases": [],
         "desc": [
             "// Return a function that can be called at most one time.",
@@ -132,6 +140,7 @@
     },
     "memoize": {
         "id": 8,
+        "name": "_.memoize",
         "aliases": [],
         "desc": [
             "// Memoize an expensive function by storing its results. You may assume",
@@ -149,6 +158,7 @@
     },
     "delay": {
         "id": 9,
+        "name": "_.delay",
         "aliases": [],
         "desc": [
             "// Delays a function for the given number of milliseconds, and then calls",
@@ -166,6 +176,7 @@
     },
     "extend": {
         "id": 10,
+        "name": "_.extend",
         "aliases": [],
         "desc": [
             "// Extend a given object with all the properties of the passed in object(s).",
@@ -187,6 +198,7 @@
     },
     "defaults": {
         "id": 11,
+        "name": "_.default",
         "aliases": [],
         "desc": [
             "// Like extend, but doesn't ever overwrite a key that already",
@@ -200,6 +212,7 @@
     },
     "sortBy": {
         "id": 12,
+        "name": "_.sortBy",
         "aliases": [],
         "desc": [
             "// Sort the object's values by a criterion produced by an iterator.",
@@ -215,6 +228,7 @@
     },
     "zip": {
         "id": 13,
+        "name": "_.zip",
         "aliases": [],
         "desc": [
             "// Zip together two or more arrays with elements of the same index",
@@ -231,6 +245,7 @@
     },
     "contains": {
         "id": 14,
+        "name": "_.contains",
         "aliases": [
             "include"
         ],
@@ -245,6 +260,7 @@
     },
     "pluck": {
         "id": 15,
+        "name": "_.pluck",
         "aliases": [],
         "desc": [
             "// Takes an array of objects and a property. Returns an array of values that",
@@ -258,6 +274,7 @@
     },
     "last": {
         "id": 16,
+        "name": "_.last",
         "aliases": [],
         "desc": [
             "// Return an array of the last n elements of an array. If n is undefined,",
@@ -271,6 +288,7 @@
     },
     "first": {
         "id": 17,
+        "name": "_.first",
         "aliases": [
             "head",
             "take"
@@ -287,6 +305,7 @@
     },
     "every": {
         "id": 18,
+        "name": "_.every",
         "aliases": [
             "all"
         ],
@@ -302,6 +321,7 @@
     },
     "flatten": {
         "id": 19,
+        "name": "_.flatten",
         "aliases": [
             "all"
         ],

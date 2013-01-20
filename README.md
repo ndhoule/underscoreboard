@@ -9,7 +9,7 @@ What Is It?
 
 Underscoreboard is a realtime coding game where you try to implement an underscore
 function faster than an opponent. All your code is visible to your opponent (and
-vice versa). A Jasmine test suite will re-run itself as you type your code, guiding
+vice versa). A Mocha test suite will re-run itself as you type your code, guiding
 you toward glory (or toward defeat).
 
 
@@ -52,7 +52,7 @@ like contexts.
 What's It Built On?
 -------------------
 
-On Express and uses Socket.io. It also uses Ace and runs a Jasmine test suite
+On Express and uses Socket.io. It also uses Ace and runs a Mocha test suite
 (converted from Underscore's Qunit tests).
 
 
@@ -83,14 +83,9 @@ server I control, you'll be able to find a working demo at
 License
 -------
 
-This project is licensed under the MIT license.
+This project is licensed under the MIT license. If you'd like to build on or use the
+project and that doesn't work for you, let me know and we can work something out.
 
-I've included [Ace](https://github.com/ajaxorg/ace) and a slightly modified version
-of) [Jasmine](https://github.com/pivotal/jasmine) in this project. Jasmine is
-licensed under the MIT license, and Ace is licensed under the BSD license.
-
-Special mention: the Jasmine test suite is based on the official Underscore test
-suite. I rewrote them in Jasmine, but they should be considered to be licensed under
-the original
-[license](https://github.com/documentcloud/underscore/blob/master/LICENSE).
-
+This application bundles the Ace editor [Ace](https://github.com/ajaxorg/ace) and a
+slightly modified [Mocha](https://github.com/visionmedia/mocha). Please see each
+project's GitHub profile for its licensing terms.

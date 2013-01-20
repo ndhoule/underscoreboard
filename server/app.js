@@ -7,7 +7,8 @@ requirejs.config({nodeRequire: require});
 requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './functions.json'], function (http, path, express, routes, socketio, _, underscoreFns) {
   var app = express()
     , server = http.createServer(app)
-    , io = socketio.listen(server, {origins: '*:*', log: false});
+    , logging = true
+    , io = socketio.listen(server, {origins: '*:*', log: logging});
 
   app.configure(function() {
     app.set('port', process.env.PORT || 3000);
@@ -24,7 +25,12 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   app.get('/', routes.index);
 
 
-  // Room constructor
+  // App-specific logging function. Logs messages only if 'logging' var is set to true.
+  var log = function(message) {
+    if (logging) { console.log(message); }
+  };
+
+  // Room constructor function
   var Room = function(){
     var users = [];
     return _.extend(Object.create(Room), {

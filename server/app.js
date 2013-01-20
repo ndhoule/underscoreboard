@@ -83,10 +83,6 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
     });
   };
 
-  var createUser = function(client){
-    return {client: client};
-  };
-
 
   // Create a room when we initialize the server
   var currentRoom = Room();
@@ -94,14 +90,12 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   var prevRooms = [];
 
   io.sockets.on('connection', function (client) {
-    var user = createUser(client);
-
     if( currentRoom.isFull() ){
       prevRooms.push(currentRoom);
       currentRoom = Room();
     }
 
-    currentRoom.addUser(user);
+    currentRoom.addUser(client);
 
     client.on('editorChange', function(message) {
       client.broadcast.emit('updateEditor', message);

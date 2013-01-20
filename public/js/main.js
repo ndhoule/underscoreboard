@@ -11,7 +11,7 @@ require.config({
 });
 
 
-require(['domReady', 'createEditor', 'io'], function(domReady, createEditor, io) {
+require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, createEditor, io) {
   "use strict";
   domReady(function() {
     var updateCount = 0;
@@ -32,6 +32,23 @@ require(['domReady', 'createEditor', 'io'], function(domReady, createEditor, io)
     window.xeditor1 = editors.p;
 
 
+    // Event listeners
+    $('#skip-button').click(function(e) {
+      e.preventDefault();
+      console.log('skip this round button clicked');
+    });
+
+    $('#reset-button').click(function(e) {
+      e.preventDefault();
+      console.log('reset editor area button clicked');
+    });
+
+    $('#login-button').click(function(e) {
+      e.preventDefault();
+      console.log('log in button clicked');
+    });
+
+    // Socket connections
     var socket = io.connect();
 
     socket.on('error', function(e){
@@ -40,6 +57,10 @@ require(['domReady', 'createEditor', 'io'], function(domReady, createEditor, io)
 
     socket.on('connect', function(){
       console.info('Socket.io connection established');
+    });
+
+    socket.on('curFn', function(message){
+      editors.p.setValue(message.desc.join('\n') + '\n' + message.boiler.join('\n'));
     });
 
     socket.on('updateEditor', function(message){

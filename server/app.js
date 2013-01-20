@@ -26,22 +26,22 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
   // Room prototype
   var Room = function(){
+    var users = [];
     return _.extend(Object.create(Room), {
-      users: [],
 
       isFull: function(){
-        return this.users.length >= 2;
+        return users.length >= 2;
       },
 
       addUser: function(user){
         if (this.isFull()) {
           throw new Error("Cannot add users to a full room.");
         }
-        return this.users.push(user);
+        return users.push(user);
       },
 
       getUsers: function(){
-        return this.users;
+        return users;
       }
 
     });

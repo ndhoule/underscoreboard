@@ -22,6 +22,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
     app.use(express.static(path.join(__dirname, '../client')));
   });
 
+  // Routing table
   app.get('/', routes.index);
 
 

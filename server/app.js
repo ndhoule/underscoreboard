@@ -4,7 +4,7 @@
 var requirejs = require('requirejs');
 requirejs.config({nodeRequire: require});
 
-requirejs(['http', 'path', 'express', './routes', 'socket.io', './functions.json'], function (http, path, express, routes, socketio, underscoreFns) {
+requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './functions.json'], function (http, path, express, routes, socketio, _, underscoreFns) {
   var app = express()
     , server = http.createServer(app)
     , io = socketio.listen(server, {origins: '*:*', log: false});
@@ -25,17 +25,13 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', './functions.json
 
 
   // Room prototype
-  var Room = {
-    init: function(){
-      if (this._initialized) {
-        throw new Error("Cannot initialize a previously initialized room.");
-      }
+  var Room = function(){
       var result = Object.create(Room);
-      result._initialized = true;
       result.players = result.observers = [];
-      return result;
-    },
+      return _.extend(result, Room.methods);
+  };
 
+  Room.methods = {
     isFull: function(){
       return this.players.length >= 2;
     },
@@ -63,7 +59,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', './functions.json
 
 
   // Create a room when we initialize the server
-  var currentRoom = Room.init();
+  var currentRoom = Room();
   // Create a container to hold full rooms
   var prevRooms = [];
 
@@ -72,7 +68,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', './functions.json
 
     if( currentRoom.isFull() ){
       prevRooms.push(currentRoom);
-      currentRoom = Room.init();
+      currentRoom = Room();
     }
 
     currentRoom.addUser(user);

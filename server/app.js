@@ -30,6 +30,19 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
     if (logging) { console.log(message); }
   };
 
+  // ID generator utility function
+  var makeId = function(len) {
+      var id, CHARSET;
+      CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      id = "";
+
+      for (var i = 0, idLen = len || 10; i < idLen; i++) {
+          id += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
+      }
+
+      return id;
+  };
+
   // Room constructor function
   var Room = function(){
     var users = [];

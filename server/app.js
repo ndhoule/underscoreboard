@@ -26,9 +26,9 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
   // Room prototype
   var Room = function(){
-      var result = Object.create(Room);
-      result.players = result.observers = [];
-      return _.extend(result, Room.methods);
+    var result = Object.create(Room);
+    result.players = result.observers = [];
+    return _.extend(result, Room.methods);
   };
 
   Room.methods = {

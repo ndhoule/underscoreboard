@@ -4,7 +4,7 @@
 var requirejs = require('requirejs');
 requirejs.config({nodeRequire: require});
 
-requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './functions.json'], function (http, path, express, routes, socketio, _, underscoreFns) {
+requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './functions.json'], function (http, path, express, routes, socketio, _, fns) {
   var app = express()
     , server = http.createServer(app)
     , logging = true
@@ -47,7 +47,23 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   var Room = function(){
     var roomID = makeID(10);
     var users = [];
+    var currentFn = null;
     return _.extend(Object.create(Room), {
+
+     genRandomFn: function(){
+        var randProp,
+            randIndex,
+            keys = [];
+
+        _.each(fns, function(val, prop){
+          keys.push(prop);
+        });
+
+        randIndex = Math.floor(Math.random() * _.size(keys));
+        randProp = keys[randIndex];
+
+        return fns[randProp];
+      },
 
       // Checks if the room is full. Returns true if yes, false if no.
       isFull: function(){

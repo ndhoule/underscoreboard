@@ -1,8 +1,6 @@
 /*jshint evil:true*/
 
 (function(){
-  // Unmap the function we're asking the user to implement
-  _.each = _.forEach = undefined;
 
   // If the user provides a leading var keyword, we need to strip it before
   // we eval their code; otherwise, it won't be executed in the correct context
@@ -20,8 +18,24 @@
   // Not sure why they'd want to do this, but let's be nice to our users!
   editorContents = editorContents.replace(/([\s\S])*?^var /m, '');
 
-  // Here be eval dragons
-  _.each = each = eval(editorContents);
+  // Unmap the function we're asking the user to implement
+  // TODO: Refactor into one function
+  var invalidateFunctions = function(){
+    for (var i = 0, len = currentFunctionNames.length; i < len; i++){
+      var functionName = currentFunctionNames[i];
+      _[functionName] = undefined;
+    }
+  };
+
+  var mapFunctions = function(){
+    for (var i = 0, len = currentFunctionNames.length; i < len; i++){
+      var functionName = currentFunctionNames[i];
+      _[functionName] = eval(editorContents);
+    }
+  };
+
+  invalidateFunctions();
+  mapFunctions();
 
   if(!_.each){
     if(!window.each){

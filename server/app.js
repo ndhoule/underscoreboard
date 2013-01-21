@@ -60,7 +60,6 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
         // TODO: Fix this security hole--isFull could be redefined by user
         if ( this.isFull() ) { throw new Error("Cannot add users to a full room."); }
 
-        log('Adding user ID ' + user.getID() + ' to room ID: ' + roomID);
         // Subscribe a user to this room's socket broadcasts
         user.getSocket().join(roomID);
         return users.push(user);
@@ -82,8 +81,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
       // Broadcast the contents of a user's editor to that user's room.
       updateEditor: function(data, socket){
-        socket.broadcast.to( this.getID() ).emit('updateEditor', data);
-        log('UID ' + this.getID() + ' Broadcasting to: ' + roomID);
+        socket.broadcast.to(roomID).emit('updateEditor', data);
       }
 
     });
@@ -128,7 +126,6 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   io.sockets.on('connection', function (socket) {
     // Check to see if the current room is full and create a new one if it is
     if( currentRoom.isFull() ){
-      log('The room is full. Creating a new room...');
       currentRoom = Room();
     }
 

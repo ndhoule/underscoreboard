@@ -16,6 +16,8 @@
   // the name of our function we should concat it in so that a user can declare
   // a var before their underscore function without breaking the jasmine tests.
   // Not sure why they'd want to do this, but let's be nice to our users!
+  // Passing a var to the RegExp constructor and using .replace() should let us
+  // do this pretty easily.
   editorContents = editorContents.replace(/([\s\S])*?^var /m, '');
 
   // Unmap the function we're asking the user to implement

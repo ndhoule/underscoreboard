@@ -1,3 +1,5 @@
+/*jshint evil:true*/
+
 (function(){
   // Unmap the function we're asking the user to implement
   _.each = _.forEach = undefined;

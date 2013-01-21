@@ -5,6 +5,12 @@
   // If the user provides a leading var keyword, we need to strip it before
   // we eval their code; otherwise, it won't be executed in the correct context
   var editorContents = parent.xeditor1.getValue();
+  var currentFunction = parent.xfunction;
+
+  //TODO: make less ghettofabulous
+  var currentFunctionNames = currentFunction.aliases;
+  currentFunctionNames.push(currentFunction.name);
+
   // TODO: This sort of works for the moment: It does lazy matching, so it only
   // grabs the first var in the file and strips it. Once the server passes in
   // the name of our function we should concat it in so that a user can declare

@@ -1,5 +1,5 @@
 /*jshint laxcomma:true*/
-/*global 'ace':false, 'io':false, 'setTimeout':false, 'document':false, 'window':false, 'console':false*/
+/*global 'setTimeout':false, 'document':false, 'window':false, 'console':false*/
 
 require.config({
   paths: {
@@ -62,6 +62,9 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
     // TODO: security hole: client could broadcast this event to anyone connected
     socket.on('beginGame', function(message){
       setTimeout(function(){
+        // TODO: Pass this directly to the testrunner using a socket event
+        // TODO: Load specs at this phase rather than on pageload.
+        window.xfunction = message;
         editors.p.setValue(message.desc.join('\n') + '\n' + message.boiler.join('\n'));
       }, 2500);
     });

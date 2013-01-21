@@ -8,14 +8,14 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   var app = express()
     , server = http.createServer(app)
     , logging = true
-    , io = socketio.listen(server, {origins: '*:*', log: logging});
+    , io = socketio.listen(server, {origins: '*:*', log: false});
 
   app.configure(function() {
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.favicon());
-    app.use(express.logger('dev'));
+    //app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
@@ -32,13 +32,12 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   };
 
   // ID generator utility function
-  var makeId = function(len) {
-      var id, CHARSET;
-      CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      id = "";
+  var makeID = function(len) {
+      var CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var id = "";
 
       for (var i = 0, idLen = len || 10; i < idLen; i++) {
-          id += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
+        id += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
       }
 
       return id;
@@ -46,7 +45,7 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
   // Room constructor function
   var Room = function(){
-    var roomId = makeId(25);
+    var roomID = makeID(10);
     var users = [];
     return _.extend(Object.create(Room), {
 
@@ -59,9 +58,11 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
       // room's broadcasts.
       addUser: function(user){
         // TODO: Fix this security hole--isFull could be redefined by user
-        if (this.isFull()) { throw new Error("Cannot add users to a full room."); }
+        if ( this.isFull() ) { throw new Error("Cannot add users to a full room."); }
 
-        io.sockets.join(roomId);
+        log('Adding user ID ' + user.getID() + ' to room ID: ' + roomID);
+        // Subscribe a user to this room's socket broadcasts
+        user.getSocket().join(roomID);
         return users.push(user);
       },
 
@@ -75,39 +76,83 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
         return users;
       },
 
-      // Emit the contents of a user's editor.
-      sendUpdate: function(){
-        //TODO: Move editor update emit logic here
+      getID: function(){
+        return roomID;
+      },
+
+      // Broadcast the contents of a user's editor to that user's room.
+      updateEditor: function(data, socket){
+        socket.broadcast.to( this.getID() ).emit('updateEditor', data);
+        log('UID ' + this.getID() + ' Broadcasting to: ' + roomID);
       }
 
     });
   };
 
+  var User = function(socket){
+    // TODO: More robust checking here
+    if (!socket) {
+      throw new Error("Cannot create a user without linking it to a socket.");
+    }
+
+    var userSocket = socket;
+    var currentRoom = null;
+    var uid = socket.id;
+    return {
+
+      setCurrentRoom: function(room){
+        return currentRoom = room;
+      },
+
+      getCurrentRoom: function(){
+        return currentRoom;
+      },
+
+      getSocket: function(){
+        return userSocket;
+      },
+
+      getID: function(){
+        return uid;
+      }
+
+    };
+  };
+
+  // Hash to store our users in
+  var Users = {};
 
   // Create a room when we initialize the server
   var currentRoom = Room();
-  // Create a container to hold full rooms
-  var prevRooms = [];
 
-  io.sockets.on('connection', function (client) {
+  io.sockets.on('connection', function (socket) {
+    // Check to see if the current room is full and create a new one if it is
     if( currentRoom.isFull() ){
-      prevRooms.push(currentRoom);
+      log('The room is full. Creating a new room...');
       currentRoom = Room();
     }
 
-    currentRoom.addUser(client);
+    // Create a user and link it to its corresponding socket connection
+    var user = User(socket);
 
-    client.on('editorChange', function(message) {
-      client.broadcast.emit('updateEditor', message);
+    // Add this user to the current room
+    currentRoom.addUser(user);
+
+    // Store the room's ID on the user object
+    user.setCurrentRoom(currentRoom);
+
+    // Broadcast changes to a room's users
+    socket.on('editorChange', function(data) {
+      user.getCurrentRoom().updateEditor(data, socket);
     });
 
-    client.on('disconnect',function(){
-      console.log('lol bai');
+    socket.on('disconnect',function(){
+      log('lol bai');
     });
   });
 
   server.listen(app.get('port'), function() {
-    console.log("Underscoreboard server listening on port " + app.get('port'));
+    log("Underscoreboard server listening on port " + app.get('port'));
   });
 
 });

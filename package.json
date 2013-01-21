@@ -1,9 +1,16 @@
 {
-  "name": "application-name",
+  "name": "Underscoreboard",
+  "description": "Underscore-oriented multiplayer competitive coding game",
+  "homepage": "http://underscoreboard.com",
   "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app"
+  "author": {
+    "name": "Nathan Houle",
+    "email": "nathan@nathanhoule.com",
+    "url": "https://github.com/ndhoule/underscoreboard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ndhoule/underscoreboard.git"
   },
   "dependencies": {
     "express": "3.0.6",
@@ -12,5 +19,16 @@
     "socket.io": "~0.9.13",
     "requirejs": "~2.1.2",
     "underscore": "~1.4.3"
-  }
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-watch": "latest"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/ndhoule/underscoreboard/blob/master/LICENSE-MIT"
+    }
+  ]
 }

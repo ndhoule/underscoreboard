@@ -50,6 +50,12 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
     var currentFn = null;
     return _.extend(Object.create(Room), {
 
+      initGame: function(){
+        log('starting game id ' + roomID);
+        currentFn = this.genRandomFn();
+        io.sockets.in(roomID).emit('beginGame', currentFn);
+      },
+
      genRandomFn: function(){
         var randProp,
             randIndex,
@@ -153,6 +159,11 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
 
     // Store the room's ID on the user object
     user.setCurrentRoom(currentRoom);
+
+    // Check again if the room is now full, and start a game if it is
+    if( currentRoom.isFull() ) {
+      currentRoom.initGame();
+    }
 
     // Broadcast changes to a room's users
     socket.on('editorChange', function(data) {

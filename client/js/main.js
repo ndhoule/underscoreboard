@@ -59,8 +59,11 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
       console.info('Socket.io connection established');
     });
 
-    socket.on('curFn', function(message){
-      editors.p.setValue(message.desc.join('\n') + '\n' + message.boiler.join('\n'));
+    // TODO: security hole: client could broadcast this event to anyone connected
+    socket.on('beginGame', function(message){
+      setTimeout(function(){
+        editors.p.setValue(message.desc.join('\n') + '\n' + message.boiler.join('\n'));
+      }, 2500);
     });
 
     socket.on('updateEditor', function(message){

@@ -10,9 +10,7 @@ module.exports = function(grunt) {
         '<%= meta.pkg.homepage ? "* " + meta.pkg.homepage + "\\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
-      src    : ['server/app.js', 'server/routes/**/*', 'client/js/main.js', 'client/js/createEditor.js', 'client/js/mocha/spec/**/*'],
-      vendor : ['lib/underscore/underscore.js', 'lib/jquery/jquery-latest.js', 'src/undermore.js'],
-      specs  : ['specs/**/*Spec.js']
+      src    : ['server/app.js', 'server/routes/**/*', 'client/js/main.js', 'client/js/createEditor.js', 'client/mocha/SpecHelper.js', 'client/mocha/spec/**/*'],
     },
     jshint: {
       all: [

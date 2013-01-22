@@ -42,7 +42,10 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
     $('#reset-button').click(function(e) {
       //TODO: Implement this
       e.preventDefault();
-      console.log('reset editor area button clicked');
+      if (window.confirm("Are you sure you want to reset your code to the start point?")) {
+        //TODO: dry
+        editors.p.setValue(window.xfunction.desc.join('\n') + '\n' + window.xfunction.boiler.join('\n'));
+      }
     });
 
     $('#login-button').click(function(e) {

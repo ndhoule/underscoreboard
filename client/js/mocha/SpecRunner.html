@@ -4,13 +4,6 @@
 		<title>Underscore Test Suite [Mocha]</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" href="lib/browser/mocha.css" />
-		<script>
-			// Catch the page before it renders and inject a query string into the mix.
-			// TODO: Is there a way to make this less janky?
-			if ( window.location.search !== ("?grep=_." + parent.xfunction.name ) ) {
-				window.location.href = window.location.pathname+"?grep=_." + parent.xfunction.name;
-			}
-		</script>
 		<script src="./lib/browser/jquery-1.9.0.min.js" type="text/javascript"></script>
 		<script src="./lib/browser/underscore-1.4.3.min.js" type="text/javascript"></script>
 		<script src="./lib/expect.js"></script>

@@ -71,12 +71,20 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
         // TODO: Pass this directly to the testrunner using a socket event
         // TODO: Load specs at this phase rather than on pageload.
         window.xfunction = message;
+        // Set the value of the editor to the placeholder text and move the cursor
+        // to the body of the function.
         editors.p.setValue(message.desc.join('\n') + '\n' + message.boiler.join('\n'));
+        editors.p.selection.moveCursorBy(-1, 0);
+        editors.p.selection.clearSelection();
+        $('#current-function-name').html(message.name);
+        $('#tests').attr({'src': '/js/mocha/SpecRunner.html?grep=_.' + message.name});
       }, 2500);
     });
 
     socket.on('updateEditor', function(message){
       editors.o.setValue(message);
+      // Ace highlights the contents of an editor every time it changes. Fix that
+      editors.o.selection.clearSelection();
     });
 
     editors.p.on('change', function(){

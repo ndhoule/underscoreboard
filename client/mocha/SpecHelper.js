@@ -5,10 +5,7 @@
   // If the user provides a leading var keyword, we need to strip it before
   // we eval their code; otherwise, it won't be executed in the correct context
   var editorContents = parent.xeditor1.getValue();
-  var currentFunction = parent.xfunction;
-
-  //TODO: make less ghettofabulous
-  var currentFunctionNames = currentFunction.aliases;
+  var currentFn = parent.xcurrentFn.aliases;
 
   // TODO: This sort of works for the moment: It does lazy matching, so it only
   // grabs the first var in the file and strips it. Once the server passes in
@@ -19,22 +16,23 @@
   // do this pretty easily.
   editorContents = editorContents.replace(/([\s\S])*?^var /m, '');
 
-  // Unmap the function we're asking the user to implement
+  // Unmap the function we're asking the user to implement (and its aliases)
   // TODO: Refactor into one function
   var invalidateFunctions = function(){
-    for (var i = 0, len = currentFunctionNames.length; i < len; i++){
-      var functionName = currentFunctionNames[i];
+    for (var i = 0, len = currentFn.length; i < len; i++){
+      var functionName = currentFn[i];
       _[functionName] = undefined;
     }
   };
 
   var mapFunctions = function(){
-    for (var i = 0, len = currentFunctionNames.length; i < len; i++){
-      var functionName = currentFunctionNames[i];
+    for (var i = 0, len = currentFn.length; i < len; i++){
+      var functionName = currentFn[i];
       _[functionName] = eval(editorContents);
     }
   };
 
+  // Glorious evaldoing
   invalidateFunctions();
   mapFunctions();
 

@@ -11,12 +11,13 @@ require.config({
 });
 
 
-require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, createEditor, io) {
+require(['domReady', 'jquery', 'io', 'createEditor'], function(domReady, $, io, createEditor) {
   "use strict";
   domReady(function() {
-    var updateCount = 0;
+    var currentFn,
+        updateCount = 0;
 
-    var update = function(){
+    var updateTests = function(){
       if (--updateCount === 0) {
         document.getElementById('tests').contentDocument.location.reload(true);
       }
@@ -26,8 +27,7 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
     editors.p = createEditor('editor-p');
     editors.o = createEditor('editor-o', true);
 
-    // Declare a global to make the player's editor available to the jasmine iframe.
-    // TODO: Make this less ugly, maybe by passing this information through sockets.
+    // Declare a global to make the player's editor available to the testing iframe.
     window.xeditor1 = editors.p;
 
 
@@ -42,7 +42,7 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
       e.preventDefault();
       if (window.confirm("Are you sure you want to reset your code to the start point?")) {
         //TODO: dry
-        editors.p.setValue(window.xfunction.desc.join('\n') + '\n' + window.xfunction.boiler.join('\n'));
+        editors.p.setValue(currentFn.desc.join('\n') + '\n' + currentFn.boiler.join('\n'));
       }
     });
 
@@ -65,28 +65,30 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
 
     socket.on('beginGame', function(message){
       setTimeout(function(){
-        // TODO: Pass this directly to the testrunner using a socket event
-        window.xfunction = message;
-        // Set the value of the editor to the placeholder text and move the cursor
-        // to the body of the function.
-        editors.p.setValue(message.desc.join('\n') + '\n' + message.boiler.join('\n'));
+        // Make both a local and global reference to the current function
+        window.xcurrentFn = currentFn = message;
+
+        // Insert the placeholder text into editor and move cursor to the start point
+        editors.p.setValue(currentFn.desc.join('\n') + '\n' + currentFn.boiler.join('\n'));
         editors.p.selection.moveCursorBy(-1, 0);
         editors.p.selection.clearSelection();
-        $('#current-function-name').html(message.name);
-        $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + message.name});
+
+        // Display the current function to the user and load the test URL
+        $('#current-function-name').html(currentFn.name);
+        $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + currentFn.name});
       }, 2500);
     });
 
     socket.on('updateEditor', function(message){
       editors.o.setValue(message);
-      // Fixes Ace highlighting the contents of an editor every time it changes
+      // Fixes annoying highlighting of opponent's editor when its contents changes
       editors.o.selection.clearSelection();
     });
 
     editors.p.on('change', function(){
       updateCount++;
       socket.emit('editorChange', editors.p.getValue());
-      setTimeout(update, 1200);
+      setTimeout(updateTests, 1200);
     });
 
   });

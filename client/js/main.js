@@ -77,7 +77,7 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
         editors.p.selection.moveCursorBy(-1, 0);
         editors.p.selection.clearSelection();
         $('#current-function-name').html(message.name);
-        $('#tests').attr({'src': '/js/mocha/SpecRunner.html?grep=_.' + message.name});
+        $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + message.name});
       }, 2500);
     });
 

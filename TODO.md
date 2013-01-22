@@ -13,9 +13,6 @@
 
 
 # Rooms #
-* Basic room functionality
 * Max clients
-    - Two active players per room
     - Infinite number of observers
-* Wait for another client to connect before randomizing function
 * Named rooms

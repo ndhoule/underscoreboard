@@ -6,12 +6,16 @@ require.config({
     ace         : '/js/lib/ace'
   , io          : '/socket.io/socket.io'
   , domReady    : '/js/lib/domReady'
+  , bootstrap   : '/js/lib/bootstrap.min'
   , createEditor: '/js/createEditor'
+  },
+  shim: {
+    'bootstrap' : ['jquery']
   }
 });
 
 
-require(['domReady', 'jquery', 'io', 'createEditor'], function(domReady, $, io, createEditor) {
+require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domReady, $, io, createEditor) {
   "use strict";
   domReady(function() {
     var currentFn,

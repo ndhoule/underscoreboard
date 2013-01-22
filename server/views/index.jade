@@ -1,17 +1,19 @@
 extends layout
 
 block navbar
-  nav
-    ul.inline
-      li
-        h1#masthead-title.inline underscoreboard
-        h3#current-function-label.inline current function
-        h4#current-function-name.inline
-        a(href="", id="reset-button", class='first') reset code
-        a(href="", id="skip-button") vote to skip
-    ul.right.inline
-      li
-        a(href="", id="login-button") log in
+  nav.navbar.navbar-fixed-top
+    div.navbar-inner
+      ul.nav.inline
+        li
+          h1#masthead-title underscoreboard
+        li
+          h3#current-function-label current function
+        li
+          h4#current-function-name
+        li
+          a(href="", id="reset-button", class='first') reset code
+        li
+          a(href="", id="skip-button") vote to skip
 
 block content
   section.main

@@ -3,6 +3,7 @@
         "id": 0,
         "name": "each",
         "aliases": [
+            "each",
             "forEach"
         ],
         "desc": [
@@ -24,6 +25,7 @@
         "id": 1,
         "name": "map",
         "aliases": [
+            "map",
             "collect"
         ],
         "desc": [
@@ -39,6 +41,7 @@
         "id": 2,
         "name": "reduce",
         "aliases": [
+            "reduce",
             "inject",
             "foldl"
         ],
@@ -66,6 +69,7 @@
         "id": 3,
         "name": "select",
         "aliases": [
+            "select",
             "filter"
         ],
         "desc": [
@@ -81,7 +85,9 @@
     "reject": {
         "id": 4,
         "name": "reject",
-        "aliases": [],
+        "aliases": [
+            "reject"
+        ],
         "desc": [
             "// Return all elements of an array that don't pass a truth test.",
             "// Returns an array."
@@ -96,6 +102,7 @@
         "id": 5,
         "name": "any",
         "aliases": [
+            "any",
             "some"
         ],
         "desc": [
@@ -112,6 +119,7 @@
         "id": 6,
         "name": "uniq",
         "aliases": [
+            "uniq",
             "unique"
         ],
         "desc": [
@@ -127,7 +135,9 @@
     "once": {
         "id": 7,
         "name": "once",
-        "aliases": [],
+        "aliases": [
+            "once"
+        ],
         "desc": [
             "// Return a function that can be called at most one time.",
             "// Subsequent calls should return the previously returned value."
@@ -141,7 +151,9 @@
     "memoize": {
         "id": 8,
         "name": "memoize",
-        "aliases": [],
+        "aliases": [
+            "memoize"
+        ],
         "desc": [
             "// Memoize an expensive function by storing its results. You may assume",
             "// that the function takes only one argument and that it is a primitive.",
@@ -159,7 +171,9 @@
     "delay": {
         "id": 9,
         "name": "delay",
-        "aliases": [],
+        "aliases": [
+            "delay"
+        ],
         "desc": [
             "// Delays a function for the given number of milliseconds, and then calls",
             "// it with the arguments supplied.",
@@ -177,7 +191,9 @@
     "extend": {
         "id": 10,
         "name": "extend",
-        "aliases": [],
+        "aliases": [
+            "extend"
+        ],
         "desc": [
             "// Extend a given object with all the properties of the passed in object(s).",
             "//",
@@ -199,7 +215,9 @@
     "defaults": {
         "id": 11,
         "name": "default",
-        "aliases": [],
+        "aliases": [
+            "default"
+        ],
         "desc": [
             "// Like extend, but doesn't ever overwrite a key that already",
             "// exists in obj"
@@ -213,7 +231,9 @@
     "sortBy": {
         "id": 12,
         "name": "sortBy",
-        "aliases": [],
+        "aliases": [
+            "sortBy"
+        ],
         "desc": [
             "// Sort the object's values by a criterion produced by an iterator.",
             "// If iterator is a string, sort objects by that property with the name",
@@ -229,7 +249,9 @@
     "zip": {
         "id": 13,
         "name": "zip",
-        "aliases": [],
+        "aliases": [
+            "zip"
+        ],
         "desc": [
             "// Zip together two or more arrays with elements of the same index",
             "// going together.",
@@ -247,6 +269,7 @@
         "id": 14,
         "name": "contains",
         "aliases": [
+            "contains",
             "include"
         ],
         "desc": [
@@ -261,7 +284,9 @@
     "pluck": {
         "id": 15,
         "name": "pluck",
-        "aliases": [],
+        "aliases": [
+            "pluck"
+        ],
         "desc": [
             "// Takes an array of objects and a property. Returns an array of values that",
             "// live at the user-defined key (property)."
@@ -275,7 +300,9 @@
     "last": {
         "id": 16,
         "name": "last",
-        "aliases": [],
+        "aliases": [
+            "last"
+        ],
         "desc": [
             "// Return an array of the last n elements of an array. If n is undefined,",
             "// return the last element in the array."
@@ -290,6 +317,7 @@
         "id": 17,
         "name": "first",
         "aliases": [
+            "first",
             "head",
             "take"
         ],
@@ -307,6 +335,7 @@
         "id": 18,
         "name": "every",
         "aliases": [
+            "every",
             "all"
         ],
         "desc": [
@@ -323,6 +352,7 @@
         "id": 19,
         "name": "flatten",
         "aliases": [
+            "flatten",
             "all"
         ],
         "desc": [

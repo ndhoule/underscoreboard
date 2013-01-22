@@ -9,7 +9,6 @@
 
   //TODO: make less ghettofabulous
   var currentFunctionNames = currentFunction.aliases;
-  currentFunctionNames.push(currentFunction.name);
 
   // TODO: This sort of works for the moment: It does lazy matching, so it only
   // grabs the first var in the file and strips it. Once the server passes in

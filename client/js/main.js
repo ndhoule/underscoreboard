@@ -34,16 +34,19 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
 
     // Event listeners
     $('#skip-button').click(function(e) {
+      //TODO: Implement this
       e.preventDefault();
       console.log('skip this round button clicked');
     });
 
     $('#reset-button').click(function(e) {
+      //TODO: Implement this
       e.preventDefault();
       console.log('reset editor area button clicked');
     });
 
     $('#login-button').click(function(e) {
+      //TODO: Implement this
       e.preventDefault();
       console.log('log in button clicked');
     });

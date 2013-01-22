@@ -28,7 +28,6 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
 
     // Declare a global to make the player's editor available to the jasmine iframe.
     // TODO: Make this less ugly, maybe by passing this information through sockets.
-    // TODO: Make editor naming scheme more consistent across files
     window.xeditor1 = editors.p;
 
 
@@ -40,7 +39,6 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
     });
 
     $('#reset-button').click(function(e) {
-      //TODO: Implement this
       e.preventDefault();
       if (window.confirm("Are you sure you want to reset your code to the start point?")) {
         //TODO: dry
@@ -65,11 +63,9 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
       console.info('Socket.io connection established');
     });
 
-    // TODO: security hole: client could broadcast this event to anyone connected
     socket.on('beginGame', function(message){
       setTimeout(function(){
         // TODO: Pass this directly to the testrunner using a socket event
-        // TODO: Load specs at this phase rather than on pageload.
         window.xfunction = message;
         // Set the value of the editor to the placeholder text and move the cursor
         // to the body of the function.
@@ -83,7 +79,7 @@ require(['domReady', 'jquery', 'createEditor', 'io'], function(domReady, $, crea
 
     socket.on('updateEditor', function(message){
       editors.o.setValue(message);
-      // Ace highlights the contents of an editor every time it changes. Fix that
+      // Fixes Ace highlighting the contents of an editor every time it changes
       editors.o.selection.clearSelection();
     });
 

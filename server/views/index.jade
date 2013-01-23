@@ -7,16 +7,38 @@ block navbar
         li
           h1#masthead-title underscoreboard
         li
-          h3#current-function-label current function
+          a(href="", id="reset-button") reset code
         li
-          h4#current-function-name
+          a(href="", id="skip-button") <i class="icon-star"></i>vote to skip
+      ul.nav.inline.pull-right
         li
-          a(href="", id="reset-button", class='first') reset code
+          h4#current-function-label current function
         li
-          a(href="", id="skip-button") vote to skip
+          h4#current-function-name.small
 
 block content
   section.main
     #editor-p
     #editor-o
     iframe#tests
+
+  // Pageload modal
+  div#pairing-modal.modal.hide.fade
+    div.modal-header
+      h3 Underscoreboard
+    div.modal-body
+      p Pairing you with a partner...
+
+  // Victory modal
+  div#victory-modal.modal.hide.fade
+    div.modal-header
+      h3 Sweet Holy Jesus
+    div.modal-body
+      p You won and stuff
+
+  // Loss modal
+  div#loss-modal.modal.hide.fade
+    div.modal-header
+      h3 You Lost
+    div.modal-body
+      p No be sad :'(

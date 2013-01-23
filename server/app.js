@@ -104,6 +104,10 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
       // Broadcast the contents of a user's editor to that user's room.
       updateEditor: function(data, socket){
         socket.broadcast.to(roomID).emit('updateEditor', data);
+      },
+
+      sweetVictory: function(data, socket){
+        socket.broadcast.to(roomID).emit('sweetVictory', data);
       }
 
     });
@@ -168,6 +172,10 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
     // Broadcast changes to a room's users
     socket.on('editorChange', function(data) {
       user.getCurrentRoom().updateEditor(data, socket);
+    });
+
+    socket.on('sweetVictory', function(data) {
+      user.getCurrentRoom().sweetVictory(data, socket);
     });
 
     socket.on('disconnect',function(){

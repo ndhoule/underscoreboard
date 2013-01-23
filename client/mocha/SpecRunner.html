@@ -22,6 +22,9 @@
 		<script>
 			onload = function(){
 				var runner = mocha.run();
+				runner.on('suite end', function(){
+					parent.xfailures = runner.failures;
+				});
 			};
 		</script>
 	</head>

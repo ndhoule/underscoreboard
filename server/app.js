@@ -7,15 +7,19 @@ requirejs.config({nodeRequire: require});
 requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './functions.json'], function (http, path, express, routes, socketio, _, fns) {
   var app = express()
     , server = http.createServer(app)
-    , logging = true
+    , logging = false
     , io = socketio.listen(server, {origins: '*:*', log: false});
+
+  app.configure('development', function() {
+    app.use(express.logger('dev'));
+    logging = true;
+  });
 
   app.configure(function() {
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.favicon());
-    //app.use(express.logger('dev'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
@@ -25,11 +29,11 @@ requirejs(['http', 'path', 'express', './routes', 'socket.io', 'underscore', './
   // Routing table
   app.get('/', routes.index);
 
-
-  // App-specific logging function. Logs messages only if 'logging' var is set to true.
+  // Logging function. Only logs when server is in development mode.
   var log = function(message) {
     if (logging) { console.log(message); }
   };
+
 
   // ID generator utility function
   var makeID = function(len) {

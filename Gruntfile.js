@@ -31,6 +31,26 @@ module.exports = function(grunt) {
         environment: 'production'
       }
     },
+    requirejs: {
+      dist: {
+        options: {
+          baseUrl: 'app/js',
+
+          name: 'main',
+          out: 'client/js/main.js',
+          optimize: 'uglify2',
+
+          paths: {
+            jquery       : 'lib/require-jquery',
+            ace          : '../../client/js/lib/ace',
+            domReady     : 'lib/domReady',
+            bootstrap    : 'lib/bootstrap.min',
+            createEditor : 'createEditor',
+            io           : '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
+          }
+        }
+      }
+    },
     jade: {
       dist: {
         options: {
@@ -71,6 +91,7 @@ module.exports = function(grunt) {
   // Load third-party modules
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
 

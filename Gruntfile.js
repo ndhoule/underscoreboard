@@ -14,6 +14,21 @@ module.exports = function(grunt) {
       src    : ['client/**/*.js', 'server/**/*.js', '!**/lib/**'],
       style  : ['client/sass/style.scss', 'client/sass/_main.scss']
     },
+    compass: {
+      options: {
+        require        : 'bootstrap-sass',
+        sassDir        : 'client/sass',
+        cssDir         : 'client/css',
+        imagesDir      : 'client/img',
+        javascriptsDir : 'client/js'
+      },
+      dev: {
+        environment: 'development'
+      },
+      dist: {
+        environment: 'production'
+      }
+    },
     jshint: {
       all: [
         'Gruntfile.js',
@@ -22,15 +37,30 @@ module.exports = function(grunt) {
       options: {
         jshintrc: '.jshintrc'
       }
+    },
+    watch: {
+      scripts: {
+        files: '<%= meta.src %>',
+        tasks: ['jshint']
+      },
+      compass: {
+        files: '<%= meta.style %>',
+        tasks: ['compass:dev'],
+        options: {
+          interrupt: true
+        }
+      }
     }
   });
 
   // Load third-party modules
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Define tasks
-  grunt.registerTask('test', ['jshint']);
+  grunt.registerTask('dev', ['compass', 'jshint']);
+  grunt.registerTask('dist', ['compass', 'jshint']);
 
   // Define default task
   grunt.registerTask('default', ['test']);

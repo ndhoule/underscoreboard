@@ -10,11 +10,17 @@ module.exports = function(grunt) {
         '<%= meta.pkg.homepage ? "* " + meta.pkg.homepage + "\\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
-      // Include all files except those in a 'lib' directory
-      // TODO: Get compiled main.js to pass jshint
-      src    : ['app/**/*.js', 'client/**/*.js', 'server/**/*.js', '!**/lib/**', '!client/js/main.js'],
+
       jade   : ['server/views/**/*.jade'],
-      style  : ['app/sass/style.scss', 'app/sass/_main.scss']
+      style  : ['app/sass/style.scss', 'app/sass/_main.scss'],
+      src : {
+        app    : ['app/js/**/*.js', '!app/js/lib/**'],
+        server : ['server/**/*.js', '!server/**/lib/**'],
+        // TODO: Fix the ignore here. This ends up scanning the lib directory
+        // no matter what. I suspect it's an upstream bug as I'm following the
+        // docs, but who knows...
+        client : ['client/js/**/*.js', '!client/js/lib/**', '!client/js/main.js'],
+      }
     },
     compass: {
       options: {
@@ -67,15 +73,26 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        '<%= meta.src %>'
+        '<%= meta.src.app %>',
+        '<%= meta.src.server %>',
+        '<%= meta.src.client %>'
       ],
+      dist: 'client/js/main.js',
       options: {
         jshintrc: '.jshintrc'
       }
     },
     watch: {
-      scripts: {
-        files: '<%= meta.src %>',
+      client: {
+        files: '<%= meta.src.client %>',
+        tasks: ['jshint']
+      },
+      server: {
+        files: '<%= meta.src.server %>',
+        tasks: ['jshint']
+      },
+      app: {
+        files: '<%= meta.src.app %>',
         tasks: ['jshint']
       },
       compass: {
@@ -96,8 +113,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Define tasks
-  grunt.registerTask('dev', ['compass', 'jshint']);
-  grunt.registerTask('dist', ['compass:dist', 'jade:dist', 'jshint']);
+  grunt.registerTask('dev', ['compass', 'jshint:all']);
+  grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:dist']);
 
   // Define default task
   grunt.registerTask('default', ['test']);

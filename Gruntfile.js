@@ -11,14 +11,15 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
       // Include all files except those in a 'lib' directory
-      src    : ['client/**/*.js', 'server/**/*.js', '!**/lib/**'],
+      // TODO: Get compiled main.js to pass jshint
+      src    : ['app/**/*.js', 'client/**/*.js', 'server/**/*.js', '!**/lib/**', '!client/js/main.js'],
       jade   : ['server/views/**/*.jade'],
-      style  : ['client/sass/style.scss', 'client/sass/_main.scss']
+      style  : ['app/sass/style.scss', 'app/sass/_main.scss']
     },
     compass: {
       options: {
         require        : 'bootstrap-sass',
-        sassDir        : 'client/sass',
+        sassDir        : 'app/sass',
         cssDir         : 'client/css',
         imagesDir      : 'client/img',
         javascriptsDir : 'client/js'

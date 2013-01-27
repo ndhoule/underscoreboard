@@ -28,7 +28,8 @@
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-watch": "latest",
     "grunt-contrib-compass": "latest",
-    "grunt-contrib-jade": "0.4.0rc7"
+    "grunt-contrib-jade": "0.4.0rc7",
+    "grunt-contrib-requirejs": "~0.3.4"
   },
   "licenses": [
     {

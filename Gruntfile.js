@@ -10,7 +10,9 @@ module.exports = function(grunt) {
         '<%= meta.pkg.homepage ? "* " + meta.pkg.homepage + "\\n" : "" %>' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
-      src    : ['server/app.js', 'server/routes/**/*', 'client/js/main.js', 'client/js/createEditor.js', 'client/mocha/SpecHelper.js', 'client/mocha/spec/**/*'],
+      // Include all files except those in a 'lib' directory
+      src    : ['client/**/*.js', 'server/**/*.js', '!**/lib/**'],
+      style  : ['client/sass/style.scss', 'client/sass/_main.scss']
     },
     jshint: {
       all: [

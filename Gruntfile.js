@@ -12,6 +12,7 @@ module.exports = function(grunt) {
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
       // Include all files except those in a 'lib' directory
       src    : ['client/**/*.js', 'server/**/*.js', '!**/lib/**'],
+      jade   : ['server/views/**/*.jade'],
       style  : ['client/sass/style.scss', 'client/sass/_main.scss']
     },
     compass: {
@@ -27,6 +28,19 @@ module.exports = function(grunt) {
       },
       dist: {
         environment: 'production'
+      }
+    },
+    jade: {
+      dist: {
+        options: {
+          data: {
+            debug: false,
+            title: '<%= meta.pkg.title || meta.pkg.name %>'
+          }
+        },
+        files: {
+          "index.html": ['server/views/index.jade']
+        }
       }
     },
     jshint: {
@@ -56,11 +70,12 @@ module.exports = function(grunt) {
   // Load third-party modules
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Define tasks
   grunt.registerTask('dev', ['compass', 'jshint']);
-  grunt.registerTask('dist', ['compass', 'jshint']);
+  grunt.registerTask('dist', ['compass:dist', 'jade:dist', 'jshint']);
 
   // Define default task
   grunt.registerTask('default', ['test']);

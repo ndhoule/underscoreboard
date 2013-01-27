@@ -32,21 +32,26 @@ module.exports = function(grunt) {
         javascriptsDir : 'client/js'
       },
       dev: {
-        environment: 'development'
+        options: {
+          environment: 'development'
+        }
       },
       dist: {
-        environment: 'production'
+        options: {
+          environment    : 'production',
+          outputStyle    : 'compressed',
+          noLineComments : true,
+          force          : true
+        }
       }
     },
     requirejs: {
       dist: {
         options: {
           baseUrl: 'app/js',
-
           name: 'main',
           out: 'client/js/main.js',
           optimize: 'uglify2',
-
           paths: {
             jquery       : 'lib/require-jquery',
             ace          : '../../client/js/lib/ace',

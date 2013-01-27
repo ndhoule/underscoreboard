@@ -27,6 +27,7 @@ module.exports = function(grunt) {
         require        : 'bootstrap-sass',
         sassDir        : 'app/sass',
         cssDir         : 'client/css',
+        relativeAssets : true,
         imagesDir      : 'client/img',
         javascriptsDir : 'client/js'
       },

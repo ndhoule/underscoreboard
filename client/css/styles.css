@@ -2419,7 +2419,7 @@ table th[class*="span"],
   *margin-right: .3em;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url(/client/img/glyphicons-halflings.png?1358929057);
+  background-image: url(/img/glyphicons-halflings.png);
   background-position: 14px 14px;
   background-repeat: no-repeat;
   margin-top: 1px;
@@ -2440,7 +2440,7 @@ table th[class*="span"],
 .dropdown-menu > .active > a > [class*=" icon-"],
 .dropdown-submenu:hover > a > [class^="icon-"],
 .dropdown-submenu:hover > a > [class*=" icon-"] {
-  background-image: url(/client/img/glyphicons-halflings-white.png?1358929057);
+  background-image: url(/img/glyphicons-halflings-white.png);
 }
 
 /* line 48, ../../../../.rvm/gems/ruby-1.9.3-p374/gems/bootstrap-sass-2.2.2.0/vendor/assets/stylesheets/bootstrap/_sprites.scss */
@@ -6689,7 +6689,7 @@ a.label:hover, a.badge:hover {
   box-sizing: border-box;
 }
 
-/* line 1, ../sass/_main.scss */
+/* line 1, ../../app/sass/_main.scss */
 nav h1, h2, h3, h4 {
   margin-top: 0;
   margin-bottom: 0;
@@ -6697,31 +6697,31 @@ nav h1, h2, h3, h4 {
   padding-bottom: 0;
 }
 
-/* line 8, ../sass/_main.scss */
+/* line 8, ../../app/sass/_main.scss */
 nav h1 {
   font-size: 1.6em;
   line-height: 36px;
 }
 
-/* line 9, ../sass/_main.scss */
+/* line 9, ../../app/sass/_main.scss */
 nav h2 {
   font-size: 1.4em;
   line-height: 18px;
 }
 
-/* line 10, ../sass/_main.scss */
+/* line 10, ../../app/sass/_main.scss */
 nav h3 {
   font-size: 1.2em;
   line-height: 20px;
 }
 
-/* line 11, ../sass/_main.scss */
+/* line 11, ../../app/sass/_main.scss */
 nav h4 {
   font-size: 1.0em;
   line-height: 42px;
 }
 
-/* line 13, ../sass/_main.scss */
+/* line 13, ../../app/sass/_main.scss */
 #editor-p {
   position: absolute;
   top: 42px;
@@ -6732,7 +6732,7 @@ nav h4 {
   border-right: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-/* line 23, ../sass/_main.scss */
+/* line 23, ../../app/sass/_main.scss */
 #editor-o {
   position: absolute;
   top: 42px;
@@ -6742,7 +6742,7 @@ nav h4 {
   left: 50%;
 }
 
-/* line 32, ../sass/_main.scss */
+/* line 32, ../../app/sass/_main.scss */
 #tests {
   position: absolute;
   top: 70%;
@@ -6753,7 +6753,7 @@ nav h4 {
   border-top: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-/* line 42, ../sass/_main.scss */
+/* line 42, ../../app/sass/_main.scss */
 #current-function-label, #current-function-name {
   display: none;
 }

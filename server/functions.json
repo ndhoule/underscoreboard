@@ -2,6 +2,7 @@
     "each": {
         "id": 0,
         "name": "each",
+        "difficulty": 0,
         "aliases": [
             "each",
             "forEach"
@@ -24,6 +25,7 @@
     "map": {
         "id": 1,
         "name": "map",
+        "difficulty": 1,
         "aliases": [
             "map",
             "collect"
@@ -40,6 +42,7 @@
     "reduce": {
         "id": 2,
         "name": "reduce",
+        "difficulty": 1,
         "aliases": [
             "reduce",
             "inject",
@@ -68,6 +71,7 @@
     "select": {
         "id": 3,
         "name": "select",
+        "difficulty": 1,
         "aliases": [
             "select",
             "filter"
@@ -85,6 +89,7 @@
     "reject": {
         "id": 4,
         "name": "reject",
+        "difficulty": 1,
         "aliases": [
             "reject"
         ],
@@ -101,6 +106,7 @@
     "any": {
         "id": 5,
         "name": "any",
+        "difficulty": 1,
         "aliases": [
             "any",
             "some"
@@ -118,6 +124,7 @@
     "uniq": {
         "id": 6,
         "name": "uniq",
+        "difficulty": 1,
         "aliases": [
             "uniq",
             "unique"
@@ -135,6 +142,7 @@
     "once": {
         "id": 7,
         "name": "once",
+        "difficulty": 2,
         "aliases": [
             "once"
         ],
@@ -151,6 +159,7 @@
     "memoize": {
         "id": 8,
         "name": "memoize",
+        "difficulty": 2,
         "aliases": [
             "memoize"
         ],
@@ -171,6 +180,7 @@
     "delay": {
         "id": 9,
         "name": "delay",
+        "difficulty": 2,
         "aliases": [
             "delay"
         ],
@@ -191,6 +201,7 @@
     "extend": {
         "id": 10,
         "name": "extend",
+        "difficulty": 2,
         "aliases": [
             "extend"
         ],
@@ -215,6 +226,7 @@
     "defaults": {
         "id": 11,
         "name": "default",
+        "difficulty": 2,
         "aliases": [
             "default"
         ],
@@ -231,6 +243,7 @@
     "sortBy": {
         "id": 12,
         "name": "sortBy",
+        "difficulty": 1,
         "aliases": [
             "sortBy"
         ],
@@ -249,6 +262,7 @@
     "zip": {
         "id": 13,
         "name": "zip",
+        "difficulty": 1,
         "aliases": [
             "zip"
         ],
@@ -268,6 +282,7 @@
     "contains": {
         "id": 14,
         "name": "contains",
+        "difficulty": 1,
         "aliases": [
             "contains",
             "include"
@@ -284,6 +299,7 @@
     "pluck": {
         "id": 15,
         "name": "pluck",
+        "difficulty": 1,
         "aliases": [
             "pluck"
         ],
@@ -300,6 +316,7 @@
     "last": {
         "id": 16,
         "name": "last",
+        "difficulty": 1,
         "aliases": [
             "last"
         ],
@@ -316,6 +333,7 @@
     "first": {
         "id": 17,
         "name": "first",
+        "difficulty": 1,
         "aliases": [
             "first",
             "head",
@@ -334,6 +352,7 @@
     "every": {
         "id": 18,
         "name": "every",
+        "difficulty": 1,
         "aliases": [
             "every",
             "all"
@@ -351,6 +370,7 @@
     "flatten": {
         "id": 19,
         "name": "flatten",
+        "difficulty": 1,
         "aliases": [
             "flatten",
             "all"

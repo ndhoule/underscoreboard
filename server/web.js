@@ -18,7 +18,7 @@ requirejs(['./app', 'http', './routes', './room', './UserModel', 'socket.io'], f
   // Create a room when we initialize the server
   var currentRoom = Room(io);
 
-  io.sockets.on('connection', function (socket) {
+  io.sockets.on('connection', function(socket){
     // Check to see if the current room is full and create a new one if it is
     if( currentRoom.isFull() ){
       currentRoom = Room(io);
@@ -34,16 +34,16 @@ requirejs(['./app', 'http', './routes', './room', './UserModel', 'socket.io'], f
     user.setCurrentRoom(currentRoom);
 
     // Check again if the room is now full, and start a game if it is
-    if( currentRoom.isFull() ) {
+    if( currentRoom.isFull() ){
       currentRoom.initGame();
     }
 
     // Broadcast changes to a room's users
-    socket.on('editorChange', function(data) {
+    socket.on('editorChange', function(data){
       user.getCurrentRoom().updateEditor(data, socket);
     });
 
-    socket.on('sweetVictory', function(data) {
+    socket.on('sweetVictory', function(data){
       user.getCurrentRoom().sweetVictory(data, socket);
     });
 
@@ -52,7 +52,7 @@ requirejs(['./app', 'http', './routes', './room', './UserModel', 'socket.io'], f
     });
   });
 
-  server.listen(app.get('port'), function() {
+  server.listen(app.get('port'), function(){
     console.log("Underscoreboard server listening on port " + app.get('port'));
   });
 });

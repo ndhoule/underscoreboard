@@ -2,8 +2,8 @@
 /*globals define: true*/
 "use strict";
 
-define(['underscore', './functions.json'], function (_, fns) {
-  // Room constructor function
+define(['underscore', './functions.json'], function(_, fns){
+
   // TODO: Get rid of io arg as dependency
   return function(io){
     var roomID = makeID(10);
@@ -83,4 +83,5 @@ define(['underscore', './functions.json'], function (_, fns) {
 
     };
   };
+
 });

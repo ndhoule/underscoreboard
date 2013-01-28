@@ -4,7 +4,7 @@
 var requirejs = require('requirejs');
 requirejs.config({nodeRequire: require});
 
-requirejs(['./app', 'http', './routes', './room', './UserModel', 'socket.io'], function(app, http, routes, Room, User, socketio){
+requirejs(['./app', 'http', './routes', './RoomModel', './UserModel', 'socket.io'], function(app, http, routes, Room, User, socketio){
   var server = http.createServer(app)
     , io = socketio.listen(server, {origins: '*:*', log: false});
 

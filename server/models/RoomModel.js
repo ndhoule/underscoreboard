@@ -2,7 +2,10 @@
 /*globals define: true*/
 "use strict";
 
-define(['underscore', './functions.json'], function(_, fns){
+define(function(require){
+  var fns = require('./functions.json'),
+      _   = require('underscore');
+
 
   // TODO: Get rid of io arg as dependency
   return function(io){

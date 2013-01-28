@@ -4,43 +4,13 @@
 var requirejs = require('requirejs');
 requirejs.config({nodeRequire: require});
 
-requirejs(['./app', 'http', './routes', './room', 'socket.io'], function (app, http, routes, Room, socketio) {
+requirejs(['./app', 'http', './routes', './room', './UserModel', 'socket.io'], function(app, http, routes, Room, User, socketio){
   var server = http.createServer(app)
     , io = socketio.listen(server, {origins: '*:*', log: false});
 
   // Routing table
   app.get('/', routes.index);
 
-
-  var User = function(socket){
-    // TODO: More robust checking here
-    if (!socket) {
-      throw new Error("Cannot create a user without linking it to a socket.");
-    }
-
-    var userSocket = socket;
-    var currentRoom = null;
-    var uid = socket.id;
-    return {
-
-      setCurrentRoom: function(room){
-        return currentRoom = room;
-      },
-
-      getCurrentRoom: function(){
-        return currentRoom;
-      },
-
-      getSocket: function(){
-        return userSocket;
-      },
-
-      getID: function(){
-        return uid;
-      }
-
-    };
-  };
 
   // Hash to store our users in
   var Users = {};

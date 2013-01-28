@@ -1,4 +1,4 @@
-/*jshint node:true, laxcomma:true*/
+/*jshint node:true*/
 /*globals define: true*/
 "use strict";
 
@@ -16,6 +16,7 @@ define(['path', 'module', 'express'], function (path, module, express) {
     app.use(express.methodOverride());
     app.use(app.router);
     app.use(express.static(path.join(pwd, '../client')));
+    app.use(express.logger());
   });
 
   app.configure('development', function() {

@@ -1,15 +1,17 @@
 var requirejs = require("requirejs");
 requirejs.config(require("../../server/config"));
 
-requirejs(['buster', 'userModel'], function(buster, User){
+requirejs(['buster', 'roomModel'], function(buster, Room) {
   // Set up BDD-style expectations
   var expect = buster.assertions.expect;
   buster.spec.expose();
 
-  describe('Rooms', function(){
+  describe('Rooms', function() {
+    before(function() {
+    });
 
-    describe(': they', function(){
-      itEventually('should test something', function(){
+    describe(': they', function() {
+      itEventually('should test something', function() {
         expect(true).toEqual(true);
       });
     });

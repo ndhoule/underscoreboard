@@ -2,9 +2,9 @@
 /*globals define: true*/
 "use strict";
 
-define(function(){
+define(function() {
 
-  return function(socket){
+  return function(socket) {
     // TODO: More robust checking here
     if (!socket) {
       throw new Error("Cannot create a user without linking it to a socket.");
@@ -15,19 +15,19 @@ define(function(){
     var uid = socket.id;
     return {
 
-      setCurrentRoom: function(room){
+      setCurrentRoom: function(room) {
         return currentRoom = room;
       },
 
-      getCurrentRoom: function(){
+      getCurrentRoom: function() {
         return currentRoom;
       },
 
-      getSocket: function(){
+      getSocket: function() {
         return userSocket;
       },
 
-      getID: function(){
+      getID: function() {
         return uid;
       }
     };

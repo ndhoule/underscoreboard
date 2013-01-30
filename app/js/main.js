@@ -21,13 +21,13 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     var currentFn,
         updateCount = 0;
 
-    var updateTests = function(){
+    var updateTests = function() {
       if (--updateCount === 0) {
         document.getElementById('tests').contentDocument.location.reload(true);
       }
     };
 
-    var verifyTests = function(){
+    var verifyTests = function() {
       if (window.xfailures === 0) {
         $('#victory-modal').modal('show');
         socket.emit('sweetVictory', true);
@@ -42,7 +42,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     window.xeditor1 = editors.p;
 
     // Show loading menu on pageload
-    setTimeout(function(){
+    setTimeout(function() {
       $('#pairing-modal').modal('show');
     }, 750);
 
@@ -70,16 +70,16 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     // Socket connections
     var socket = io.connect();
 
-    socket.on('error', function(e){
+    socket.on('error', function(e) {
       console.error('Unable to create Socket.io connection. Error: ', e);
     });
 
-    socket.on('connect', function(){
+    socket.on('connect', function() {
       console.info('Socket.io connection established');
     });
 
-    socket.on('beginGame', function(message){
-      setTimeout(function(){
+    socket.on('beginGame', function(message) {
+      setTimeout(function() {
         // Make both a local and global reference to the current function
         window.xcurrentFn = currentFn = message;
 
@@ -97,17 +97,17 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       }, 3000);
     });
 
-    socket.on('updateEditor', function(message){
+    socket.on('updateEditor', function(message) {
       editors.o.setValue(message);
       // Fixes annoying highlighting of opponent's editor when its contents changes
       editors.o.selection.clearSelection();
     });
 
-    socket.on('sweetVictory', function(message){
+    socket.on('sweetVictory', function(message) {
       $('#loss-modal').modal('show');
     });
 
-    editors.p.on('change', function(){
+    editors.p.on('change', function() {
       updateCount++;
       socket.emit('editorChange', editors.p.getValue());
       setTimeout(updateTests, 1200);

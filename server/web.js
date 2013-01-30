@@ -5,7 +5,7 @@ var requirejs = require('requirejs');
 requirejs.config(require("./config"));
 
 requirejs(['app', 'http', './routes', 'socket.io', 'roomModel', 'userModel'],
-  function(app, http, routes, socketio, Room, User){
+  function(app, http, routes, socketio, Room, User) {
   var server = http.createServer(app),
       io = socketio.listen(server, {origins: '*:*', log: false});
 
@@ -17,7 +17,7 @@ requirejs(['app', 'http', './routes', 'socket.io', 'roomModel', 'userModel'],
   var Users = {};
   var currentRoom = Room(io);
 
-  io.sockets.on('connection', function(socket){
+  io.sockets.on('connection', function(socket) {
     // Check to see if the current room is full and create a new one if so
     if( currentRoom.isFull() ){
       currentRoom = Room(io);
@@ -34,20 +34,20 @@ requirejs(['app', 'http', './routes', 'socket.io', 'roomModel', 'userModel'],
     }
 
     // Broadcast changes to a room's users
-    socket.on('editorChange', function(data){
+    socket.on('editorChange', function(data) {
       user.getCurrentRoom().updateEditor(data, socket);
     });
 
-    socket.on('sweetVictory', function(data){
+    socket.on('sweetVictory', function(data) {
       user.getCurrentRoom().sweetVictory(data, socket);
     });
 
-    socket.on('disconnect',function(){
+    socket.on('disconnect',function() {
       console.log('Client disconnected');
     });
   });
 
-  server.listen(app.get('port'), function(){
+  server.listen(app.get('port'), function() {
     console.log("Express server listening on port " + app.get('port'));
   });
 

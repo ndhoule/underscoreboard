@@ -12,12 +12,12 @@
             "// The end result should provide interface of (value, key, obj).",
             "//",
             "// E.g.:",
-            "// _.each(obj, function(value, key, obj){",
+            "// _.each(obj, function(value, key, obj) {",
             "//   console.log (value, key, obj);",
             "// };"
         ],
         "boiler": [
-            "var each = function(obj, iterator){",
+            "var each = function(obj, iterator) {",
             "  ",
             "};"
         ]
@@ -34,7 +34,7 @@
             "// Return the results of applying an iterator to each element of an array."
         ],
         "boiler": [
-            "var map = function(arr, iterator){",
+            "var map = function(arr, iterator) {",
             "  ",
             "};"
         ]
@@ -58,12 +58,12 @@
             "//",
             "// Example:",
             "//   var numbers = [1,2,3];",
-            "//   var sum = _.reduce(numbers, function(previous_value, item){",
+            "//   var sum = _.reduce(numbers, function(previous_value, item) {",
             "//     return previous_value + item;",
             "//   }, 0); // should be 6"
         ],
         "boiler": [
-            "var reduce = function(obj, iterator, initialValue){",
+            "var reduce = function(obj, iterator, initialValue) {",
             "  ",
             "};"
         ]
@@ -81,7 +81,7 @@
             "// Returns an array."
         ],
         "boiler": [
-            "var select = function(arr, iterator){",
+            "var select = function(arr, iterator) {",
             "  ",
             "};"
         ]
@@ -98,7 +98,7 @@
             "// Returns an array."
         ],
         "boiler": [
-            "var reject = function(arr, iterator){",
+            "var reject = function(arr, iterator) {",
             "  ",
             "};"
         ]
@@ -116,7 +116,7 @@
             "// Returns boolean true or false."
         ],
         "boiler": [
-            "var any = function(obj, iterator){",
+            "var any = function(obj, iterator) {",
             "  ",
             "};"
         ]
@@ -134,7 +134,7 @@
             "// Returns an array."
         ],
         "boiler": [
-            "var uniq = function(array){",
+            "var uniq = function(array) {",
             "  ",
             "};"
         ]
@@ -151,7 +151,7 @@
             "// Subsequent calls should return the previously returned value."
         ],
         "boiler": [
-            "var once = function(func){",
+            "var once = function(func) {",
             "  ",
             "};"
         ]
@@ -172,7 +172,7 @@
             "// instead if possible."
         ],
         "boiler": [
-            "var memoize = function(func){",
+            "var memoize = function(func) {",
             "  ",
             "};"
         ]
@@ -193,7 +193,7 @@
             "// call someFunction('a', 'b') after 500ms."
         ],
         "boiler": [
-            "var delay = function(func, wait){",
+            "var delay = function(func, wait) {",
             "  ",
             "};"
         ]
@@ -218,7 +218,7 @@
             "//   }); // obj1 now contains key1, key2, key3 and bla"
         ],
         "boiler": [
-            "var extend = function(){",
+            "var extend = function() {",
             "  ",
             "};"
         ]
@@ -235,7 +235,7 @@
             "// exists in obj"
         ],
         "boiler": [
-            "var defaults = function(){",
+            "var defaults = function() {",
             "  ",
             "};"
         ]
@@ -254,7 +254,7 @@
             "// an array of people by their name."
         ],
         "boiler": [
-            "var sortBy = function(obj, iterator){",
+            "var sortBy = function(obj, iterator) {",
             "  ",
             "};"
         ]
@@ -274,7 +274,7 @@
             "// _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3]]"
         ],
         "boiler": [
-            "var zip = function(){",
+            "var zip = function() {",
             "  ",
             "};"
         ]
@@ -291,7 +291,7 @@
             "// Using `===`, determine if the array or object contains a given value."
         ],
         "boiler": [
-            "var contains = function(obj, target){",
+            "var contains = function(obj, target) {",
             "  ",
             "};"
         ]
@@ -308,7 +308,7 @@
             "// live at the user-defined key (property)."
         ],
         "boiler": [
-            "var pluck = function(arr, prop){",
+            "var pluck = function(arr, prop) {",
             "  ",
             "};"
         ]
@@ -325,7 +325,7 @@
             "// return the last element in the array."
         ],
         "boiler": [
-            "var last = function(arr, n){",
+            "var last = function(arr, n) {",
             "  ",
             "};"
         ]
@@ -344,7 +344,7 @@
             "// return the first element in the array."
         ],
         "boiler": [
-            "var first = function(){",
+            "var first = function() {",
             "  ",
             "};"
         ]
@@ -362,7 +362,7 @@
             "// Returns boolean true or false."
         ],
         "boiler": [
-            "var every = function(obj, iterator){",
+            "var every = function(obj, iterator) {",
             "  ",
             "};"
         ]

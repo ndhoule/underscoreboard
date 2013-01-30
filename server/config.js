@@ -3,5 +3,10 @@
 "use strict";
 
 module.exports = {
-  nodeRequire: require
+  nodeRequire: require,
+  paths: {
+    app:    './app',
+    roomModel: './models/roomModel',
+    userModel: './models/userModel'
+  }
 };

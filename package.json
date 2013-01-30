@@ -21,7 +21,7 @@
     "jade": "*",
     "socket.io": "~0.9.13",
     "requirejs": "~2.1.2",
-    "underscore": "~1.4.3"
+    "lodash": "~1.0.0-rc.3"
   },
   "devDependencies": {
     "grunt": "~0.4.0",

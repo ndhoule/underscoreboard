@@ -4,7 +4,7 @@
 
 define(function(require){
   var fns = require('./functions.json'),
-      _   = require('underscore');
+      _   = require('lodash');
 
 
   // TODO: Get rid of io arg as dependency

@@ -1,4 +1,4 @@
-// Rename this as *Test.js to include in grunt buster job
+// Rename this as *Spec.js to include in grunt buster job
 
 var requirejs = require("requirejs");
 requirejs.config(require("../../server/config"));

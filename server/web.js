@@ -2,9 +2,7 @@
 "use strict";
 
 var requirejs = require('requirejs');
-requirejs.config({
-  nodeRequire: require
-});
+requirejs.config(require("./config"));
 
 requirejs(['./app', 'http', './routes', './models/RoomModel', './models/UserModel', 'socket.io'],
   function(app, http, routes, Room, User, socketio){

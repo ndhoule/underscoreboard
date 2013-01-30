@@ -45,6 +45,11 @@ module.exports = function(grunt) {
         }
       }
     },
+    buster: {
+      test: {
+        config: 'test/buster.js'
+      }
+    },
     requirejs: {
       options: {
         baseUrl: 'app/js',
@@ -124,6 +129,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-buster');
 
   // Define tasks
   grunt.registerTask('dev', ['compass', 'jshint:all']);

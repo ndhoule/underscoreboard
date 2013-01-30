@@ -5,8 +5,8 @@
 module.exports = {
   nodeRequire: require,
   paths: {
-    app:    './app',
-    roomModel: './models/roomModel',
-    userModel: './models/userModel'
+    app:       __dirname + '/app',
+    roomModel: __dirname + '/models/roomModel',
+    userModel: __dirname + '/models/userModel'
   }
 };

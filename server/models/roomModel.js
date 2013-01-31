@@ -6,21 +6,22 @@ define(function(require) {
   var fns = require('./functions.json'),
       _   = require('lodash');
 
+  function makeID(len){
+      var CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var id = "";
+      for (var i = 0, idLen = len || 10; i < idLen; i++) {
+        id += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
+      }
+      return id;
+  }
+
 
   // TODO: Get rid of io arg as dependency
   return function(io) {
     var roomID = makeID(10);
     var users = [];
+    var round = 1;
     var currentFn = null;
-
-    function makeID(len){
-        var CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var id = "";
-        for (var i = 0, idLen = len || 10; i < idLen; i++) {
-          id += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
-        }
-        return id;
-    }
 
     return {
 
@@ -33,7 +34,18 @@ define(function(require) {
      genRandomFn: function() {
         var randProp,
             randIndex,
-            keys = [];
+            keys = [],
+            maxDifficulty = 1;
+
+        console.log('Starting round ' + this.getRound());
+
+        // Always return _.each during the first round.
+        // TODO: Rudimentary round changing works but increases round too often,
+        // so it's limited to here. Fix this.
+        if (this.getRound() === 1) {
+          this.increaseRound();
+          return fns.each;
+        }
 
         _.each(fns, function(val, prop) {
           keys.push(prop);
@@ -42,7 +54,23 @@ define(function(require) {
         randIndex = Math.floor(Math.random() * _.size(keys));
         randProp = keys[randIndex];
 
+
+        // Hacky fix for difficulty levels; make sure we only return functions
+        // that are of difficulty level 0 or 1.
+        if (fns[randProp].difficulty > maxDifficulty) {
+          console.log("Function too difficult. Generating a different function...");
+          return this.genRandomFn();
+        }
+
         return fns[randProp];
+      },
+
+      getRound: function() {
+        return round;
+      },
+
+      increaseRound: function() {
+        return ++round;
       },
 
       // Checks if the room is full. Returns true if yes, false if no.
@@ -82,6 +110,7 @@ define(function(require) {
 
       sweetVictory: function(data, socket) {
         socket.broadcast.to(roomID).emit('sweetVictory', data);
+        setTimeout(this.initGame(), 2500);
       }
 
     };

@@ -88,10 +88,14 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
         editors.p.selection.moveCursorBy(-1, 0);
         editors.p.selection.clearSelection();
 
+        // Hide the victory/loss modals if they are displayed
+        $('#victory-modal').modal('hide');
+        $('#loss-modal').modal('hide');
+
         // Display the current function to the user and load the test URL
         $('#current-function-name').html('<small>' + currentFn.name + '</small>');
-        $('#current-function-label').toggle();
-        $('#current-function-name').toggle();
+        $('#current-function-label').show();
+        $('#current-function-name').show();
         $('#pairing-modal').modal('hide');
         $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + currentFn.name});
       }, 3000);

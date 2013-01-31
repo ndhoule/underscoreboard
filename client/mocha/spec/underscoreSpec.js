@@ -82,7 +82,7 @@ describe("_.last", function() {
     var result = (function(){ return _.last(arguments, 2); })(1, 2, 3, 4);
     expect(result.join(', ')).to.equal('3, 4');
   });
-  it("should work well with _.map", function() {
+  it("should work well with map", function() {
     var result = _.map([[1,2,3],[1,2,3]], _.last);
     expect(result.join(', ')).to.equal('3, 3');
   });
@@ -105,7 +105,7 @@ describe("_.first", function() {
     var result = (function(){ return _.first(arguments, 2); })(4, 3, 2, 1);
     expect(result.join(', ')).to.equal('4, 3');
   });
-  it("should work well with _.map", function() {
+  it("should work well with map", function() {
     var result = _.map([[1,2,3],[1,2,3]], _.first);
     expect(result.join(', ')).to.equal('1, 1');
   });

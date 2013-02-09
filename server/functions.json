@@ -193,7 +193,7 @@
             "// call someFunction('a', 'b') after 500ms."
         ],
         "boiler": [
-            "var delay = function(func, wait) {",
+            "var delay = function(func, wait, optionalParams) {",
             "  ",
             "};"
         ]

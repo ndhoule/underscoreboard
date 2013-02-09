@@ -3,7 +3,6 @@
  * Jonas Huckstein <https://github.com/jonashuckestein/>
  */
 
-
 describe("_.each", function() {
   it("should provide value and iteration count", function() {
     _.each([1, 2, 3], function(num, i) {
@@ -225,9 +224,7 @@ describe("_.any", function() {
 });
 
 describe("_.uniq", function() {
-  // TODO: clarify this -- "should return a list of unique values? consolidate
-  // repeated values?"
-  it("should return all unique values of an unsorted array", function() {
+  it("should return all unique values contained in an unsorted array", function() {
     var list = [1, 2, 1, 3, 1, 4];
     expect(_.uniq(list).join(', ')).to.equal('1, 2, 3, 4');
   });
@@ -256,8 +253,7 @@ describe("_.once", function() {
 });
 
 describe("_.memoize", function() {
-  // TODO: rewrite to be more clear
-  it("a memoized version of fibonacci produces identical results", function() {
+  it("a memoized function should produce the same result when called with the same arguments", function() {
     var fib = function(n) {
       return n < 2 ? n : fib(n - 1) + fib(n - 2);
     };
@@ -276,34 +272,32 @@ describe("_.memoize", function() {
   });
 });
 
-xdescribe("_.delay", function() {
-  // TODO: rewrite test descriptions to be more clear
-  // TODO: This currently tests whether or not a function gets fired after some
-  // amount of time, but it doesn't test whether it is NOT fired before that time.
-  // Figure this out in another 'it' block.
-  var flag, testArgs;
-  it("should only execute the function after the specified wait time", function() {
-    runs(function() {
-      flag = false;
-      testArgs = false;
+describe("_.delay", function() {
+  var clock, delayed, callback;
 
-      _.delay(
-        function(newVal){
-          flag = true;
-          testArgs = newVal;
-        }, 50, true);
-    });
-    waitsFor(function() {
-      return flag;
-    }, "The function should have been executed by now", 100);
-
-    // TODO: equivalent qunit code for above todo
-    //setTimeout(function(){ ok(!delayed, "didn't delay the function quite yet"); }, 50);
-    //setTimeout(function(){ ok(delayed, 'delayed the function'); start(); }, 150);
-    //setTimeout(function(){ ok(testArgs, "function arguments are passed in successfully"); }, 150);
+  before(function() {
+    clock = sinon.useFakeTimers();
+    callback = sinon.spy();
   });
+
+  after(function() {
+    clock.restore();
+  });
+
+  it("should only execute the function after the specified wait time", function() {
+    _.delay(callback, 100);
+
+    clock.tick(99);
+    expect(callback.notCalled).to.be(true);
+    clock.tick(1);
+    expect(callback.calledOnce).to.be(true);
+  });
+
   it("should have successfully passed function arguments in", function() {
-    expect(testArgs).to.equal(true);
+    _.delay(callback, 100, 1, 2);
+    clock.tick(100);
+
+    expect(callback.calledWith(1, 2)).to.be(true);
   });
 });
 
@@ -382,8 +376,7 @@ describe("_.sortBy", function() {
     var sorted = _.sortBy(list, 'length');
     expect(sorted.join(' ')).to.equal('one two four five three');
   });
-  // TODO: What the hell does 'stable' mean? Improve description here
-  it("should be stable", function() {
+  it("should produce reliable results", function() {
     function Pair(x, y) {
       this.x = x;
       this.y = y;
@@ -413,4 +406,3 @@ describe("_.zip", function() {
     expect(String(stooges)).to.equal('moe,30,true,larry,40,,curly,50,');
   });
 });
-

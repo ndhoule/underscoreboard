@@ -52,6 +52,12 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       }
     };
 
+    var resetEditor = function(editor) {
+      editor.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
+      editor.selection.moveCursorBy(-1, 0);
+      editor.selection.clearSelection();
+    };
+
     // Show loading menu on pageload
     setTimeout(function() {
       $('#pairing-modal').modal('show');
@@ -60,8 +66,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     $('#reset-button').click(function(e) {
       e.preventDefault();
       if (window.confirm("Are you sure you want to reset your code to the start point?")) {
-        //TODO: dry
-        editors.player.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
+        resetEditor(editors.player);
       }
     });
 
@@ -82,9 +87,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
         window.underscoreboardGlobals.currentFunction = currentFunction = message;
 
         // Insert the placeholder text into editor and move cursor to the start point
-        editors.player.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
-        editors.player.selection.moveCursorBy(-1, 0);
-        editors.player.selection.clearSelection();
+        resetEditor(editors.player);
 
         // Hide the victory/loss modals if they are displayed
         $('#victory-modal').modal('hide');

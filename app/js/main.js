@@ -45,6 +45,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       }
     };
 
+    // Monitor the passing specs and display a victory modal when all are passing
     var verifyTests = function() {
       if (window.underscoreboardGlobals.specFailures === 0) {
         $('#victory-modal').modal('show');
@@ -52,17 +53,22 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       }
     };
 
+    // Insert the server's placeholder text and insert it into the editor. The
+    // start point for the text is always the end of the second-to-last line, so
+    // move the cursor there while we're at it
     var resetEditor = function(editor) {
       editor.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
       editor.selection.moveCursorBy(-1, 0);
       editor.selection.clearSelection();
     };
 
-    // Show loading menu on pageload
+    // Show a load menu on startup
     setTimeout(function() {
       $('#pairing-modal').modal('show');
     }, 750);
 
+    // Reset the contents of the editor to the placeholder test when the reset
+    // button is pressed
     $('#reset-button').click(function(e) {
       e.preventDefault();
       if (window.confirm("Are you sure you want to reset your code to the start point?")) {
@@ -77,23 +83,21 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       console.error('Unable to create Socket.io connection. Error: ', e);
     });
 
-    socket.on('connect', function() {
-      console.info('Socket.io connection established');
-    });
-
     socket.on('beginGame', function(message) {
+      // Delay the start of the game by a few seconds to make the transition
+      // less jarring
       setTimeout(function() {
         // Make both a local and global reference to the current function
         window.underscoreboardGlobals.currentFunction = currentFunction = message;
 
-        // Insert the placeholder text into editor and move cursor to the start point
         resetEditor(editors.player);
 
-        // Hide the victory/loss modals if they are displayed
+        // Hide the victory/loss modals if they're currently displayed
         $('#victory-modal').modal('hide');
         $('#loss-modal').modal('hide');
 
-        // Display the current function to the user and load the test URL
+        // Display the current function to the user and load the test URL. This
+        // prevents Mocha from testing any function other than the current function
         $('#current-function-name').html('<small>' + currentFunction.name + '</small>');
         $('#current-function-label').show();
         $('#current-function-name').show();
@@ -108,15 +112,19 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       editors.opponent.selection.clearSelection();
     });
 
+    // If receiving this message, that means the server has broadcasted a loss.
+    // Display a loss modal in this case
     socket.on('sweetVictory', function(message) {
       $('#loss-modal').modal('show');
     });
 
+    // When the contents of the player editor changes, increase a counter. This puts
+    // some intertia behind test refreshing so it doesn't happen too often
     editors.player.on('change', function() {
       updateCount++;
       socket.emit('editorChange', editors.player.getValue());
-      setTimeout(updateTests, 1200);
-      setTimeout(verifyTests, 2500);
+      var updateTestsTimeout = setTimeout(updateTests, 1200);
+      var verifyTestsTimeout = setTimeout(verifyTests, 2500);
     });
 
   });

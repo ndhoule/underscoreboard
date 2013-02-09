@@ -24,7 +24,7 @@
       onload = function(){
         var runner = mocha.run();
         runner.on('suite end', function(){
-          parent.xfailures = runner.failures;
+          parent.underscoreboardGlobals.specFailures = runner.failures;
         });
       };
     </script>

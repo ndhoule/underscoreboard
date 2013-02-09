@@ -3,8 +3,8 @@
 
 (function(){
   // Note: Globals prevent use of "use strict" here.
-  var editorContents = parent.xeditor1.getValue();
-  var currentFn = parent.xcurrentFn.aliases;
+  var editorContents = parent.underscoreboardGlobals.xeditor1.getValue(),
+      currentFn      = parent.underscoreboardGlobals.xcurrentFn.aliases;
 
   // If the user provides a leading var keyword, we need to strip it before
   // we eval their code; otherwise, it won't be executed in the correct context
@@ -13,7 +13,7 @@
   // Unmap the function we're asking the user to implement (as well as its aliases).
   // Leave all other underscore functions in so that players can use functions
   // such as each(), map(), or reduce() to implement other functions.
-  var mapFunctions = function(){
+  var remapFunctions = function(){
     for (var i = 0, len = currentFn.length; i < len; i++){
       var functionName = currentFn[i];
       // First, invalidate currentFn and its aliases

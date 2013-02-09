@@ -8,4 +8,3 @@ exports.index = function(req, res) {
 exports.code = function(message) {
   console.log(JSON.stringify(message));
 };
-

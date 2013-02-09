@@ -3,7 +3,6 @@
 "use strict";
 
 define(function() {
-
   return function(socket) {
     // TODO: More robust checking here
     if (!socket) {
@@ -32,5 +31,4 @@ define(function() {
       }
     };
   };
-
 });

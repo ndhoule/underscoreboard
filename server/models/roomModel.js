@@ -15,7 +15,6 @@ define(function(require) {
       return id;
   }
 
-
   // TODO: Get rid of io arg as dependency
   return function(io) {
     var roomID = makeID(10);
@@ -31,7 +30,7 @@ define(function(require) {
         io.sockets.in(roomID).emit('beginGame', currentFn);
       },
 
-     genRandomFn: function() {
+      genRandomFn: function() {
         var randProp,
             randIndex,
             keys = [],
@@ -115,5 +114,4 @@ define(function(require) {
 
     };
   };
-
 });

@@ -20,12 +20,12 @@ require.config({
 require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domReady, $, io, createEditor) {
   "use strict";
 
-  // Declare a few necessary globals and put them in the underscoreboardGlobals
+  // Initialize a few necessary globals and put them in the underscoreboardGlobals
   // namespace
   window.underscoreboardGlobals = {
-    xfailures: null,
-    xeditor1: null,
-    xcurrentFn: null
+    specFailures: null,
+    playerEditor: null,
+    currentFunction: null
   };
 
   // The contents of this file should only load once the DOM is ready, so wrap
@@ -41,7 +41,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     };
 
     var verifyTests = function() {
-      if (window.underscoreboardGlobals.xfailures === 0) {
+      if (window.underscoreboardGlobals.specFailures === 0) {
         $('#victory-modal').modal('show');
         socket.emit('sweetVictory', true);
       }
@@ -52,7 +52,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     editors.o = createEditor('editor-o', true);
 
     // Declare a global to make the player's editor available to the testing iframe.
-    window.underscoreboardGlobals.xeditor1 = editors.p;
+    window.underscoreboardGlobals.playerEditor = editors.p;
 
     // Show loading menu on pageload
     setTimeout(function() {
@@ -81,7 +81,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     socket.on('beginGame', function(message) {
       setTimeout(function() {
         // Make both a local and global reference to the current function
-        window.underscoreboardGlobals.xcurrentFn = currentFn = message;
+        window.underscoreboardGlobals.currentFunction = currentFn = message;
 
         // Insert the placeholder text into editor and move cursor to the start point
         editors.p.setValue(currentFn.desc.join('\n') + '\n' + currentFn.boiler.join('\n'));

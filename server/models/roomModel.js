@@ -3,21 +3,13 @@
 "use strict";
 
 define(function(require) {
-  var fns = require('./functions.json'),
-      _   = require('lodash');
+  var fns  = require('./functions.json'),
+      _    = require('lodash'),
+      uuid = require('node-uuid');
 
-  function makeID(len){
-      var CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      var id = "";
-      for (var i = 0, idLen = len || 10; i < idLen; i++) {
-        id += CHARSET.charAt(Math.floor(Math.random() * CHARSET.length));
-      }
-      return id;
-  }
-
-  // TODO: Get rid of io arg as dependency
   return function(io) {
-    var roomID = makeID(10);
+    // Generate a UUID for the room
+    var roomID = uuid.v4();
     var users = [];
     var round = 1;
     var currentFn = null;

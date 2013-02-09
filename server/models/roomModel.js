@@ -64,15 +64,15 @@ define(function(require) {
         return ++round;
       },
 
-      // Checks if the room is full. Returns true if yes, false if no.
+      // Checks if the room is full (has two users).
+      // Returns true if yes, false if no.
       isFull: function() {
         return users.length >= 2;
       },
 
       // Adds a user to the room's users array and subscribes them to this
-      // room's broadcasts.
+      // room's broadcasts. Returns the population of the room in int form.
       addUser: function(user) {
-        // TODO: Fix this security hole--isFull could be redefined by user
         if ( this.isFull() ) { throw new Error("Cannot add users to a full room."); }
 
         // Subscribe a user to this room's socket broadcasts
@@ -90,6 +90,7 @@ define(function(require) {
         return users;
       },
 
+      // Return the room's ID
       getID: function() {
         return roomID;
       },
@@ -99,8 +100,12 @@ define(function(require) {
         socket.broadcast.to(roomID).emit('updateEditor', data);
       },
 
+      // When a user's tests pass, they send a victory event to the server.
+      // Here, we broadcast that event to the other player.
       sweetVictory: function(data, socket) {
         socket.broadcast.to(roomID).emit('sweetVictory', data);
+
+        // Start another game after 2.5 seconds.
         setTimeout(this.initGame(), 2500);
       }
 

@@ -133,8 +133,9 @@ define(function(require) {
       addUser      : publicAddUser,
       removeUser   : publicRemoveUser,
       getUsers     : publicGetUsers,
-      sweetVictory : publicSweetVictory,
-      updateEditor : publicUpdateEditor
+      getID        : publicGetID,
+      updateEditor : publicUpdateEditor,
+      sweetVictory : publicSweetVictory
     };
   };
 });

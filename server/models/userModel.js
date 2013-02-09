@@ -6,7 +6,6 @@ define(function() {
   // Export the User model we create in this file. Accepts a socket as an argument
   // and upon instantiation, links the user to that socket.
   return function(socket) {
-    // TODO: More robust checking here
     if (!socket) {
       throw new Error("Cannot create a user without linking it to a socket.");
     }

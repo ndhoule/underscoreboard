@@ -3,11 +3,13 @@ define(['socket.io', 'roomModel', 'userModel'], function(socket, Room, User){
     var io = socket.listen(server, {log:false});
 
     // Set up containers for users and rooms.
+    var currentRoom;
     var Users = {};
     var Rooms = {};
 
     // Create an initial room and put it in the rooms hash.
-    var currentRoom = Room(io);
+    currentRoom = Room(io);
+    Rooms[currentRoom.getID()] = currentRoom;
 
     io.sockets.on('connection', function(socket) {
       // Check to see if the current room is full and create a new one if so.

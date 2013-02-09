@@ -2,15 +2,19 @@ define(['socket.io', 'roomModel', 'userModel'], function(socket, Room, User){
   return function(server) {
     var io = socket.listen(server, {log:false});
 
-    // Set up Users container and create an initial room. Future rooms will be
-    // created by socket events.
+    // Set up containers for users and rooms.
     var Users = {};
+    var Rooms = {};
+
+    // Create an initial room and put it in the rooms hash.
     var currentRoom = Room(io);
 
     io.sockets.on('connection', function(socket) {
-      // Check to see if the current room is full and create a new one if so
+      // Check to see if the current room is full and create a new one if so.
+      // Stick it in the Rooms hash so we can refer to it later.
       if (currentRoom.isFull()){
         currentRoom = Room(io);
+        Rooms[currentRoom.getID()] = currentRoom;
       }
 
       // Create a user and link it to its corresponding socket connection
@@ -33,7 +37,15 @@ define(['socket.io', 'roomModel', 'userModel'], function(socket, Room, User){
       });
 
       socket.on('disconnect',function() {
-        console.log('Client disconnected');
+        var userRoom = user.getCurrentRoom();
+
+        // Remove the user from their room
+        userRoom.removeUser(user);
+
+        // Delete the room if it's empty
+        if (userRoom.isEmpty()) {
+          delete Rooms[userRoom.getID()];
+        }
       });
     });
 

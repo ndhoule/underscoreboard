@@ -3,7 +3,7 @@
 "use strict";
 
 define(function(require) {
-  var fns  = require('./functions.json'),
+  var underscoreFunctions  = require('./functions.json'),
       _    = require('lodash'),
       uuid = require('node-uuid');
 
@@ -20,42 +20,39 @@ define(function(require) {
 
       initGame: function() {
         console.log('starting game id ' + roomID);
-        currentFn = this.genRandomFn();
+        currentFn = this.generateRandomFunction();
         io.sockets.in(roomID).emit('beginGame', currentFn);
       },
 
       // Returns a random function from our list of underscore functions. We'll
       // broadcast this function to the room's members on round start
-      genRandomFn: function() {
-        var randProp,
-            randIndex,
+      generateRandomFunction: function() {
+        var randomFunction,
+            randomIndex,
             keys = [],
             maxDifficulty = 1;
 
-        // Always return _.each during the first round.
-        // TODO: Rudimentary round changing works but increases round too often,
-        // so it's limited to here. Fix this.
+        // Always return _.each during the first round. Helps prevent advanced
+        // functions from being presented at first load.
         if (this.getRound() === 1) {
           this.increaseRound();
-          return fns.each;
+          return underscoreFunctions.each;
         }
 
-        _.each(fns, function(val, prop) {
-          keys.push(prop);
+        // Create a list of functions from which we can pull a random function.
+        // Creating this list lets us limit our pool by difficulty level.
+        _.each(underscoreFunctions, function(val, prop) {
+          if (prop.difficulty <= maxDifficulty) {
+            keys.push(prop);
+          }
         });
 
-        randIndex = Math.floor(Math.random() * _.size(keys));
-        randProp = keys[randIndex];
+        // Find our random function by grabbing a random index limited by the
+        // pool size.
+        randomIndex = Math.floor(Math.random() * _.size(keys));
+        randomFunction = keys[randomIndex];
 
-
-        // Hacky fix for difficulty levels; make sure we only return functions
-        // that are of difficulty level 0 or 1.
-        if (fns[randProp].difficulty > maxDifficulty) {
-          console.log("Function too difficult. Generating a different function...");
-          return this.genRandomFn();
-        }
-
-        return fns[randProp];
+        return underscoreFunctions[randomFunction];
       },
 
       // Returns the current round number of the room

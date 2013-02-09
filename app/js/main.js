@@ -46,25 +46,12 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       $('#pairing-modal').modal('show');
     }, 750);
 
-    // Event listeners
-    $('#skip-button').click(function(e) {
-      //TODO: Implement this
-      e.preventDefault();
-      console.log('skip this round button clicked');
-    });
-
     $('#reset-button').click(function(e) {
       e.preventDefault();
       if (window.confirm("Are you sure you want to reset your code to the start point?")) {
         //TODO: dry
         editors.p.setValue(currentFn.desc.join('\n') + '\n' + currentFn.boiler.join('\n'));
       }
-    });
-
-    $('#login-button').click(function(e) {
-      //TODO: Implement this
-      e.preventDefault();
-      console.log('log in button clicked');
     });
 
     // Socket connections

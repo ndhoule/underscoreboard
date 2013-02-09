@@ -54,7 +54,7 @@ module.exports = function(grunt) {
       options: {
         baseUrl: 'app/js',
         name: 'main',
-        out: 'client/js/main.js',
+        out: 'client/js/main.min.js',
         paths: {
           jquery       : 'lib/require-jquery',
           ace          : '../../client/js/lib/ace',

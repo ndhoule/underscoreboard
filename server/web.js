@@ -19,7 +19,7 @@ requirejs(['app', 'http', './routes', 'socket.io', 'roomModel', 'userModel'],
 
   io.sockets.on('connection', function(socket) {
     // Check to see if the current room is full and create a new one if so
-    if( currentRoom.isFull() ){
+    if (currentRoom.isFull()){
       currentRoom = Room(io);
     }
 
@@ -29,7 +29,7 @@ requirejs(['app', 'http', './routes', 'socket.io', 'roomModel', 'userModel'],
     user.setCurrentRoom(currentRoom);
 
     // Check again if the room is now full, and start the game if so
-    if( currentRoom.isFull() ){
+    if (currentRoom.isFull()){
       currentRoom.initGame();
     }
 

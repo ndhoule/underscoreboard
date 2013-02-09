@@ -68,23 +68,29 @@ describe("_.last", function() {
   it("should pull the last element from an array", function() {
     expect(_.last([1,2,3])).to.equal(3);
   });
+
   it("should handle a user-defined index", function() {
     expect(_.last([1,2,3], 0).join(', ')).to.equal('');
   });
+
   it("should be able to ", function() {
     expect(_.last([1,2,3], 2).join(', ')).to.equal('2, 3');
   });
+
   it("should be able to pull the last element from an array", function() {
     expect(_.last([1,2,3], 5).join(', ')).to.equal('1, 2, 3');
   });
+
   it("should work on an arguments object", function() {
     var result = (function(){ return _.last(arguments, 2); })(1, 2, 3, 4);
     expect(result.join(', ')).to.equal('3, 4');
   });
+
   it("should work well with map", function() {
     var result = _.map([[1,2,3],[1,2,3]], _.last);
     expect(result.join(', ')).to.equal('3, 3');
   });
+
   it("handle a null value gracefully", function() {
     expect(_.last(null)).to.equal(undefined);
   });
@@ -95,19 +101,23 @@ describe("_.first", function() {
   it("should be able to pull out the first element of an array", function() {
     expect(_.first([1,2,3])).to.equal(1);
   });
+
   it("should be able to accept a user-defined index", function() {
     expect(_.first([1,2,3], 0).join(', ')).to.equal('');
     expect(_.first([1,2,3], 2).join(', ')).to.equal('1, 2');
     expect(_.first([1,2,3], 5).join(', ')).to.equal('1, 2, 3');
   });
+
   it("should work on an arguments object", function() {
     var result = (function(){ return _.first(arguments, 2); })(4, 3, 2, 1);
     expect(result.join(', ')).to.equal('4, 3');
   });
+
   it("should work well with map", function() {
     var result = _.map([[1,2,3],[1,2,3]], _.first);
     expect(result.join(', ')).to.equal('1, 1');
   });
+
   it("should handle a null value gracefully", function() {
     expect(_.first(null)).to.equal(undefined);
   });
@@ -118,10 +128,12 @@ describe("_.reduce", function() {
     var sum = _.reduce([1, 2, 3], function(sum, num){ return sum + num; }, 0);
     expect(sum).to.equal(6);
   });
+
   it("should handle a null value gracefully (as long as the user provides an initial value)", function() {
     var sum = _.reduce([1, 2, 3], function(sum, num){ return sum + num; });
     expect(sum).to.equal(6);
   });
+
   it("should handle a null value gracefully (as long as the user provides an initial value)", function() {
     expect(_.reduce(null, function(){}, 138)).to.equal(138);
   });
@@ -132,6 +144,7 @@ describe("_.select", function() {
     var evens = _.select([1, 2, 3, 4, 5, 6], function(num){ return num % 2 === 0; });
     expect(evens.join(', ')).to.equal('2, 4, 6');
   });
+
   it("should select each odd number in an array", function() {
     var odds = _.select([1, 2, 3, 4, 5, 6], function(num){ return num % 2 !== 0; });
     expect(odds.join(', ')).to.equal('1, 3, 5');
@@ -143,6 +156,7 @@ describe("_.reject", function() {
     var odds = _.reject([1, 2, 3, 4, 5, 6], function(num){ return num % 2 === 0; });
     expect(odds.join(', ')).to.equal('1, 3, 5');
   });
+
   it("should return all odd numbers", function() {
     var evens = _.reject([1, 2, 3, 4, 5, 6], function(num){ return num % 2 !== 0; });
     expect(evens.join(', ')).to.equal('2, 4, 6');
@@ -153,24 +167,31 @@ describe("_.every", function() {
   it("should handle an empty set", function() {
     expect( _.every([], function(i){return i;}) ).to.equal(true);
   });
+
   it("should handle a set that contains only true values", function() {
     expect( _.every([true, true, true], function(i){return i;}) ).to.equal(true);
   });
+
   it("should handle a set that contains one false value", function() {
     expect( _.every([true, false, true], function(i){return i;}) ).to.equal(false);
   });
+
   it("should handle a set that contains even numbers", function() {
     expect( _.every([0, 10, 28], function(num){ return num % 2 === 0; }) ).to.equal(true);
   });
+
   it("should handle a set that contains an odd number", function() {
     expect( _.every([0, 11, 28], function(num){ return num % 2 === 0; }) ).to.equal(false);
   });
+
   it("should cast to boolean true", function() {
     expect( _.every([1], function(i){return i;}) ).to.equal(true);
   });
+
   it("should cast to boolean false", function() {
     expect( _.every([0], function(i){return i;}) ).to.equal(false);
   });
+
   it("should work with an array that contains several undefined values", function() {
     expect( _.every([undefined, undefined, undefined], function(i){return i;}) ).to.equal(false);
   });
@@ -178,6 +199,7 @@ describe("_.every", function() {
 
 describe("_.any", function() {
   var nativeSome;
+
   beforeEach(function(){
     nativeSome = Array.prototype.some;
     Array.prototype.some = null;
@@ -275,12 +297,12 @@ describe("_.memoize", function() {
 describe("_.delay", function() {
   var clock, delayed, callback;
 
-  before(function() {
+  beforeEach(function() {
     clock = sinon.useFakeTimers();
     callback = sinon.spy();
   });
 
-  after(function() {
+  afterEach(function() {
     clock.restore();
   });
 
@@ -303,6 +325,7 @@ describe("_.delay", function() {
 
 describe("_.extend", function() {
   var result;
+
   afterEach(function(){
     result = null;
   });
@@ -310,20 +333,25 @@ describe("_.extend", function() {
   it("should extend an object with the attributes of another", function() {
     expect(_.extend({}, {a:'b'}).a).to.equal('b');
   });
+
   it("should override properties found on the destination", function() {
     expect(_.extend({a:'x'}, {a:'b'}).a).to.equal('b');
   });
+
   it("should not override properties not found in the source", function() {
     expect(_.extend({x:'x'}, {a:'b'}).x).to.equal('x');
   });
+
   it("should extend from multiple source objects", function() {
     result = _.extend({x:'x'}, {a:'a'}, {b:'b'});
     expect(result.x == 'x' && result.a == 'a' && result.b == 'b').to.be(true);
   });
+
   it("in the case of a conflict, it should use the last property's values when extending from multiple source objects", function() {
     result = _.extend({x:'x'}, {a:'a', x:2}, {a:'b'});
     expect(result.x == 2 && result.a == 'b').to.be(true);
   });
+
   it("should not copy undefined values", function() {
     result = _.extend({}, {a: void 0, b: null});
     expect(result.hasOwnProperty('a') && result.hasOwnProperty('b')).to.be(true);
@@ -332,19 +360,23 @@ describe("_.extend", function() {
 
 describe("_.defaults", function() {
   var result, options;
+
   beforeEach(function(){
     options = {zero: 0, one: 1, empty: "", nan: NaN, string: "string"};
     _.defaults(options, {zero: 1, one: 10, twenty: 20}, {empty: "full"}, {nan: "nan"}, {word: "word"}, {word: "dog"});
   });
+
   it("should apply a value when one doesn't already exist on the target", function() {
     expect(options.zero).to.equal(0);
     expect(options.one).to.equal(1);
     expect(options.twenty).to.equal(20);
   });
+
   it("should not apply a value if one already exist on the target", function() {
     expect(options.empty).to.equal("");
     expect(isNaN(options.nan)).to.equal(true);
   });
+
   it("if two identical values are passed in, the first one wins", function() {
     expect(options.word).to.equal("word");
   });
@@ -355,6 +387,7 @@ describe("_.flatten", function() {
     var nestedArray = [1, [2], [3, [[[4]]]]];
     expect(JSON.stringify(_.flatten(nestedArray))).to.equal('[1,2,3,4]');
   });
+
   it("works on an arguments object", function() {
     var result = (function(){ return _.flatten(arguments); })(1, [2], [3, [[[4]]]]);
     expect(JSON.stringify(result)).to.equal('[1,2,3,4]');
@@ -367,16 +400,19 @@ describe("_.sortBy", function() {
     people = _.sortBy(people, function(person){ return person.age; });
     expect(_.pluck(people, 'name').join(', ')).to.equal('moe, curly');
   });
+
   it("should handle undefined values", function() {
     var list = [undefined, 4, 1, undefined, 3, 2];
     expect(_.sortBy(list, function(i){return i;}).join(',')).to.equal('1,2,3,4,,');
   });
+
   it("should sort by length", function() {
     var list = ["one", "two", "three", "four", "five"];
     var sorted = _.sortBy(list, 'length');
     expect(sorted.join(' ')).to.equal('one two four five three');
   });
-  it("should produce reliable results", function() {
+
+  it("should produce results that change the order of the list as little as possible", function() {
     function Pair(x, y) {
       this.x = x;
       this.y = y;

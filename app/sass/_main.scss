@@ -10,7 +10,7 @@ nav h2 { font-size: 1.4em; line-height: 18px; }
 nav h3 { font-size: 1.2em; line-height: 20px; }
 nav h4 { font-size: 1.0em; line-height: 42px; }
 
-#editor-p {
+#editor-player {
   position: absolute;
   top: 42px;
   overflow: hidden;
@@ -20,7 +20,7 @@ nav h4 { font-size: 1.0em; line-height: 42px; }
   border-right: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-#editor-o {
+#editor-opponent {
   position: absolute;
   top: 42px;
   overflow: hidden;

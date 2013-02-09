@@ -24,8 +24,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
   // them in require.js's equivalent of $(document).ready
   domReady(function() {
     var currentFunction,
-        updateTestsTimer,
-        verifyTestsTimer;
+        updateTestsTimer;
 
     var editors = {
       player: createEditor('editor-player'),
@@ -42,6 +41,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
 
     var updateTests = function() {
       document.getElementById('tests').contentDocument.location.reload(true);
+      setTimeout(verifyTests, 1000);
     };
 
     // Monitor the passing specs and display a victory modal when all are passing
@@ -124,13 +124,9 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       if (updateTestsTimer) {
         clearTimeout(updateTestsTimer);
       }
-      if (verifyTestsTimer) {
-        clearTimeout(verifyTestsTimer);
-      }
 
       socket.emit('editorChange', editors.player.getValue());
       updateTestsTimer = setTimeout(updateTests, 1200);
-      verifyTestsTimer = setTimeout(verifyTests, 2500);
     });
 
   });

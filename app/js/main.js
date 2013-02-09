@@ -1,5 +1,5 @@
 /*jshint laxcomma:true*/
-/*global 'setTimeout':false, 'document':false, 'window':false, 'console':false*/
+/*global setTimeout:false, clearTimeout: false, document:false, window:false, console:false*/
 
 // Set require.js configuration settings. These are used mostly for compiling
 // main.js into main.min.js via r.js
@@ -24,7 +24,8 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
   // them in require.js's equivalent of $(document).ready
   domReady(function() {
     var currentFunction,
-        updateCount = 0;
+        updateTestsTimer,
+        verifyTestsTimer;
 
     var editors = {
       player: createEditor('editor-player'),
@@ -40,9 +41,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     };
 
     var updateTests = function() {
-      if (--updateCount === 0) {
-        document.getElementById('tests').contentDocument.location.reload(true);
-      }
+      document.getElementById('tests').contentDocument.location.reload(true);
     };
 
     // Monitor the passing specs and display a victory modal when all are passing
@@ -118,13 +117,20 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       $('#loss-modal').modal('show');
     });
 
-    // When the contents of the player editor changes, increase a counter. This puts
-    // some intertia behind test refreshing so it doesn't happen too often
+    // When the contents of the player editor change, set a timer (and invalidate
+    // any timers that already exist). This puts intertia behind test refreshes so
+    // they don't happen too often
     editors.player.on('change', function() {
-      updateCount++;
+      if (updateTestsTimer) {
+        clearTimeout(updateTestsTimer);
+      }
+      if (verifyTestsTimer) {
+        clearTimeout(verifyTestsTimer);
+      }
+
       socket.emit('editorChange', editors.player.getValue());
-      var updateTestsTimeout = setTimeout(updateTests, 1200);
-      var verifyTestsTimeout = setTimeout(verifyTests, 2500);
+      updateTestsTimer = setTimeout(updateTests, 1200);
+      verifyTestsTimer = setTimeout(verifyTests, 2500);
     });
 
   });

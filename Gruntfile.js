@@ -109,6 +109,7 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', ['compass', 'jshint:all']);
   grunt.registerTask('test', ['jshint:all', 'buster:test']);
   grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:dist']);
+  grunt.registerTask('precommit', ['jshint:dist', 'buster:test']);
 
   // Define default task
   grunt.registerTask('default', ['test']);

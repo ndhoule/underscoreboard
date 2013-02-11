@@ -56,6 +56,10 @@ npm install
 sudo npm install -g grunt
 ``
 
+Optionally, run `./git-hooks.sh` to install pre-commit testing hooks. This will
+automatically lint your files and run the testing suite before each commit and
+prevent a commit if either throws an error.
+
 #### Common Grunt Tasks
 
 `grunt dev`: Hints and builds (but doesn't minify/uglify) client JS and Sass.

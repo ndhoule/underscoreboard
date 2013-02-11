@@ -11,25 +11,25 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
 
-      jade   : ['server/views/**/*.jade'],
-      style  : ['app/sass/style.scss', 'app/sass/_main.scss'],
+      jade   : ['app/views/**/*.jade'],
+      style  : ['assets/sass/style.scss', 'assets/sass/_main.scss'],
       src : {
-        app    : ['app/js/**/*.js', '!app/js/lib/**'],
-        server : ['server/**/*.js', '!server/**/lib/**'],
+        assets : ['assets/js/**/*.js', '!assets/js/lib/**'],
+        app : ['app/**/*.js', '!app/**/lib/**'],
         // TODO: Fix the ignore here. This ends up scanning the lib directory
         // no matter what. I suspect it's an upstream bug as I'm following the
         // docs, but who knows...
-        client : ['client/js/**/*.js', '!client/js/lib/**', '!client/js/main.js'],
+        public : ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.js'],
       }
     },
     compass: {
       options: {
         require        : 'bootstrap-sass',
-        sassDir        : 'app/sass',
-        cssDir         : 'client/css',
+        sassDir        : 'assets/sass',
+        cssDir         : 'app/public/css',
         relativeAssets : true,
-        imagesDir      : 'client/img',
-        javascriptsDir : 'client/js'
+        imagesDir      : 'app/public/img',
+        javascriptsDir : 'app/public/js'
       },
       dev: {
         options: {
@@ -47,17 +47,17 @@ module.exports = function(grunt) {
     },
     buster: {
       test: {
-        config: 'test/buster.js'
+        config: 'spec/buster.js'
       }
     },
     requirejs: {
       options: {
-        baseUrl: 'app/js',
+        baseUrl: 'assets/js',
         name: 'main',
-        out: 'client/js/main.min.js',
+        out: 'app/public/js/main.min.js',
         paths: {
           jquery       : 'lib/require-jquery',
-          ace          : '../../client/js/lib/ace',
+          ace          : '../../app/public/js/lib/ace',
           domReady     : 'lib/domReady',
           bootstrap    : 'lib/bootstrap.min',
           createEditor : 'createEditor',
@@ -84,33 +84,33 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          "index.html": ['server/views/index.jade']
+          "index.html": ['app/views/index.jade']
         }
       }
     },
     jshint: {
       all: [
         'Gruntfile.js',
+        '<%= meta.src.assets %>',
         '<%= meta.src.app %>',
-        '<%= meta.src.server %>',
-        '<%= meta.src.client %>'
+        '<%= meta.src.public %>'
       ],
-      dist: 'client/js/main.js',
+      dist: 'app/public/js/main.js',
       options: {
         jshintrc: '.jshintrc'
       }
     },
     watch: {
-      client: {
-        files: '<%= meta.src.client %>',
-        tasks: ['jshint']
-      },
-      server: {
-        files: '<%= meta.src.server %>',
+      public: {
+        files: '<%= meta.src.public %>',
         tasks: ['jshint']
       },
       app: {
         files: '<%= meta.src.app %>',
+        tasks: ['jshint']
+      },
+      assets: {
+        files: '<%= meta.src.assets %>',
         tasks: ['requirejs:dev']
       },
       compass: {

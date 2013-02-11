@@ -15,7 +15,7 @@ define(['path', 'module', 'express'], function (path, module, express) {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(path.join(pwd, '../client')));
+    app.use(express.static(path.join(pwd, '/public')));
     app.use(express.logger());
   });
 

@@ -12,8 +12,10 @@ html
     //-script(src="js/main.js")
     // if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    - if (typeof js != undefined)
+      each script in js
+        script(src=script)
 
   body
     block navbar
     block content
-    script(src="js/main.min.js")

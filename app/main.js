@@ -10,7 +10,7 @@ requirejs(['app', 'http', './routes', 'sockets'],
       io     = sockets(server);
 
   // Routing table
-  app.get('/', routes.index);
+  app.get('/', routes.main);
 
   // Start the server
   server.listen(app.get('port'), function() {

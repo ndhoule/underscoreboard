@@ -1,10 +1,9 @@
-/*jshint node:true, laxcomma:true*/
+/*jshint node:true*/
 "use strict";
 
-exports.index = function(req, res) {
-  res.render('index', { title: 'Underscoreboard.js' });
-};
-
-exports.code = function(message) {
-  console.log(JSON.stringify(message));
+exports.main = function(req, res) {
+  res.render('main', {
+    title : 'Underscoreboard',
+    js    : ['js/main.min.js']
+  });
 };

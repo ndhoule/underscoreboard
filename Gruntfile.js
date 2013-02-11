@@ -14,7 +14,7 @@ module.exports = function(grunt) {
       src : {
         assets : ['assets/js/**/*.js', '!assets/js/lib/**'],
         app    : ['app/**/*.js', '!app/public/**'],
-        public : ['app/public/js/**/*.js', '!app/public/js/lib/**'],
+        public : ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js'],
       }
     },
     compass: {

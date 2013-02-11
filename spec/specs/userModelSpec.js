@@ -1,5 +1,5 @@
 var requirejs = require("requirejs");
-requirejs.config(require("../../server/config"));
+requirejs.config(require("../../app/require-config"));
 
 requirejs(['buster', 'userModel'], function(buster, User) {
   // Set up BDD-style expectations

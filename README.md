@@ -51,7 +51,7 @@ similar to rake, but for JavaScript.)
 To install all dev dependencies, run:
 
 ``
-bundle install (or gem install sass, if you don't have bundler installed)
+gem install sass
 npm install
 sudo npm install -g grunt
 ``

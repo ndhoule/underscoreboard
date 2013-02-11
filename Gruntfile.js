@@ -83,17 +83,13 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      public: {
-        files: '<%= meta.src.public %>',
-        tasks: ['jshint']
-      },
-      app: {
-        files: '<%= meta.src.app %>',
-        tasks: ['jshint']
-      },
-      assets: {
+      dev: {
         files: '<%= meta.src.assets %>',
         tasks: ['requirejs:dev', 'compass:dev']
+      },
+      dist: {
+        files: '<%= meta.src.assets %>',
+        tasks: ['requirejs:dist', 'compass:dist']
       }
     }
   });

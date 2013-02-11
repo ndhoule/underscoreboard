@@ -11,15 +11,10 @@ module.exports = function(grunt) {
         '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
         ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
 
-      jade   : ['app/views/**/*.jade'],
-      style  : ['assets/sass/style.scss', 'assets/sass/_main.scss'],
       src : {
         assets : ['assets/js/**/*.js', '!assets/js/lib/**'],
-        app : ['app/**/*.js', '!app/**/lib/**'],
-        // TODO: Fix the ignore here. This ends up scanning the lib directory
-        // no matter what. I suspect it's an upstream bug as I'm following the
-        // docs, but who knows...
-        public : ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.js'],
+        app    : ['app/**/*.js', '!app/public/**'],
+        public : ['app/public/js/**/*.js', '!app/public/js/lib/**'],
       }
     },
     compass: {
@@ -75,19 +70,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    jade: {
-      dist: {
-        options: {
-          data: {
-            debug: false,
-            title: '<%= meta.pkg.title || meta.pkg.name %>'
-          }
-        },
-        files: {
-          "index.html": ['app/views/index.jade']
-        }
-      }
-    },
     jshint: {
       all: [
         'Gruntfile.js',
@@ -111,14 +93,7 @@ module.exports = function(grunt) {
       },
       assets: {
         files: '<%= meta.src.assets %>',
-        tasks: ['requirejs:dev']
-      },
-      compass: {
-        files: '<%= meta.style %>',
-        tasks: ['compass:dev'],
-        options: {
-          interrupt: true
-        }
+        tasks: ['requirejs:dev', 'compass:dev']
       }
     }
   });
@@ -127,12 +102,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-buster');
 
   // Define tasks
   grunt.registerTask('dev', ['compass', 'jshint:all']);
+  grunt.registerTask('test', ['jshint:all', 'buster:test']);
   grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:dist']);
 
   // Define default task

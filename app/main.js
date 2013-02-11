@@ -2,7 +2,7 @@
 "use strict";
 
 var requirejs = require('requirejs');
-requirejs.config(require("./config"));
+requirejs.config(require("./require-config"));
 
 requirejs(['app', 'http', './routes', 'sockets'],
   function(app, http, routes, sockets) {

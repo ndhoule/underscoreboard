@@ -34,8 +34,8 @@ define(['socket.io', 'roomModel', 'userModel'], function(socket, Room, User){
         user.getCurrentRoom().updateEditor(data, socket);
       });
 
-      socket.on('sweetVictory', function(data) {
-        user.getCurrentRoom().sweetVictory(data, socket);
+      socket.on('victory', function(data) {
+        user.getCurrentRoom().victory(data, socket);
       });
 
       socket.on('disconnect',function() {

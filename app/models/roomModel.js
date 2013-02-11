@@ -117,8 +117,8 @@ define(function(require) {
 
     // When a user's tests pass, they send a victory event to the server.
     // Here, we broadcast that event to the other player.
-    var publicSweetVictory = function(data, socket) {
-      socket.broadcast.to(roomID).emit('sweetVictory', data);
+    var publicVictory = function(data, socket) {
+      socket.broadcast.to(roomID).emit('victory', data);
 
       // Start another game after 2.5 seconds.
       setTimeout(publicInitGame(), 2500);
@@ -135,7 +135,7 @@ define(function(require) {
       getUsers     : publicGetUsers,
       getID        : publicGetID,
       updateEditor : publicUpdateEditor,
-      sweetVictory : publicSweetVictory
+      victory      : publicVictory
     };
   };
 });

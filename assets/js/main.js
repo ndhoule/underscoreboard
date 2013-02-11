@@ -48,7 +48,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     var verifyTests = function() {
       if (window.underscoreboardGlobals.specFailures === 0) {
         $('#victory-modal').modal('show');
-        socket.emit('sweetVictory', true);
+        socket.emit('victory', true);
       }
     };
 
@@ -113,7 +113,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
 
     // If receiving this message, that means the server has broadcasted a loss.
     // Display a loss modal in this case
-    socket.on('sweetVictory', function(message) {
+    socket.on('victory', function(message) {
       $('#loss-modal').modal('show');
     });
 

@@ -1,6 +1,11 @@
 define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Room, User){
   return function(server) {
     var io = socket.listen(server, {log:false});
+    // Heroku has support for socket.io, but for long-polling only. Set that here.
+    io.configure(function() {
+        io.set("transports", ["xhr-polling"]);
+        io.set("polling duration", 5);
+    });
 
     // Set up containers for users and rooms.
     var rooms = {

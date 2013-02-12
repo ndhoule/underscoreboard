@@ -52,3 +52,19 @@ nav h4 { font-size: 1.0em; line-height: 42px; }
 #current-function-label, #current-function-name {
   display: none;
 }
+
+.center {
+  width: inherit;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.loading-container {
+  margin: 10px;
+}
+
+.loading-img {
+  width: 32px;
+  height: 32px;
+  border: 0 !important;
+}

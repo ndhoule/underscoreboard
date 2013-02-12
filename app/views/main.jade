@@ -7,12 +7,13 @@ block navbar
         li
           h1#masthead-title underscoreboard
         li
-          a(href="", id="reset-button") reset code
-      ul.nav.inline.pull-right
-        li
-          h4#current-function-label current function
-        li
-          h4#current-function-name.small
+          a(href='', id='reset-button') reset code
+      //-ul.nav.inline.pull-right
+        //-li.dropdown
+          //-a.dropdown-toggle(data-toggle='dropdown', href='#') Help <b class='caret'></b>
+          //-ul.dropdown-menu
+            //-li
+              //-a.help-modal
 
 block content
   section.main
@@ -23,10 +24,15 @@ block content
   // Pairing modal. Displays on pageload and disappears when the user gets paired.
   div#pairing-modal.modal.hide.fade
     div.modal-header
-      h3 Underscoreboard
+      h3 Welcome to Underscoreboard
     div.modal-body
-      p Waiting for a partner...
-      p If you're just here to check it out, click <a href='https://underscoreboard.herokuapp.com' target='_blank'>here</a> to open a second tab.
+      p.center Finding you a partner...
+      div.loading-container.center
+        img.loading-img.center(src='../img/loading.gif')
+      p &nbsp;
+      h4 About Underscoreboard
+      p Underscoreboard is a realtime coding game where you try to implement an Underscore (a JavaScript library) faster than an opponent. As you type, your code will be run through a test suite. Make all the tests pass and you win!
+      p If you're just here to check it out, click <a href="http://underscoreboard.com", target='_blank'>here</a> to open a second tab to play by yourself. (Spoiler: It's better with friends.)
 
   // Victory modal. Displays when a user wins a round.
   div#victory-modal.modal.hide.fade
@@ -44,6 +50,13 @@ block content
 
   // Re-pairing modal. Displays when a user's opponent leaves the room.
   div#repairing-modal.modal.hide.fade
+    div.modal-header
+      h3 Your Opponent Left
+    div.modal-body
+      p Finding you a new partner...
+
+  // Re-pairing modal. Displays when a user's opponent leaves the room.
+  div#help-modal.modal.hide.fade
     div.modal-header
       h3 Your Opponent Left
     div.modal-body

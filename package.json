@@ -1,11 +1,19 @@
 {
   "name": "Underscoreboard",
+  "subdomain": "Underscoreboard",
+  "domains": [
+    "underscoreboard.com",
+    "www.underscoreboard.com"
+  ],
   "description": "Underscore-oriented multiplayer competitive coding game",
   "homepage": "http://underscoreboard.com",
   "version": "0.0.1",
   "engines": {
     "node": "0.8.x",
     "npm": "1.1.x"
+  },
+  "scripts": {
+    "start": "app/main.js"
   },
   "author": {
     "name": "Nathan Houle",

@@ -83,6 +83,10 @@ define(function(require) {
 
       // Subscribe a user to this room's socket broadcasts
       user.getSocket().join(roomID);
+
+      // Tell the user it belongs to this room
+      user.setCurrentRoom(this);
+
       // Add the user to the current room's users array
       return users.push(user);
     };
@@ -98,6 +102,16 @@ define(function(require) {
           arr.splice(i, 1);
         }
       });
+
+      if (publicGetUsers().length !== 0) {
+        // If a user left and there are still users in the room, tell their browser
+        // clients to reset state
+        io.sockets.in(roomID).emit('resetRoom');
+
+        // Reset the room's state
+        round = 1;
+        currentFn = null;
+      }
     };
 
     // Return an array containing all users in the room.

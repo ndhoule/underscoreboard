@@ -20,6 +20,9 @@ require.config({
 require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domReady, $, io, createEditor) {
   "use strict";
 
+  // Establish a socket connection right away
+  var socket = io.connect();
+
   // The contents of this file should only load once the DOM is ready, so wrap
   // them in require.js's equivalent of $(document).ready
   domReady(function() {
@@ -56,6 +59,13 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     // start point for the text is always the end of the second-to-last line, so
     // move the cursor there while we're at it
     var resetEditor = function(editor) {
+      // If the current function is not defined, set it to the empty string to
+      // prevent inconsolable whinging at the console
+      if (!currentFunction) {
+        currentFunction.desc = '';
+        currentFunction.boiler = '';
+      }
+
       editor.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
       editor.selection.moveCursorBy(-1, 0);
       editor.selection.clearSelection();
@@ -75,8 +85,8 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       }
     });
 
-    // Socket connections
-    var socket = io.connect();
+
+    /* Socket events */
 
     socket.on('error', function(e) {
       console.error('Unable to create Socket.io connection. Error: ', e);
@@ -94,6 +104,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
         // Hide the victory/loss modals if they're currently displayed
         $('#victory-modal').modal('hide');
         $('#loss-modal').modal('hide');
+        $('#repairing-modal').modal('hide');
 
         // Display the current function to the user and load the test URL. This
         // prevents Mocha from testing any function other than the current function
@@ -116,6 +127,27 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     socket.on('victory', function(message) {
       $('#loss-modal').modal('show');
     });
+
+    // If the other player disconnects, display a repairing modal and clean up.
+    socket.on('resetRoom', function(message) {
+      // Tell the user we're re-pairing them.
+      $('#repairing-modal').modal('show');
+
+      // Do cleanup to reset state to original condition
+      window.underscoreboardGlobals.currentFunction = currentFunction = null;
+      resetEditor(editors.player);
+      resetEditor(editors.opponent);
+      // Make sure no modals get in the way
+      $('#pairing-modal').modal('hide');
+      $('#victory-modal').modal('hide');
+      $('#loss-modal').modal('hide');
+      // Blank out the tests
+      $('#tests').html('');
+      // Remove whatever the current function was
+      $('#current-function-label').html('');
+      $('#current-function-name').html('');
+    });
+
 
     // When the contents of the player editor change, set a timer (and invalidate
     // any timers that already exist). This puts intertia behind test refreshes so

@@ -18,7 +18,7 @@ Demo
 ----
 
 Real talk, girl--if a project doesn't include a live demo, almost nobody's gonna
-check it out. You can find a working demo at <https://underscoreboard.heroku.com>.
+check it out. You can find a working demo at <http://underscoreboard.com>.
 
 
 Installation

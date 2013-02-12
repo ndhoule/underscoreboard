@@ -27,17 +27,13 @@ Installation
 First, make sure you have installed [Node.js](http://nodejs.org/). Next, clone down
 the repo and install its local dependencies (listed in `package.json`):
 
-``
-git clone https://github.com/ndhoule/underscoreboard.git
-cd underscoreboard/
-npm install --production
-``
+    git clone https://github.com/ndhoule/underscoreboard.git
+    cd underscoreboard/
+    npm install --production
 
 To run the server, start it with node:
 
-``
-node app/main.js
-``
+    node app/main.js
 
 ### Development
 
@@ -50,11 +46,9 @@ similar to rake, but for JavaScript.)
 
 To install all dev dependencies, run:
 
-``
-gem install sass
-npm install
-sudo npm install -g grunt
-``
+    gem install sass
+    npm install
+    sudo npm install -g grunt
 
 Optionally, run `./git-hooks.sh` to install pre-commit testing hooks. This will
 automatically lint your files and run the testing suite before each commit and
@@ -80,20 +74,19 @@ App Structure
 There are a lot of nested folders and files in this app, so here's a quick overview
 of how everything fits together:
 
-``
-├── Gruntfile.js  <br />
-├── app           <br />
-│   ├── main.js   <br />
-│   └── public    <br />
-│       ├── js    <br />
-│       └── mocha <br />
-├── assets        <br />
-│   ├── js        <br />
-│   └── sass      <br />
-├── package.json  <br />
-└── spec          <br />
+    .
+    ├── Gruntfile.js  <br />
+    ├── app           <br />
+    │   ├── main.js   <br />
+    │   └── public    <br />
+    │       ├── js    <br />
+    │       └── mocha <br />
+    ├── assets        <br />
+    │   ├── js        <br />
+    │   └── sass      <br />
+    ├── package.json  <br />
+    └── spec          <br />
 
-``
 
 `Gruntfile.js`: A settings file for Grunt. Tells it where to find stuff and defines
 what tasks we can run using the `grunt` command.

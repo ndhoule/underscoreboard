@@ -93,7 +93,6 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     });
 
     socket.on('beginGame', function(message) {
-      console.log('Beginning game.');
       // Delay the start of the game by a few seconds to make the transition
       // less jarring
       setTimeout(function() {
@@ -128,6 +127,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
 
     // If the other player disconnects, display a repairing modal and clean up.
     socket.on('resetRoom', function(message) {
+      console.info('Opponent disconnected.');
       // Tell the user we're re-pairing them.
       $('#repairing-modal').modal('show');
 

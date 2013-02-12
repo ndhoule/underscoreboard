@@ -81,7 +81,6 @@ There are a lot of nested folders and files in this app, so here's a quick overv
 of how everything fits together:
 
 ``
-.                 <br />
 ├── Gruntfile.js  <br />
 ├── app           <br />
 │   ├── main.js   <br />

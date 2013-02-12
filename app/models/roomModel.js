@@ -110,7 +110,7 @@ define(function(require) {
       if (users.length > 0) {
         // If a user left and there are still users in the room, tell their browser
         // clients to reset state
-        io.sockets.in(roomID).emit('resetRoom');
+        io.sockets.in(roomID).emit('resetRoom', 'Opponent has left.');
 
         // Reset the room's state
         round = 1;

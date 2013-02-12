@@ -67,7 +67,6 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
           });
         } else {
           // Move it from the full rooms object to the available stack
-          console.info('Room has an empty spot. Moving it to the available stack...');
           rooms.available.push(rooms.full[userCurrentRoom.getID()]);
           delete rooms.full[userCurrentRoom.getID()];
 

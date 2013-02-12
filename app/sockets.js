@@ -33,8 +33,6 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
         // move it to the full rooms list
         var fullRoom = rooms.available.shift();
         rooms.full[fullRoom.getID()] = fullRoom;
-
-        //debugger;
       }
 
       // Broadcast changes to a room's users
@@ -44,7 +42,10 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
 
       // Broadcast a victory event to non-winners
       socket.on('victory', function(data) {
-        user.getCurrentRoom().victory(data, socket);
+        // Only broadcast if the room is full
+        if (user.getCurrentRoom().isFull()) {
+          user.getCurrentRoom().victory(data, socket);
+        }
       });
 
       socket.on('disconnect',function() {

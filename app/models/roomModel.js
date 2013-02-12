@@ -13,14 +13,18 @@ define(function(require) {
     var roomID = uuid.v4();
     var users = [];
     var round = 1;
-    var currentFn = null;
+    var currentFunction = null;
 
     // Declare the room's utility methods. We'll later expose some of these as
     // public methods when we return a Room object
     var publicInitGame = function() {
-      console.log('starting game id ' + roomID);
-      currentFn = privateGenerateRandomFunction();
-      io.sockets.in(roomID).emit('beginGame', currentFn);
+      if (users.length === 2) {
+        console.info('Starting game ID ' + roomID);
+        currentFunction = privateGenerateRandomFunction();
+        io.sockets.in(roomID).emit('beginGame', currentFunction);
+      } else {
+        console.warn("Tried to start a game with only " + users.length + " players.");
+      }
     };
 
     // Returns a random function from our list of underscore functions. We'll
@@ -66,7 +70,7 @@ define(function(require) {
 
     // Checks if the room is full. Returns true if yes, false if no.
     var publicIsFull = function() {
-      return users.length >= 2;
+      return users.length === 2;
     };
 
     // Checks if the room is empty. Returns true if yes, false if no.
@@ -110,7 +114,7 @@ define(function(require) {
 
         // Reset the room's state
         round = 1;
-        currentFn = null;
+        currentFunction = null;
       }
     };
 

@@ -26,8 +26,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
   // The contents of this file should only load once the DOM is ready, so wrap
   // them in require.js's equivalent of $(document).ready
   domReady(function() {
-    var currentFunction,
-        updateTestsTimer;
+    var updateTestsTimer;
 
     var editors = {
       player: createEditor('editor-player'),
@@ -53,13 +52,21 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
         $('#victory-modal').modal('show');
         socket.emit('victory', true);
       }
-    };
+  };
 
-    // Insert the server's placeholder text and insert it into the editor. The
+    // Inserts the server's placeholder text and insert it into the editor. The
     // start point for the text is always the end of the second-to-last line, so
     // move the cursor there while we're at it
     var resetEditor = function(editor) {
-      editor.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
+      var text = '',
+          fn   = window.underscoreboardGlobals.currentFunction;
+
+      // If the function isn't yet defined by the server, keep the default empty string
+      if (fn) {
+        text = fn.desc.join('\n') + '\n' + fn.boiler.join('\n');
+      }
+
+      editor.setValue(text);
       editor.selection.moveCursorBy(-1, 0);
       editor.selection.clearSelection();
     };
@@ -86,11 +93,12 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     });
 
     socket.on('beginGame', function(message) {
+      console.log('Beginning game.');
       // Delay the start of the game by a few seconds to make the transition
       // less jarring
       setTimeout(function() {
         // Make both a local and global reference to the current function
-        window.underscoreboardGlobals.currentFunction = currentFunction = message;
+        window.underscoreboardGlobals.currentFunction = message;
 
         resetEditor(editors.player);
 
@@ -101,11 +109,8 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
 
         // Display the current function to the user and load the test URL. This
         // prevents Mocha from testing any function other than the current function
-        $('#current-function-name').html('<small>' + currentFunction.name + '</small>');
-        $('#current-function-label').show();
-        $('#current-function-name').show();
         $('#pairing-modal').modal('hide');
-        $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + currentFunction.name});
+        $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + message.name});
       }, 3000);
     });
 
@@ -127,18 +132,18 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
       $('#repairing-modal').modal('show');
 
       // Do cleanup to reset state to original condition
-      window.underscoreboardGlobals.currentFunction = currentFunction = null;
+      window.underscoreboardGlobals.currentFunction = null;
       resetEditor(editors.player);
       resetEditor(editors.opponent);
-      // Make sure no modals get in the way
+
+      // Important: Invalidate test timer so we don't accidentally run tests
+      // against empty editors
+      clearTimeout(updateTestsTimer);
+
+      // Make sure no modals are in the way
       $('#pairing-modal').modal('hide');
       $('#victory-modal').modal('hide');
       $('#loss-modal').modal('hide');
-      // Blank out the tests
-      $('#tests').html('');
-      // Remove whatever the current function was
-      $('#current-function-label').html('');
-      $('#current-function-name').html('');
     });
 
 

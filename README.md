@@ -72,21 +72,20 @@ App Structure
 -------------
 
 There are a lot of nested folders and files in this app, so here's a quick overview
-of how everything fits together:
+of the key components (less relevant files removed from tree):
 
     .
-    ├── Gruntfile.js  <br />
-    ├── app           <br />
-    │   ├── main.js   <br />
-    │   └── public    <br />
-    │       ├── js    <br />
-    │       └── mocha <br />
-    ├── assets        <br />
-    │   ├── js        <br />
-    │   └── sass      <br />
-    ├── package.json  <br />
-    └── spec          <br />
-
+    ├── Gruntfile.js
+    ├── app
+    │   ├── main.js
+    │   └── public
+    │       ├── js
+    │       └── mocha
+    ├── assets
+    │   ├── js
+    │   └── sass
+    ├── package.json
+    └── spec
 
 `Gruntfile.js`: A settings file for Grunt. Tells it where to find stuff and defines
 what tasks we can run using the `grunt` command.

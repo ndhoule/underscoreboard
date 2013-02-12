@@ -13,7 +13,9 @@
     "npm": "1.1.x"
   },
   "scripts": {
-    "start": "app/main.js"
+    "start": "app/main.js",
+    "prepublish": "dist",
+    "test": "grunt test"
   },
   "author": {
     "name": "Nathan Houle",

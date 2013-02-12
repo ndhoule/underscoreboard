@@ -59,13 +59,6 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     // start point for the text is always the end of the second-to-last line, so
     // move the cursor there while we're at it
     var resetEditor = function(editor) {
-      // If the current function is not defined, set it to the empty string to
-      // prevent inconsolable whinging at the console
-      if (!currentFunction) {
-        currentFunction.desc = '';
-        currentFunction.boiler = '';
-      }
-
       editor.setValue(currentFunction.desc.join('\n') + '\n' + currentFunction.boiler.join('\n'));
       editor.selection.moveCursorBy(-1, 0);
       editor.selection.clearSelection();

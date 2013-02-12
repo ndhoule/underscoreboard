@@ -28,7 +28,7 @@ define(function(require) {
     var privateGenerateRandomFunction = function() {
       var randomFunction,
           randomIndex,
-          keys = [],
+          pool = [],
           maxDifficulty = 1;
 
       // Always return _.each during the first round. Helps prevent advanced
@@ -40,18 +40,18 @@ define(function(require) {
 
       // Create a list of functions from which we can pull a random function.
       // Creating this list lets us limit our pool by difficulty level.
-      _.each(underscoreFunctions, function(val, prop) {
-        if (prop.difficulty <= maxDifficulty) {
-          keys.push(prop);
+      _.each(underscoreFunctions, function(val) {
+        if (val.difficulty <= maxDifficulty) {
+          pool.push(val);
         }
       });
 
       // Find our random function by grabbing a random index limited by the
       // pool size.
-      randomIndex = Math.floor(Math.random() * _.size(keys));
-      randomFunction = keys[randomIndex];
+      randomIndex = Math.floor(Math.random() * _.size(pool));
 
-      return underscoreFunctions[randomFunction];
+      // Return the random function.
+      return pool[randomIndex];
     };
 
     // Returns the current round number of the room

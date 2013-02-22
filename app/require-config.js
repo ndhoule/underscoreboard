@@ -7,7 +7,7 @@ module.exports = {
   paths: {
     app:       __dirname + '/app',
     sockets:   __dirname + '/sockets',
-    roomModel: __dirname + '/models/roomModel',
-    userModel: __dirname + '/models/userModel'
+    roomModel: __dirname + '/models/room',
+    userModel: __dirname + '/models/user'
   }
 };

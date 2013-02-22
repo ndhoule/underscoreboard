@@ -4,13 +4,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     meta : {
-      pkg    : grunt.file.readJSON('package.json'),
-      banner : '/*! <%= meta.pkg.title || meta.pkg.name %> - v<%= meta.pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= meta.pkg.homepage ? "* " + meta.pkg.homepage + "\\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= meta.pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(meta.pkg.licenses, "type").join(", ") %> */\n',
-
+      pkg : grunt.file.readJSON('package.json'),
       src : {
         assets : ['assets/js/**/*.js', '!assets/js/lib/**'],
         app    : ['app/**/*.js', '!app/public/**'],

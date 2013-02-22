@@ -4,9 +4,9 @@
 
 define(function(require) {
   var functions  = require('./functions.json'),
-      _    = require('lodash'),
-      uuid = require('node-uuid');
+      uuid       = require('node-uuid');
 
+  // Create a room prototype
   var room = {};
 
   room.initGame = function() {
@@ -33,15 +33,15 @@ define(function(require) {
 
     // Create a list of functions from which we can pull a random function.
     // Creating this list lets us limit our pool by difficulty level.
-    _.each(functions, function(val) {
-      if (val.difficulty <= maxDifficulty) {
-        pool.push(val);
+    for (var key in functions) {
+      if(functions[key].difficulty <= maxDifficulty) {
+        pool.push(functions[key]);
       }
-    });
+    }
 
     // Find our random function by grabbing a random index limited by the
     // pool size.
-    randomIndex = Math.floor(Math.random() * _.size(pool));
+    randomIndex = Math.floor(Math.random() * pool.length);
 
     // Return the random function.
     return pool[randomIndex];
@@ -75,7 +75,7 @@ define(function(require) {
       throw new Error("Cannot remove users from an empty room.");
     }
 
-    _.each(this.users, function(val, i, arr) {
+    this.users.forEach(function(val, i, arr) {
       if (val === user) {
         arr.splice(i, 1);
       }

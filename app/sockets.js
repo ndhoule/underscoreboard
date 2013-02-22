@@ -1,4 +1,4 @@
-define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, createRoom, createUser){
+define(['socket.io', 'roomModel', 'userModel'], function(socket, createRoom, createUser){
   return function(server) {
     var io = socket.listen(server, {log:false});
 
@@ -67,7 +67,7 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, cr
 
         if (userCurrentRoom.isEmpty()) {
           // If it's empty, destroy it from the available rooms stack
-          _(rooms.available).each(function(room, i){
+          rooms.available.forEach(function(room, i){
             if (room === userCurrentRoom) {
               console.info('Room was vacated. Deleting it from the available stack...');
               rooms.available.splice(i, 1);

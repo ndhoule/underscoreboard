@@ -1,6 +1,6 @@
 /*jshint node:true*/
 /*globals define: true*/
-"use strict";
+'use strict';
 
 module.exports = {
   nodeRequire: require,

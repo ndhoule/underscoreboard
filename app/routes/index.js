@@ -1,5 +1,5 @@
 /*jshint node:true*/
-"use strict";
+'use strict';
 
 exports.main = function(req, res) {
   res.render('main', {

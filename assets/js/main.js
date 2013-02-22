@@ -18,7 +18,7 @@ require.config({
 
 
 require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domReady, $, io, createEditor) {
-  "use strict";
+  'use strict';
 
   // Establish a socket connection right away
   var socket = io.connect();

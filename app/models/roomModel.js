@@ -3,157 +3,120 @@
 "use strict";
 
 define(function(require) {
-  var underscoreFunctions  = require('./functions.json'),
+  var functions  = require('./functions.json'),
       _    = require('lodash'),
       uuid = require('node-uuid');
 
-  // Export the Room module we create in this file.
+  var room = {};
+
+  room.initGame = function() {
+    if (this.users.length === 2) {
+      console.info('Starting game ID ' + this.id);
+      this.currentFunction = this.generateFunction();
+    } else {
+      console.warn("Tried to start a game with only " + this.users.length + " players.");
+    }
+  };
+
+  room.generateFunction = function() {
+    var randomFunction,
+        randomIndex,
+        pool = [],
+        maxDifficulty = 1;
+
+    // Always return _.each during the first round. Helps prevent advanced
+    // functions from being presented at first load.
+    if (this.round === 1) {
+      this.round++;
+      return functions.each;
+    }
+
+    // Create a list of functions from which we can pull a random function.
+    // Creating this list lets us limit our pool by difficulty level.
+    _.each(functions, function(val) {
+      if (val.difficulty <= maxDifficulty) {
+        pool.push(val);
+      }
+    });
+
+    // Find our random function by grabbing a random index limited by the
+    // pool size.
+    randomIndex = Math.floor(Math.random() * _.size(pool));
+
+    // Return the random function.
+    return pool[randomIndex];
+  };
+
+  room.isFull = function() {
+    return this.users.length === 2;
+  };
+
+  room.isEmpty = function() {
+    return this.users.length === 0;
+  };
+
+  room.addUser = function(user) {
+    if (this.isFull()) {
+      throw new Error("Cannot add users to a full room.");
+    }
+
+    // Subscribe a user to this room's socket broadcasts
+    user.socket.join(this.id);
+
+    // Tell the user it belongs to this room
+    user.room = this;
+
+    // Add the user to the current room's users array
+    return this.users.push(user);
+  };
+
+  room.removeUser = function(user) {
+    if (this.isEmpty()) {
+      throw new Error("Cannot remove users from an empty room.");
+    }
+
+    _.each(this.users, function(val, i, arr) {
+      if (val === user) {
+        arr.splice(i, 1);
+      }
+    });
+
+    if (this.users.length > 0) {
+      // Reset the room's state
+      this.round = 1;
+      this.currentFunction = null;
+    }
+  };
+
+  room.updateEditor = function(data, socket) {
+    socket.broadcast.to(this.id).emit('updateEditor', data);
+  };
+
+  room.victory = function(ignore, socket) {
+    socket.broadcast.to(this.id).emit('victory');
+    return this.initGame();
+  };
+
+  // Return a maker function
   return function(io) {
-    // Generate a UUID for the room
-    var roomID = uuid.v4();
-    var users = [];
-    var round = 1;
-    var currentFunction = null;
-
-    // Declare the room's utility methods. We'll later expose some of these as
-    // public methods when we return a Room object
-    var publicInitGame = function() {
-      if (users.length === 2) {
-        console.info('Starting game ID ' + roomID);
-        currentFunction = privateGenerateRandomFunction();
-        io.sockets.in(roomID).emit('beginGame', currentFunction);
-      } else {
-        console.warn("Tried to start a game with only " + users.length + " players.");
+    var instance = Object.create(room, {
+      id: {
+        value: uuid.v4()
+      },
+      users: {
+        value: [],
+        writable: true
+      },
+      round: {
+        value: 1,
+        writable: true
+      },
+      currentFunction: {
+        value: null,
+        writable: true
       }
-    };
+    });
 
-    // Returns a random function from our list of underscore functions. We'll
-    // broadcast this function to the room's members on round start
-    var privateGenerateRandomFunction = function() {
-      var randomFunction,
-          randomIndex,
-          pool = [],
-          maxDifficulty = 1;
-
-      // Always return _.each during the first round. Helps prevent advanced
-      // functions from being presented at first load.
-      if (publicGetRound() === 1) {
-        privateIncreaseRound();
-        return underscoreFunctions.each;
-      }
-
-      // Create a list of functions from which we can pull a random function.
-      // Creating this list lets us limit our pool by difficulty level.
-      _.each(underscoreFunctions, function(val) {
-        if (val.difficulty <= maxDifficulty) {
-          pool.push(val);
-        }
-      });
-
-      // Find our random function by grabbing a random index limited by the
-      // pool size.
-      randomIndex = Math.floor(Math.random() * _.size(pool));
-
-      // Return the random function.
-      return pool[randomIndex];
-    };
-
-    // Returns the current round number of the room
-    var publicGetRound = function() {
-      return round;
-    };
-
-    // Increases the round number of the room and returns the current round number
-    var privateIncreaseRound = function() {
-      return ++round;
-    };
-
-    // Checks if the room is full. Returns true if yes, false if no.
-    var publicIsFull = function() {
-      return users.length === 2;
-    };
-
-    // Checks if the room is empty. Returns true if yes, false if no.
-    var publicIsEmpty = function() {
-      return users.length === 0;
-    };
-
-    // Adds a user to the room's users array and subscribes them to this
-    // room's broadcasts. Returns the population of the room in int form.
-    var publicAddUser = function(user) {
-      if (publicIsFull()) {
-        throw new Error("Cannot add users to a full room.");
-      }
-
-      // Subscribe a user to this room's socket broadcasts
-      user.getSocket().join(roomID);
-
-      // Tell the user it belongs to this room
-      user.setCurrentRoom(this);
-
-      // Add the user to the current room's users array
-      return users.push(user);
-    };
-
-    // Removes a user from the current room.
-    var publicRemoveUser = function(user) {
-      if (publicIsEmpty()) {
-        throw new Error("Cannot remove users from an empty room.");
-      }
-
-      _.each(users, function(val, i, arr) {
-        if (val === user) {
-          arr.splice(i, 1);
-        }
-      });
-
-      if (users.length > 0) {
-        // If a user left and there are still users in the room, tell their browser
-        // clients to reset state
-        io.sockets.in(roomID).emit('resetRoom', 'Opponent has left.');
-
-        // Reset the room's state
-        round = 1;
-        currentFunction = null;
-      }
-    };
-
-    // Return an array containing all users in the room.
-    var publicGetUsers = function() {
-      return users;
-    };
-
-    // Return the room's ID
-    var publicGetID = function() {
-      return roomID;
-    };
-
-    // Broadcast the contents of a user's editor to that user's room.
-    var publicUpdateEditor = function(data, socket) {
-      socket.broadcast.to(roomID).emit('updateEditor', data);
-    };
-
-    // When a user's tests pass, they send a victory event to the server.
-    // Here, we broadcast that event to the other player.
-    var publicVictory = function(data, socket) {
-      socket.broadcast.to(roomID).emit('victory', data);
-
-      // Start another game after 2.5 seconds.
-      setTimeout(publicInitGame(), 2500);
-    };
-
-    // Return the room and expose its interface.
-    return {
-      initGame     : publicInitGame,
-      getRound     : publicGetRound,
-      isFull       : publicIsFull,
-      isEmpty      : publicIsEmpty,
-      addUser      : publicAddUser,
-      removeUser   : publicRemoveUser,
-      getUsers     : publicGetUsers,
-      getID        : publicGetID,
-      updateEditor : publicUpdateEditor,
-      victory      : publicVictory
-    };
+    return instance;
   };
 });

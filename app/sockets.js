@@ -1,4 +1,4 @@
-define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Room, User){
+define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, createRoom, createUser){
   return function(server) {
     var io = socket.listen(server, {log:false});
 
@@ -8,14 +8,15 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
       available : []
     };
 
+    // TODO: Refactor functionality into functions
     io.sockets.on('connection', function(socket) {
       // Create a user and link it to its socket connection
-      var user = User(socket);
-      console.info('Client ID ' + user.getID() + ' connected');
+      var user = createUser(socket);
+      console.info('Client ID ' + user.id + ' connected');
 
       // Check if there's a room available to join. If not, create one
       if (rooms.available[0] === undefined) {
-        rooms.available[0] = (Room(io));
+        rooms.available[0] = createRoom(io);
       }
 
       // Get a handle on the first available room
@@ -28,23 +29,29 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
       if (userRoom.isFull()){
         // ...and start the game if so
         userRoom.initGame();
+        io.sockets.in(userRoom.id).emit('beginGame', userRoom.currentFunction);
 
         // If the room is full, remove it from the list of available rooms and
         // move it to the full rooms list
         var fullRoom = rooms.available.shift();
-        rooms.full[fullRoom.getID()] = fullRoom;
+        rooms.full[fullRoom.id] = fullRoom;
       }
 
       // Broadcast changes to a room's users
       socket.on('editorChange', function(data) {
-        user.getCurrentRoom().updateEditor(data, socket);
+        user.room.updateEditor(data, socket);
       });
 
       // Broadcast a victory event to non-winners
       socket.on('victory', function(data) {
         // Only broadcast if the room is full
-        if (user.getCurrentRoom().isFull()) {
-          user.getCurrentRoom().victory(data, socket);
+        if (user.room.isFull()) {
+          user.room.victory(data, socket);
+
+          // Start another game after 2.5 seconds
+          setTimeout(function() {
+            io.sockets.in(userRoom.id).emit('beginGame', userRoom.currentFunction);
+          }, 2500);
         }
       });
 
@@ -52,10 +59,11 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
         console.info('Player disconnected');
 
         // Get a handle on the user's current room
-        var userCurrentRoom = user.getCurrentRoom();
+        var userCurrentRoom = user.room;
 
         // Remove the user from their room
         userCurrentRoom.removeUser(user);
+        io.sockets.in(userCurrentRoom.id).emit('resetRoom', 'Opponent has left.');
 
         if (userCurrentRoom.isEmpty()) {
           // If it's empty, destroy it from the available rooms stack
@@ -67,10 +75,10 @@ define(['lodash', 'socket.io', 'roomModel', 'userModel'], function(_, socket, Ro
           });
         } else {
           // Move it from the full rooms object to the available stack
-          rooms.available.push(rooms.full[userCurrentRoom.getID()]);
-          delete rooms.full[userCurrentRoom.getID()];
+          rooms.available.push(rooms.full[userCurrentRoom.id]);
+          delete rooms.full[userCurrentRoom.id];
 
-          console.info('Room ' + rooms.available[0].getID() + ' was moved to the available stack' );
+          console.info('Room ' + rooms.available[0].id + ' was moved to the available stack' );
         }
       });
     });

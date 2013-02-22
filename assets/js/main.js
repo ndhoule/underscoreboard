@@ -50,7 +50,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     var verifyTests = function() {
       if (window.underscoreboardGlobals.specFailures === 0) {
         $('#victory-modal').modal('show');
-        socket.emit('victory', true);
+        socket.emit('victory');
       }
   };
 

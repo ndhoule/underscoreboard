@@ -49,8 +49,18 @@ module.exports = function(grunt) {
           ace          : '../../app/public/js/lib/ace',
           domReady     : 'lib/domReady',
           bootstrap    : 'lib/bootstrap.min',
-          createEditor : 'createEditor',
-          io           : '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io'
+          backbone     : 'lib/backbone-amd-0.9.10-min',
+          underscore   : 'lib/underscore-min',
+          io           : '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io',
+
+          // Views
+          editorView  : 'views/editorView'
+        },
+        shim: {
+          'bootstrap' : ['jquery'],
+          'underscore': {
+            exports: '_'
+          }
         }
       },
       dev: {

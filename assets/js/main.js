@@ -1,23 +1,10 @@
 /*jshint laxcomma:true*/
 /*global setTimeout:false, clearTimeout: false, document:false, window:false, console:false*/
 
-// Set require.js configuration settings. These are used mostly for compiling
-// main.js into main.min.js via r.js
-require.config({
-  paths: {
-    ace         : '/js/lib/ace'
-  , io          : '/socket.io/socket.io'
-  , domReady    : '/js/lib/domReady'
-  , bootstrap   : '/js/lib/bootstrap.min'
-  , createEditor: '/js/createEditor'
-  },
-  shim: {
-    'bootstrap' : ['jquery']
-  }
-});
+// Ensures that Ace files get loaded relative to the compiled main.min.js path
+require.config({ paths:{ ace:'js/lib/ace' } });
 
-
-require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domReady, $, io, createEditor) {
+require(['domReady', 'jquery', 'io', 'editorView', 'bootstrap'], function(domReady, $, io, EditorView) {
   'use strict';
 
   // Establish a socket connection right away
@@ -29,15 +16,15 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     var updateTestsTimer;
 
     var editors = {
-      player: createEditor('editor-player'),
-      opponent: createEditor('editor-opponent', true)
+      player: new EditorView({el: 'editor-player'}),
+      opponent: new EditorView({el: 'editor-opponent', readOnly: true})
     };
 
     // Create a few globals so we can share values with the testing iframe.
     // Namespace them in the underscoreboardGlobals object to prevent collisions
     window.underscoreboardGlobals = {
       specFailures: null,
-      playerEditor: editors.player,
+      playerEditor: editors.player.aceSession,
       currentFunction: null
     };
 
@@ -52,23 +39,6 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
         $('#victory-modal').modal('show');
         socket.emit('victory');
       }
-  };
-
-    // Inserts the server's placeholder text and insert it into the editor. The
-    // start point for the text is always the end of the second-to-last line, so
-    // move the cursor there while we're at it
-    var resetEditor = function(editor) {
-      var text = '',
-          fn   = window.underscoreboardGlobals.currentFunction;
-
-      // If the function isn't yet defined by the server, keep the default empty string
-      if (fn) {
-        text = fn.desc.join('\n') + '\n' + fn.boiler.join('\n');
-      }
-
-      editor.setValue(text);
-      editor.selection.moveCursorBy(-1, 0);
-      editor.selection.clearSelection();
     };
 
     // Show a load menu on startup
@@ -81,7 +51,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     $('#reset-button').click(function(e) {
       e.preventDefault();
       if (window.confirm("Are you sure you want to reset your code to the start point?")) {
-        resetEditor(editors.player);
+        editors.player.resetEditor();
       }
     });
 
@@ -99,7 +69,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
         // Make both a local and global reference to the current function
         window.underscoreboardGlobals.currentFunction = message;
 
-        resetEditor(editors.player);
+        editors.player.resetEditor();
 
         // Hide the victory/loss modals if they're currently displayed
         $('#victory-modal').modal('hide');
@@ -116,7 +86,7 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     socket.on('updateEditor', function(message) {
       editors.opponent.setValue(message);
       // Fixes annoying highlighting of opponent's editor when its contents changes
-      editors.opponent.selection.clearSelection();
+      editors.opponent.aceSession.selection.clearSelection();
     });
 
     // If receiving this message, that means the server has broadcasted a loss.
@@ -133,8 +103,8 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
 
       // Do cleanup to reset state to original condition
       window.underscoreboardGlobals.currentFunction = null;
-      resetEditor(editors.player);
-      resetEditor(editors.opponent);
+      editors.player.resetEditor();
+      editors.opponent.resetEditor();
 
       // Important: Invalidate test timer so we don't accidentally run tests
       // against empty editors
@@ -150,12 +120,12 @@ require(['domReady', 'jquery', 'io', 'createEditor', 'bootstrap'], function(domR
     // When the contents of the player editor change, set a timer (and invalidate
     // any timers that already exist). This puts intertia behind test refreshes so
     // they don't happen too often
-    editors.player.on('change', function() {
+    editors.player.aceSession.on('change', function() {
       if (updateTestsTimer) {
         clearTimeout(updateTestsTimer);
       }
 
-      socket.emit('editorChange', editors.player.getValue());
+      socket.emit('editorChange', editors.player.aceSession.getValue());
       updateTestsTimer = setTimeout(updateTests, 1200);
     });
 

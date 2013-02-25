@@ -50,7 +50,7 @@ module.exports = function(grunt) {
           domReady     : 'lib/domReady',
           bootstrap    : 'lib/bootstrap.min',
           backbone     : 'lib/backbone-amd-0.9.10-min',
-          underscore   : 'lib/underscore-min',
+          underscore   : 'lib/underscore.min',
           io           : '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io',
 
           // Views

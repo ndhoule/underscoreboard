@@ -61,16 +61,18 @@ module.exports = function(grunt) {
           'underscore': {
             exports: '_'
           }
-        }
+        },
       },
       dev: {
         options: {
-          optimize: 'none',
+          optimize: 'none'
         }
       },
       dist: {
         options: {
           optimize: 'uglify2',
+          mangle: true,
+          preserveLicenseComments: false
         }
       }
     },

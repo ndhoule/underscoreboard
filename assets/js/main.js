@@ -1,4 +1,3 @@
-/*jshint laxcomma:true*/
 /*global setTimeout:false, clearTimeout: false, document:false, window:false, console:false*/
 
 // Ensures that Ace files get loaded relative to the compiled main.min.js path
@@ -50,7 +49,7 @@ require(['domReady', 'jquery', 'io', 'editorView', 'bootstrap'], function(domRea
     // button is pressed
     $('#reset-button').click(function(e) {
       e.preventDefault();
-      if (window.confirm("Are you sure you want to reset your code to the start point?")) {
+      if (window.confirm('Are you sure you want to reset your code to the start point?')) {
         editors.player.resetEditor();
       }
     });
@@ -91,12 +90,12 @@ require(['domReady', 'jquery', 'io', 'editorView', 'bootstrap'], function(domRea
 
     // If receiving this message, that means the server has broadcasted a loss.
     // Display a loss modal in this case
-    socket.on('victory', function(message) {
+    socket.on('victory', function() {
       $('#loss-modal').modal('show');
     });
 
     // If the other player disconnects, display a repairing modal and clean up.
-    socket.on('resetRoom', function(message) {
+    socket.on('resetRoom', function() {
       console.info('Opponent disconnected.');
       // Tell the user we're re-pairing them.
       $('#repairing-modal').modal('show');

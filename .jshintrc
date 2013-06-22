@@ -57,6 +57,10 @@
   "globals" : {
     "$"           : false,
     "jQuery"      : false,
+    "define"      : false,
+    "document"    : false,
+    "setTimeout"  : false,
+
     "it"          : false,
     "xit"         : false,
     "describe"    : false,

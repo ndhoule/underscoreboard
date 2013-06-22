@@ -1,5 +1,3 @@
-/*globals io: true*/
-
 (function() {
   'use strict';
 
@@ -9,8 +7,10 @@
   requirejs.config(require(path.join(__dirname, 'config', 'requirejs')));
 
   requirejs(['app', 'http', 'routes', 'sockets'], function(app, http, routes, sockets) {
-    var server = http.createServer(app),
-      io = sockets(server);
+    var server = http.createServer(app);
+
+    // Install Socket.io into the server
+    sockets(server);
 
     // debugger;
     app.get('/', routes.main);

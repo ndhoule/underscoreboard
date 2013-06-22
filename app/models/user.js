@@ -1,5 +1,3 @@
-/*globals define: true*/
-
 (function(){
   'use strict';
 

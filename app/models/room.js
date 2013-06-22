@@ -1,5 +1,3 @@
-/*globals define: true*/
-
 (function(){
   'use strict';
 
@@ -16,7 +14,7 @@
         console.info('Starting game ID ' + this.id);
         this.currentFunction = this.generateFunction();
       } else {
-        console.error("Tried to start a game with only " + this.users.length + " players.");
+        console.error('Tried to start a game with only ' + this.users.length + ' players.');
       }
     };
 
@@ -53,7 +51,7 @@
 
     room.addUser = function(user) {
       if (this.isFull()) {
-        throw new Error("Cannot add users to a full room.");
+        throw new Error('Cannot add users to a full room.');
       }
 
       // Subscribe a user to this room's socket broadcasts
@@ -68,7 +66,7 @@
 
     room.removeUser = function(user) {
       if (this.isEmpty()) {
-        throw new Error("Cannot remove users from an empty room.");
+        throw new Error('Cannot remove users from an empty room.');
       }
 
       this.users.forEach(function(val, i, arr) {
@@ -92,7 +90,7 @@
     };
 
     // Return a room maker function
-    return function(io) {
+    return function() {
       var instance = Object.create(room, {
         id: {
           value: uuid.v4()

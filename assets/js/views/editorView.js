@@ -14,7 +14,7 @@ define(['ace/ace', 'backbone'], function(ace, Backbone) {
 
       // Keep a reference to this view's element and init an Ace session
       this.el = options.el;
-      if (options.readOnly) this.readOnly = options.readOnly;
+      options.readOnly && (this.readOnly = options.readOnly);
       this.initAce(this.el, this.readOnly);
 
       return this;
@@ -29,7 +29,7 @@ define(['ace/ace', 'backbone'], function(ace, Backbone) {
       this.aceSession.setReadOnly(this.readOnly);
 
       // Set some JavaScript-centric settings
-      this.aceSession.getSession().setMode("ace/mode/javascript");
+      this.aceSession.getSession().setMode('ace/mode/javascript');
       this.aceSession.getSession().setTabSize(2);
     },
 

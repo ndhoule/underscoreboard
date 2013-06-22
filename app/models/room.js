@@ -1,12 +1,13 @@
-/*jshint node:true, laxcomma:true*/
+/*jshint node: true, laxcomma: true*/
 /*globals define: true*/
-"use strict";
+'use strict';
 
 define(function(require) {
-  var functions  = require('./functions.json'),
-      uuid       = require('node-uuid');
+  var functions = require('./functions.json'),
+    _ = require('lodash'),
+    uuid = require('node-uuid');
 
-  // Create a room prototype
+  // Main room object
   var room = {};
 
   room.initGame = function() {
@@ -14,18 +15,16 @@ define(function(require) {
       console.info('Starting game ID ' + this.id);
       this.currentFunction = this.generateFunction();
     } else {
-      console.warn("Tried to start a game with only " + this.users.length + " players.");
+      console.error("Tried to start a game with only " + this.users.length + " players.");
     }
   };
 
   room.generateFunction = function() {
-    var randomFunction,
-        randomIndex,
-        pool = [],
-        maxDifficulty = 1;
+    var pool,
+      maxDifficulty = 1;
 
-    // Always return _.each during the first round. Helps prevent advanced
-    // functions from being presented at first load.
+    // Always return _.each during the first round. Prevents advanced functions
+    // from being presented during the first round.
     if (this.round === 1) {
       this.round++;
       return functions.each;
@@ -33,18 +32,16 @@ define(function(require) {
 
     // Create a list of functions from which we can pull a random function.
     // Creating this list lets us limit our pool by difficulty level.
-    for (var key in functions) {
-      if(functions[key].difficulty <= maxDifficulty) {
-        pool.push(functions[key]);
+    pool = _.filter(functions, function(func) {
+      if (func.difficulty <= maxDifficulty) {
+        return func;
       }
-    }
+    });
+    console.log('pool is:', pool);
+    console.log('round is:', this.round);
 
-    // Find our random function by grabbing a random index limited by the
-    // pool size.
-    randomIndex = Math.floor(Math.random() * pool.length);
-
-    // Return the random function.
-    return pool[randomIndex];
+    // Return a random function.
+    return pool[_.random(0, pool.length - 1)];
   };
 
   room.isFull = function() {
@@ -76,9 +73,7 @@ define(function(require) {
     }
 
     this.users.forEach(function(val, i, arr) {
-      if (val === user) {
-        arr.splice(i, 1);
-      }
+      val === user && arr.splice(i, 1);
     });
 
     if (this.users.length > 0) {
@@ -97,7 +92,7 @@ define(function(require) {
     return this.initGame();
   };
 
-  // Return a maker function
+  // Return a room maker function
   return function(io) {
     var instance = Object.create(room, {
       id: {

@@ -1,19 +1,23 @@
-/*jshint node:true, newcap:false*/
-"use strict";
+/*globals io: true*/
 
-var requirejs = require('requirejs');
-requirejs.config(require("./require-config"));
+(function() {
+  'use strict';
 
-requirejs(['app', 'http', './routes', 'sockets'],
-  function(app, http, routes, sockets) {
-  var server = http.createServer(app),
-      io     = sockets(server);
+  var requirejs = require('requirejs'),
+    path = require('path');
 
-  // Routing table
-  app.get('/', routes.main);
+  requirejs.config(require(path.join(__dirname, 'config', 'requirejs')));
 
-  // Start the server
-  server.listen(app.get('port'), function() {
-    console.log("Express server listening on port " + app.get('port'));
+  requirejs(['app', 'http', 'routes', 'sockets'], function(app, http, routes, sockets) {
+    var server = http.createServer(app),
+      io = sockets(server);
+
+    // debugger;
+    app.get('/', routes.main);
+
+    // Start the server
+    server.listen(app.get('port'), function() {
+      console.log('Express server listening on port ' + app.get('port'));
+    });
   });
-});
+}());

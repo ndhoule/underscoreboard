@@ -1,9 +1,14 @@
-/*jshint node:true*/
-'use strict';
+(function(){
+  define(function() {
+    var routes = {};
 
-exports.main = function(req, res) {
-  res.render('main', {
-    title : 'Underscoreboard',
-    js    : ['js/main.min.js']
+    routes.main = function(req, res) {
+      res.render('main', {
+        title : 'Underscoreboard',
+        js    : ['js/main.min.js']
+      });
+    };
+
+    return routes;
   });
-};
+}());

@@ -1,6 +1,6 @@
 define(['socket.io', 'roomModel', 'userModel'], function(socket, createRoom, createUser){
   return function(server) {
-    var io = socket.listen(server, {log:false});
+    var io = socket.listen(server, { log:false });
 
     // Set up containers for users and rooms.
     var rooms = {

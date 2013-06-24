@@ -6,11 +6,11 @@
 
   requirejs.config(require(path.join(__dirname, 'config', 'requirejs')));
 
-  requirejs(['app', 'http', 'routes', 'sockets'], function(app, http, routes, sockets) {
+  requirejs(['app', 'http', 'routes', 'sockjs_handlers'], function(app, http, routes, sockjs_handlers) {
     var server = http.createServer(app);
 
-    // Install Socket.io into the server
-    sockets(server);
+    // Attach Sockjs handlers to the server
+    sockjs_handlers.installHandlers(server, { prefix: '/echo' });
 
     // debugger;
     app.get('/', routes.main);

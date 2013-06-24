@@ -55,20 +55,22 @@
   "wsh"           : false,
 
   "globals" : {
-    "$"           : false,
-    "jQuery"      : false,
-    "define"      : false,
-    "document"    : false,
-    "setTimeout"  : false,
+    "$"            : false,
+    "clearTimeout" : false,
+    "define"       : false,
+    "document"     : false,
+    "jQuery"       : false,
+    "setTimeout"   : false,
+    "SockJS"       : false,
 
-    "it"          : false,
-    "xit"         : false,
-    "describe"    : false,
-    "xdescribe"   : false,
-    "beforeEach"  : false,
-    "afterEach"   : false,
-    "expect"      : false,
-    "spyOn"       : false
+    "it"           : false,
+    "xit"          : false,
+    "describe"     : false,
+    "xdescribe"    : false,
+    "beforeEach"   : false,
+    "afterEach"    : false,
+    "expect"       : false,
+    "spyOn"        : false
   },
   "indent"        : 2
 }

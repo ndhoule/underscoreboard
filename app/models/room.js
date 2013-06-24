@@ -2,9 +2,21 @@
   'use strict';
 
   define(function(require) {
+    // TODO: Get rid of require arg here
     var functions = require('../lib/functions.json'),
       _ = require('lodash'),
       uuid = require('node-uuid');
+
+    var createMessage = function(type, data) {
+      if (!type) {
+        throw new Error('Socket data cannot be sent without a type.');
+      }
+
+      return JSON.stringify({
+        type: type,
+        data: data
+      });
+    };
 
     // Main room object
     var room = {};
@@ -54,9 +66,6 @@
         throw new Error('Cannot add users to a full room.');
       }
 
-      // Subscribe a user to this room's socket broadcasts
-      user.socket.join(this.id);
-
       // Tell the user it belongs to this room
       user.room = this;
 
@@ -80,33 +89,40 @@
       }
     };
 
-    room.updateEditor = function(data, socket) {
-      socket.broadcast.to(this.id).emit('updateEditor', data);
+    room.updateEditor = function(message) {
+      this.broadcast(message.type, message.data, message.sender);
     };
 
-    room.victory = function(ignore, socket) {
-      socket.broadcast.to(this.id).emit('victory');
-      return this.initGame();
+    room.victory = function(message) {
+      this.broadcast(message.type, message.data, message.sender);
+      this.initGame();
     };
 
-    // Return a room maker function
-    return function() {
+    // Emit a message to all users in a room
+    room.emit = function(type, data) {
+      _.each(this.users, function(user) {
+        user._socket.write(createMessage(type, data));
+      });
+    };
+
+    // Emit a message to all users except for those blacklisted
+    room.broadcast = function(type, data, excludes) {
+      !Array.isArray(excludes) && (excludes = [excludes]);
+
+      _.each(this.users, function(user) {
+        !_.contains(excludes, user.id) && user._socket.write(createMessage(type, data));
+      });
+    };
+
+    // Creates a room. Links that room to a channel; in this case, a SockJS
+    // websocket.
+    return function(channel) {
       var instance = Object.create(room, {
-        id: {
-          value: uuid.v4()
-        },
-        users: {
-          value: [],
-          writable: true
-        },
-        round: {
-          value: 1,
-          writable: true
-        },
-        currentFunction: {
-          value: null,
-          writable: true
-        }
+        _channel: { value: channel, writable: true },
+        id: { value: uuid.v4() },
+        currentFunction: { value: null, writable: true },
+        round: { value: 1, writable: true },
+        users: { value: [], writable: true }
       });
 
       return instance;

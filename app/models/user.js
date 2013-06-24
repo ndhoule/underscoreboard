@@ -1,30 +1,13 @@
 (function(){
   'use strict';
 
-  define(function() {
-    // Export the User model we create in this file. Accepts a socket as an argument
-    // and upon instantiation, links the user to that socket.
+  define(['node-uuid'], function(uuid) {
     return function(socket) {
-      if (!socket) {
-        throw new Error('Cannot create a user without linking it to a socket.');
-      }
-
-      var user = {};
-
-      var instance = Object.create(user, {
-        socket: {
-          value: socket
-        },
-        id: {
-          value: socket.id
-        },
-        room: {
-          value: null,
-          writable: true
-        }
+      return Object.create({}, {
+        _socket: { value: socket, writable: true },
+        id: { value: uuid.v4() },
+        room: { value: null, writable: true }
       });
-
-      return instance;
     };
   });
 }());

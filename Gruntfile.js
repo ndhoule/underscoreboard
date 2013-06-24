@@ -51,7 +51,6 @@ module.exports = function(grunt) {
           bootstrap    : 'lib/bootstrap.min',
           backbone     : 'lib/backbone-amd-0.9.10-min',
           underscore   : 'lib/underscore.min',
-          io           : '../../node_modules/socket.io/node_modules/socket.io-client/dist/socket.io',
 
           // Views
           editorView  : 'views/editorView'
@@ -108,7 +107,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-buster');
 
   // Define tasks
-  grunt.registerTask('dev', ['compass', 'jshint:all']);
+  grunt.registerTask('dev', ['compass', 'requirejs:dev']);
   grunt.registerTask('test', ['jshint:all', 'buster:test']);
   grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:dist']);
   grunt.registerTask('precommit', ['jshint:dist', 'buster:test']);

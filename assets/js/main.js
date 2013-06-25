@@ -1,43 +1,68 @@
 /*global setTimeout:false, clearTimeout: false, document:false, window:false, console:false*/
 
 // Ensures that Ace files get loaded relative to the compiled main.min.js path
-require.config({ paths:{ ace:'js/lib/ace' } });
+require.config({
+  paths: {
+    ace: 'js/lib/ace'
+  }
+});
 
-require(['domReady', 'jquery', 'editorView', 'bootstrap'], function(domReady, $, EditorView) {
+require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'], function(domReady, EditorView, $, _, SockJS) {
   'use strict';
 
   // Establish a socket connection right away
-  var socket = new SockJS('http://localhost:5000/echo');
+  var socket = new SockJS(window.location.origin + '/echo');
 
   // The contents of this file should only load once the DOM is ready, so wrap
   // them in require.js's equivalent of $(document).ready
   domReady(function() {
     var updateTestsTimer;
+    var childFrame = document.getElementById('tests').contentWindow;
 
     var editors = {
-      player: new EditorView({el: 'editor-player'}),
-      opponent: new EditorView({el: 'editor-opponent', readOnly: true})
+      player: new EditorView({ el: 'editor-player' }),
+      opponent: new EditorView({ el: 'editor-opponent', readOnly: true })
     };
 
     // Create a few globals so we can share values with the testing iframe.
     // Namespace them in the underscoreboardGlobals object to prevent collisions
     window.underscoreboardGlobals = {
-      specFailures: null,
+      runStats: null,
       playerEditor: editors.player.aceSession,
       currentFunction: null
     };
 
     var updateTests = function() {
-      document.getElementById('tests').contentDocument.location.reload(true);
+      childFrame.document.getElementById('mocha').innerHTML = '';
+      childFrame.hotReload();
+      childFrame.runner();
+
       setTimeout(verifyTests, 1000);
     };
 
     // Monitor the passing specs and display a victory modal when all are passing
     var verifyTests = function() {
-      if (window.underscoreboardGlobals.specFailures === 0) {
+      var runStats = childFrame.lastRun.stats;
+
+      console.debug('Runstats:', runStats);
+
+      // Tripwires! If any of these fail, set victory to false
+      var victory = !_.some([
+        runStats.tests === 0,
+        runStats.passes === 0,
+        runStats.failures !== 0,
+        runStats.tests !== runStats.passes
+      ]);
+
+      console.debug('Victory status:', victory);
+
+      if (victory) {
         $('#victory-modal').modal('show');
         socket.send(JSON.stringify({ type: 'victory', data: true }));
       }
+      // Invalidate the previous tests to ensure they don't contaminate future
+      // results
+      window.underscoreboardGlobals.runStats = null;
     };
 
     // Show a load menu on startup

@@ -3,22 +3,22 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
-    meta : {
-      pkg : grunt.file.readJSON('package.json'),
-      src : {
-        assets : ['assets/js/**/*.js', '!assets/js/lib/**'],
-        app    : ['app/**/*.js', '!app/public/**'],
-        public : ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js'],
+    meta: {
+      pkg: grunt.file.readJSON('package.json'),
+      src: {
+        assets: ['assets/js/**/*.js', '!assets/js/lib/**'],
+        app: ['app/**/*.js', '!app/public/**'],
+        public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js']
       }
     },
     compass: {
       options: {
-        require        : 'bootstrap-sass',
-        sassDir        : 'assets/sass',
-        cssDir         : 'app/public/css',
-        relativeAssets : true,
-        imagesDir      : 'app/public/img',
-        javascriptsDir : 'app/public/js'
+        require: 'bootstrap-sass',
+        sassDir: 'assets/sass',
+        cssDir: 'app/public/css',
+        relativeAssets: true,
+        imagesDir: 'app/public/img',
+        javascriptsDir: 'app/public/js'
       },
       dev: {
         options: {
@@ -27,10 +27,10 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
-          environment    : 'production',
-          outputStyle    : 'compressed',
-          noLineComments : true,
-          force          : true
+          environment: 'production',
+          outputStyle: 'compressed',
+          noLineComments: true,
+          force: true
         }
       }
     },
@@ -45,18 +45,19 @@ module.exports = function(grunt) {
         name: 'main',
         out: 'app/public/js/main.min.js',
         paths: {
-          jquery       : 'lib/require-jquery',
-          ace          : '../../app/public/js/lib/ace',
-          domReady     : 'lib/domReady',
-          bootstrap    : 'lib/bootstrap.min',
-          backbone     : 'lib/backbone-amd-0.9.10-min',
-          underscore   : 'lib/underscore.min',
+          ace: '../../app/public/js/lib/ace',
+          backbone: 'lib/backbone-amd-0.9.10-min',
+          bootstrap: 'lib/bootstrap.min',
+          domReady: 'lib/domReady',
+          jquery: 'lib/require-jquery',
+          sockjs: 'lib/sockjs-0.3.min',
+          underscore: 'lib/underscore.min',
 
           // Views
-          editorView  : 'views/editorView'
+          editorView: 'views/editorView'
         },
         shim: {
-          'bootstrap' : ['jquery'],
+          'bootstrap': ['jquery'],
           'underscore': {
             exports: '_'
           }

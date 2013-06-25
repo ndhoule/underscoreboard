@@ -2,7 +2,7 @@ doctype 5
 html
   head
     title=title
-    meta(name='description', content='A simple outcode-your-friends (or enemies) game')
+    meta(name='description', content='A simple outcode-your-friends-or-enemies game')
     meta(name='author', content='Nathan Houle')
     link(rel='stylesheet', href='css/styles.css')
     link(rel='shortcut icon', href='img/favicon.ico')
@@ -12,7 +12,6 @@ html
     //-script(src="js/main.js")
     // if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
-    script(src='http://cdn.sockjs.org/sockjs-0.3.min.js')
     - if (typeof js != undefined)
       each script in js
         script(src=script)

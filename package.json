@@ -7,14 +7,12 @@
   ],
   "description": "Underscore-oriented multiplayer competitive coding game",
   "homepage": "http://underscoreboard.com",
-  "version": "0.0.1",
+  "version": "0.0.1-4",
   "engines": {
-    "node": "0.8.x",
-    "npm": "1.1.x"
+    "node": ">=0.8"
   },
   "scripts": {
     "start": "app/main.js",
-    "prepublish": "dist",
     "test": "grunt test"
   },
   "author": {
@@ -27,23 +25,22 @@
     "url": "https://github.com/ndhoule/underscoreboard.git"
   },
   "dependencies": {
-    "express": "3.0.6",
-    "jade": "*",
-    "socket.io": "~0.9.13",
-    "requirejs": "~2.1.2",
+    "express": "~3.0.6",
+    "jade": "~0.31.2",
+    "requirejs": "~2.1.6",
     "node-uuid": "~1.4.0",
     "lodash": "~1.3.1",
     "sockjs": "~0.3.7",
     "websocket-multiplex": "~0.1.0"
   },
   "devDependencies": {
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-compass": "~0.3.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-buster": "~0.2.1",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-watch": "~0.4.4",
-    "grunt-contrib-compass": "~0.2.0",
-    "grunt-contrib-requirejs": "~0.4.1",
-    "buster": "~0.6.12",
-    "grunt-buster": "~0.1.2"
+    "buster": "~0.6.12"
   },
   "licenses": [
     {

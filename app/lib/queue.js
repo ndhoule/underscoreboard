@@ -32,20 +32,22 @@ define(function() {
    * Removes the first instance of a given value from the queue.
    *
    * @param {*} element A value to remove from the queue.
-   * @returns {Boolean} True if the element was removed, false if not.
+   * @returns {*} The element if it was found, or undefined if not.
    */
   queue.remove = function(element) {
-    var index = this._elements.indexOf(element);
+    var result,
+        index = this._elements.indexOf(element);
+
     if (index === -1) {
-      return false;
+      return result;
     }
     if (index === this._head) {
-      this.dequeue();
+      result = this.dequeue();
     } else {
-      this._elements.splice(index, 1);
+      result = this._elements.splice(index, 1);
       this._tail--;
     }
-    return true;
+    return result;
   };
 
   /**
@@ -67,7 +69,7 @@ define(function() {
    * @returns {*} True if the queue is empty, false if it contains any
    * elements.
    */
-  queue.peek = function() {
+  queue.isEmpty = function() {
     return this.size() === 0;
   };
 

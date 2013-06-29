@@ -37,8 +37,8 @@ define(['ace/ace', 'backbone'], function(ace, Backbone) {
     // The start point for the text is always the end of the second-to-last line,
     // so move the cursor there while we're at it
     resetEditor: function() {
-      var text;
-      var fn = window.underscoreboardGlobals.currentFunction;
+      var text,
+          fn = window.UNDERSCOREBOARD.currentFunction;
 
       try {
         text = fn.desc.join('\n') + '\n' + fn.boiler.join('\n');

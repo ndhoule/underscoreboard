@@ -1,52 +1,43 @@
 /*global setTimeout:false, clearTimeout: false, document:false, window:false, console:false*/
 
-// Ensures that Ace files get loaded relative to the compiled main.min.js path
+// Ensure that Ace files are loaded relative to the compiled file's path
 require.config({
   paths: {
     ace: 'js/lib/ace'
   }
 });
 
-require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'], function(domReady, EditorView, $, _, SockJS) {
+require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap'], function(domReady, $, _, SockJS, EditorView) {
   'use strict';
 
-  // Establish a socket connection right away
+  // Namespace for global data
+  window.UNDERSCOREBOARD = Object.create(null);
   var socket = new SockJS(window.location.origin + '/echo');
 
-  // The contents of this file should only load once the DOM is ready, so wrap
-  // them in require.js's equivalent of $(document).ready
+  // Require's equivalent of $(document).ready()
   domReady(function() {
-    var updateTestsTimer;
-    var childFrame = document.getElementById('tests').contentWindow;
+    var updateTestsTimer,
+        editors,
+        tests,
+        childFrame = document.getElementById('tests').contentWindow;
 
-    var editors = {
+    editors = {
       player: new EditorView({ el: 'editor-player' }),
       opponent: new EditorView({ el: 'editor-opponent', readOnly: true })
     };
 
-    // Create a few globals so we can share values with the testing iframe.
-    // Namespace them in the underscoreboardGlobals object to prevent collisions
-    window.underscoreboardGlobals = {
-      runStats: null,
-      playerEditor: editors.player.aceSession,
-      currentFunction: null
+    tests = Object.create(null);
+
+    tests.update = function() {
+      console.debug('Updating tests...');
+      childFrame.postMessage({
+        code: editors.player.aceSession.getValue(),
+        currentFunction: window.UNDERSCOREBOARD.currentFunction
+      }, window.location.origin);
     };
 
-    var updateTests = function() {
-      childFrame.document.getElementById('mocha').innerHTML = '';
-      childFrame.hotReload();
-      childFrame.runner();
-
-      setTimeout(verifyTests, 1000);
-    };
-
-    // Monitor the passing specs and display a victory modal when all are passing
-    var verifyTests = function() {
-      var runStats = childFrame.lastRun.stats;
-
-      console.debug('Runstats:', runStats);
-
-      // Tripwires! If any of these fail, set victory to false
+    tests.verify = function(runStats) {
+      // If any of these fail, set victory to false
       var victory = !_.some([
         runStats.tests === 0,
         runStats.passes === 0,
@@ -54,15 +45,15 @@ require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'
         runStats.tests !== runStats.passes
       ]);
 
-      console.debug('Victory status:', victory);
+      console.info('Victory status:', victory);
 
       if (victory) {
         $('#victory-modal').modal('show');
-        socket.send(JSON.stringify({ type: 'victory', data: true }));
+        socket.send(JSON.stringify({
+          type: 'victory',
+          data: true
+        }));
       }
-      // Invalidate the previous tests to ensure they don't contaminate future
-      // results
-      window.underscoreboardGlobals.runStats = null;
     };
 
     // Show a load menu on startup
@@ -82,6 +73,16 @@ require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'
 
     /* Socket events */
 
+    // XXX
+    window.addEventListener('message', function(event) {
+      if (event.origin !== window.location.origin) {
+        return;
+      }
+
+      tests.verify(event.data);
+    }, false);
+    // XXX
+
     socket.onmessage = function(e) {
       var message = JSON.parse(e.data);
 
@@ -92,7 +93,7 @@ require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'
         // less jarring
         setTimeout(function() {
           // Make both a local and global reference to the current function
-          window.underscoreboardGlobals.currentFunction = message.data;
+          window.UNDERSCOREBOARD.currentFunction = message.data;
 
           editors.player.resetEditor();
 
@@ -127,7 +128,7 @@ require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'
         $('#repairing-modal').modal('show');
 
         // Do cleanup to reset state to original condition
-        window.underscoreboardGlobals.currentFunction = null;
+        window.UNDERSCOREBOARD.currentFunction = null;
         editors.player.resetEditor();
         editors.opponent.resetEditor();
 
@@ -157,7 +158,7 @@ require(['domReady', 'editorView', 'jquery', 'underscore', 'sockjs', 'bootstrap'
         type: 'editorChange',
         data: editors.player.aceSession.getValue()
       }));
-      updateTestsTimer = setTimeout(updateTests, 1200);
+      updateTestsTimer = setTimeout(tests.update, 1200);
     });
 
   });

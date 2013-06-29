@@ -1,11 +1,7 @@
 (function(){
-  'use strict';
 
-  define(function(require) {
-    // TODO: Get rid of require arg here
-    var functions = require('../lib/functions.json'),
-      _ = require('lodash'),
-      uuid = require('node-uuid');
+  define(['lodash', 'node-uuid', '../lib/functions.json'], function(_, uuid, functions) {
+    'use strict';
 
     var createMessage = function(type, data) {
       if (!type) {
@@ -19,7 +15,7 @@
     };
 
     // Main room object
-    var room = {};
+    var room = Object.create(null);
 
     room.initGame = function() {
       if (this.users.length === 2) {

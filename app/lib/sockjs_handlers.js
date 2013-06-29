@@ -7,16 +7,15 @@
     var multiplexer = new websocket_multiplex.MultiplexServer(sockjs_server);
 
     // Set up containers for users and rooms.
-    var users = {};
+    var users = Object.create(null);
     var rooms = {
-      full: {},
+      full: Object.create(null),
       available: [] // TODO: Replace with true queue
     };
 
     // TODO: Refactor functionality into smaller functions
     sockjs_server.on('connection', function(conn) {
       // Create a user and record that user's socket connection's ID
-      // TODO: Do sockjs objects have ids?
       users[conn.id] = createUser(conn);
       var user = users[conn.id];
 
@@ -36,7 +35,6 @@
       // Check if the room is now full and start the game if so
       if (userRoom.isFull()) {
         userRoom.initGame();
-        // TODO: Won't work, sockjs doesn't have the concept of rooms.
         userRoom.emit('beginGame', userRoom.currentFunction);
 
         // If the room is full, remove it from the list of available rooms and
@@ -60,7 +58,6 @@
 
             // Start another game after 2.5 seconds
             setTimeout(function() {
-              // TODO: Won't work, sockjs doesn't have the concept of rooms.
               user.room.emit('beginGame', userRoom.currentFunction);
             }, 2500);
           }
@@ -79,7 +76,6 @@
 
         // Remove the user from their room
         userCurrentRoom.removeUser(user);
-        // TODO: Won't work, sockjs doesn't have the concept of rooms.
         userCurrentRoom.emit('resetRoom', 'Opponent has left.');
 
         if (userCurrentRoom.isEmpty()) {

@@ -17,16 +17,19 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
   // Require's equivalent of $(document).ready()
   domReady(function() {
     var updateTestsTimer,
-        editors,
-        tests,
+        messageHandler,
+        tests = Object.create(null),
+        editors = Object.create(null),
+        modals = Object.create(null),
         childFrame = document.getElementById('tests').contentWindow;
 
-    editors = {
-      player: new EditorView({ el: 'editor-player' }),
-      opponent: new EditorView({ el: 'editor-opponent', readOnly: true })
-    };
+    modals.pairing = $('#pairing-modal');
+    modals.repairing = $('#repairing-modal');
+    modals.victory = $('#victory-modal');
+    modals.loss = $('#loss-modal');
 
-    tests = Object.create(null);
+    editors.player = new EditorView({ el: 'editor-player' });
+    editors.opponent = new EditorView({ el: 'editor-opponent', readOnly: true });
 
     tests.update = function() {
       console.debug('Updating tests...');
@@ -48,7 +51,7 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
       console.info('Victory status:', victory);
 
       if (victory) {
-        $('#victory-modal').modal('show');
+        modals.victory.modal('show');
         socket.send(JSON.stringify({
           type: 'victory',
           data: true
@@ -58,7 +61,7 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
 
     // Show a load menu on startup
     setTimeout(function() {
-      $('#pairing-modal').modal('show');
+      modals.pairing.modal('show');
     }, 750);
 
     // Reset the contents of the editor to the placeholder test when the reset
@@ -70,24 +73,25 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
       }
     });
 
-
-    /* Socket events */
-
-    // XXX
-    window.addEventListener('message', function(event) {
+    var messageHandler = function(event) {
       if (event.origin !== window.location.origin) {
         return;
       }
 
       tests.verify(event.data);
-    }, false);
-    // XXX
+    };
 
-    socket.onmessage = function(e) {
-      var message = JSON.parse(e.data);
+
+    // Listen for Mocha test results
+    window.addEventListener('message', messageHandler, false);
+
+    /* Socket events */
+
+    socket.onmessage = function(event) {
+      var message = JSON.parse(event.data);
 
       switch(message.type) {
-      case 'beginGame':
+        case 'beginGame':
         console.log('Starting game...');
         // Delay the start of the game by a few seconds to make the transition
         // less jarring
@@ -98,51 +102,51 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
           editors.player.resetEditor();
 
           // Hide the victory/loss modals if they're currently displayed
-          $('#victory-modal').modal('hide');
-          $('#loss-modal').modal('hide');
-          $('#repairing-modal').modal('hide');
+          modals.victory.modal('hide');
+          modals.loss.modal('hide');
+          modals.repairing.modal('hide');
 
           // Display the current function to the user and load the test URL. This
           // prevents Mocha from testing any function other than the current function
-          $('#pairing-modal').modal('hide');
-          $('#tests').attr({'src': '/mocha/SpecRunner.html?grep=_.' + message.data.name});
+          modals.pairing.modal('hide');
+          $('#tests').attr({ 'src': '/mocha/SpecRunner.html?grep=_.' + message.data.name });
           console.log('Game started.');
         }, 3000);
         break;
 
-      case 'editorChange':
+        case 'editorChange':
         editors.opponent.setValue(message.data);
         // Fixes annoying highlighting of opponent's editor when its contents changes
         editors.opponent.aceSession.selection.clearSelection();
         break;
 
-      case 'victory':
+        case 'victory':
         // If receiving this message, that means the server has broadcasted a loss.
-        $('#loss-modal').modal('show');
+        modals.loss.modal('show');
         break;
 
-      case 'resetRoom':
+        case 'resetRoom':
         // If the other player disconnects, display a repairing modal and clean up.
         console.info('Opponent disconnected.');
         // Tell the user we're re-pairing them.
-        $('#repairing-modal').modal('show');
+        modals.repairing.modal('show');
 
-        // Do cleanup to reset state to original condition
+        // Reset state to original condition
         window.UNDERSCOREBOARD.currentFunction = null;
         editors.player.resetEditor();
         editors.opponent.resetEditor();
 
-        // Important: Invalidate test timer so we don't accidentally run tests
-        // against empty editors
+        // Invalidate test timer so we don't accidentally run tests against
+        // empty editors
         clearTimeout(updateTestsTimer);
 
         // Make sure no modals are in the way
-        $('#pairing-modal').modal('hide');
-        $('#victory-modal').modal('hide');
-        $('#loss-modal').modal('hide');
+        modals.pairing.modal('hide');
+        modals.victory.modal('hide');
+        modals.loss.modal('hide');
         break;
 
-      default:
+        default:
         console.warn('Unknown message received from server:', message.type);
       }
     };

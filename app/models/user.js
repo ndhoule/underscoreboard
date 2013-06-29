@@ -1,13 +1,19 @@
-(function(){
+define(['node-uuid'], function(uuid) {
   'use strict';
 
-  define(['node-uuid'], function(uuid) {
-    return function(socket) {
-      return Object.create({}, {
-        _socket: { value: socket, writable: true },
-        id: { value: uuid.v4() },
-        room: { value: null, writable: true }
-      });
-    };
-  });
-}());
+  return function(socket) {
+    return Object.create(null, {
+      _socket: {
+        value: socket,
+        writable: true
+      },
+      id: {
+        value: uuid.v4()
+      },
+      room: {
+        value: null,
+        writable: true
+      }
+    });
+  };
+});

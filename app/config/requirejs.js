@@ -15,4 +15,4 @@
       userModel:       path.join('models', 'user')
     }
   };
-}());
+}).call(this);

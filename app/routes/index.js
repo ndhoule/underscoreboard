@@ -1,14 +1,14 @@
-(function(){
-  define(function() {
-    var routes = {};
+define(function() {
+  'use strict';
 
-    routes.main = function(req, res) {
-      res.render('main', {
-        title : 'Underscoreboard',
-        js    : ['js/main.min.js']
-      });
-    };
+  var routes = Object.create(null);
 
-    return routes;
-  });
-}());
+  routes.main = function(req, res) {
+    res.render('main', {
+      title : 'Underscoreboard',
+      js    : ['js/main.min.js']
+    });
+  };
+
+  return routes;
+});

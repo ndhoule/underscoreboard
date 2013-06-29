@@ -1,7 +1,5 @@
-(function() {
+define(['sockjs'], function (sockjs) {
   'use strict';
 
-  define(['sockjs'], function (sockjs) {
-    return sockjs.createServer();
-  });
-}());
+  return sockjs.createServer();
+});

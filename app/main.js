@@ -2,7 +2,7 @@
   'use strict';
 
   var requirejs = require('requirejs'),
-    path = require('path');
+      path = require('path');
 
   requirejs.config(require(path.join(__dirname, 'config', 'requirejs')));
 
@@ -20,4 +20,4 @@
       console.log('Express server listening on port ' + app.get('port'));
     });
   });
-}());
+}).call(this);

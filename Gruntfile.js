@@ -8,7 +8,8 @@ module.exports = function(grunt) {
       src: {
         assets: ['assets/js/**/*.js', '!assets/js/lib/**'],
         app: ['app/**/*.js', '!app/public/**'],
-        public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js']
+        public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js'],
+        tests: ['test/unit/**/*Spec.js']
       }
     },
 
@@ -102,7 +103,8 @@ module.exports = function(grunt) {
         'Gruntfile.js',
         '<%= meta.src.assets %>',
         '<%= meta.src.app %>',
-        '<%= meta.src.public %>'
+        '<%= meta.src.public %>',
+        '<%= meta.src.tests %>'
       ]
     },
 
@@ -110,13 +112,17 @@ module.exports = function(grunt) {
       options: {
         livereload: true
       },
-      assets: {
-        files: '<%= meta.src.assets %>',
-        tasks: ['requirejs:dev', 'karma:continuous', 'jshint:all']
-      },
       app: {
         files: '<%= meta.src.app %>',
-        tasks: ['karma:continuous', 'jshint:all']
+        tasks: ['test']
+      },
+      assets: {
+        files: '<%= meta.src.assets %>',
+        tasks: ['requirejs:dev', 'test']
+      },
+      tests: {
+        files: '<%= meta.src.tests %>',
+        tasks: ['test']
       }
     },
 

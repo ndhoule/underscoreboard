@@ -81,7 +81,6 @@ module.exports = function(grunt) {
           preserveLicenseComments: false,
           done: function(done, output) {
             var duplicates = require('rjs-build-analysis').duplicates(output);
-            console.log('dat output is:', typeof output);
 
             if (duplicates.length > 0) {
               grunt.log.subhead('Duplicates found in requirejs build:');
@@ -119,6 +118,19 @@ module.exports = function(grunt) {
         files: '<%= meta.src.app %>',
         tasks: ['karma:continuous', 'jshint:all']
       }
+    },
+
+    shell: {
+      deploy: {
+        command: 'echo \'yes\' | jitsu deploy',
+        options: {
+          failOnError: true,
+          callback: function(err, stdout, stderr, cb) {
+            console.log('Finished uploading to Nodejitsu.');
+            cb();
+          }
+        }
+      }
     }
   });
 
@@ -128,17 +140,19 @@ module.exports = function(grunt) {
   });
 
   // Load third-party modules
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-compass');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-notify');
+  grunt.loadNpmTasks('grunt-shell');
 
   // Tasks
   grunt.registerTask('test', ['karma:continuous', 'jshint:all']);
   grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
   grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
+  grunt.registerTask('deploy', ['dist', 'shell:deploy']);
 
   // Runs just before a commit. Don't put tasks that generate files here as
   // they won't be included in your commit.

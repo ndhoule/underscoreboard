@@ -1,0 +1,14 @@
+windows:
+  - name: "hook"
+    clear: true
+    root: "~/src/underscoreboard"
+    layout: 7c0f,270x78,0,0{135x78,0,0,57,134x78,136,0[134x35,136,0,36,134x36,136,36,61,134x5,136,73,59]}
+    filters:
+      before:
+        - "export NODE_ENV=development"
+    panes:
+      - cmd: ["sleep 3", "open -a 'Google Chrome' 'http://0.0.0.0:8080/debug?port=5858' ; sleep 1 ; open -a 'Google Chrome' 'http://localhost:5000' ; sleep 1 ; open -a 'Google Chrome' 'http://localhost:5000'"]
+        focus: true
+      - cmd: ["cd app", "nodemon --debug main.js"]
+      - cmd: ["grunt watch"]
+      - cmd: ["sleep 1", "always node-inspector"]

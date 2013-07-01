@@ -11,6 +11,7 @@ module.exports = function(grunt) {
         public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js']
       }
     },
+
     compass: {
       options: {
         require: 'bootstrap-sass',
@@ -34,11 +35,19 @@ module.exports = function(grunt) {
         }
       }
     },
-    buster: {
-      test: {
-        config: 'spec/buster.js'
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      },
+      continuous: {
+        configFile: 'karma.conf.js',
+        singleRun: true,
+        reporters: ['progress', 'growl'],
+        browsers: ['PhantomJS']
       }
     },
+
     requirejs: {
       options: {
         baseUrl: 'assets/js',
@@ -61,7 +70,7 @@ module.exports = function(grunt) {
           'underscore': {
             exports: '_'
           }
-        },
+        }
       },
       dev: {
         options: {
@@ -76,6 +85,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     jshint: {
       all: [
         'Gruntfile.js',
@@ -88,6 +98,7 @@ module.exports = function(grunt) {
         jshintrc: '.jshintrc'
       }
     },
+
     watch: {
       dev: {
         files: '<%= meta.src.assets %>',
@@ -105,13 +116,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-buster');
+  grunt.loadNpmTasks('grunt-karma');
 
   // Define tasks
   grunt.registerTask('dev', ['compass', 'requirejs:dev']);
-  grunt.registerTask('test', ['jshint:all', 'buster:test']);
+  grunt.registerTask('test', ['jshint:all']);
   grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:dist']);
-  grunt.registerTask('precommit', ['jshint:dist', 'buster:test']);
+  grunt.registerTask('precommit', ['jshint:dist']);
 
   // Define default task
   grunt.registerTask('default', ['test']);

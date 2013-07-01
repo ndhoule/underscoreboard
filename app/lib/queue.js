@@ -7,7 +7,7 @@ define(function() {
    * Inserts an item into the queue at the current tail index.
    *
    * @param {*} element The element to be inserted into the queue.
-   * @returns {number} the numberk
+   * @returns {number} the number of elements contained in the queue.
    */
   queue.enqueue = function(element) {
     this._elements[this._tail++] = element;
@@ -44,7 +44,7 @@ define(function() {
     if (index === this._head) {
       result = this.dequeue();
     } else {
-      result = this._elements.splice(index, 1);
+      result = this._elements.splice(index, 1)[0];
       this._tail--;
     }
     return result;
@@ -93,7 +93,7 @@ define(function() {
    * not.
    */
   queue.contains = function(element) {
-    if (this._storage.indexOf(element) === -1) {
+    if (this._elements.indexOf(element) === -1) {
       return false;
     }
     return true;

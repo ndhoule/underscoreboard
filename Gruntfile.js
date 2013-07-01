@@ -37,9 +37,6 @@ module.exports = function(grunt) {
     },
 
     karma: {
-      unit: {
-        configFile: 'karma.conf.js'
-      },
       continuous: {
         configFile: 'karma.conf.js',
         singleRun: true,
@@ -93,21 +90,12 @@ module.exports = function(grunt) {
         '<%= meta.src.app %>',
         '<%= meta.src.public %>'
       ],
-      dist: 'app/public/js/main.js',
       options: {
         jshintrc: '.jshintrc'
       }
     },
 
     watch: {
-      dev: {
-        files: '<%= meta.src.assets %>',
-        tasks: ['requirejs:dev', 'compass:dev']
-      },
-      dist: {
-        files: '<%= meta.src.assets %>',
-        tasks: ['requirejs:dist', 'compass:dist']
-      }
     }
   });
 
@@ -118,12 +106,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
 
-  // Define tasks
-  grunt.registerTask('dev', ['compass', 'requirejs:dev']);
-  grunt.registerTask('test', ['jshint:all']);
-  grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:dist']);
-  grunt.registerTask('precommit', ['jshint:dist']);
+  // Tasks
+  grunt.registerTask('dev', ['compass:dev', 'requirejs:dev']);
+  grunt.registerTask('test', ['jshint:all', 'karma:continuous']);
+  grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:all']);
 
-  // Define default task
+  // Runs just before a commit. Don't put tasks that generate files here as
+  // they won't be included in your commit.
+  grunt.registerTask('precommit', ['jshint:all', 'karma:continuous']);
+
+  // Default task (runs when running `grunt` without arguments)
   grunt.registerTask('default', ['test']);
 };

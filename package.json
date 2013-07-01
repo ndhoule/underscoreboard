@@ -42,8 +42,9 @@
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4",
     "grunt-karma": "~0.4.5",
+    "grunt-notify": "~0.2.4",
     "karma": "~0.8.6",
-    "karma-growl-reporter": "0.0.1"
+    "rjs-build-analysis": "0.0.3"
   },
   "licenses": [
     {

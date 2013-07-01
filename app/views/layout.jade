@@ -12,6 +12,8 @@ html
     //-script(src="js/main.js")
     // if lt IE 9
       script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    - if (process.env.NODE_ENV === 'development')
+      script(src='http://localhost:35729/livereload.js')
     - if (typeof js != undefined)
       each script in js
         script(src=script)

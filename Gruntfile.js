@@ -40,7 +40,7 @@ module.exports = function(grunt) {
       continuous: {
         configFile: 'karma.conf.js',
         singleRun: true,
-        reporters: ['progress', 'growl'],
+        reporters: ['progress'],
         browsers: ['PhantomJS']
       }
     },
@@ -78,25 +78,53 @@ module.exports = function(grunt) {
         options: {
           optimize: 'uglify2',
           mangle: true,
-          preserveLicenseComments: false
+          preserveLicenseComments: false,
+          done: function(done, output) {
+            var duplicates = require('rjs-build-analysis').duplicates(output);
+            console.log('dat output is:', typeof output);
+
+            if (duplicates.length > 0) {
+              grunt.log.subhead('Duplicates found in requirejs build:');
+              grunt.log.warn(duplicates);
+              done(new Error('r.js built duplicate modules, please check the excludes option.'));
+            }
+
+            done();
+          }
         }
       }
     },
 
     jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
       all: [
         'Gruntfile.js',
         '<%= meta.src.assets %>',
         '<%= meta.src.app %>',
         '<%= meta.src.public %>'
-      ],
-      options: {
-        jshintrc: '.jshintrc'
-      }
+      ]
     },
 
     watch: {
+      options: {
+        livereload: true
+      },
+      assets: {
+        files: '<%= meta.src.assets %>',
+        tasks: ['requirejs:dev', 'karma:continuous', 'jshint:all']
+      },
+      app: {
+        files: '<%= meta.src.app %>',
+        tasks: ['karma:continuous', 'jshint:all']
+      }
     }
+  });
+
+  // On watch events, configure jshint:all to run only on changed file
+  grunt.event.on('watch', function(action, filepath) {
+    grunt.config(['jshint', 'all'], filepath);
   });
 
   // Load third-party modules
@@ -105,15 +133,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-notify');
 
   // Tasks
-  grunt.registerTask('dev', ['compass:dev', 'requirejs:dev']);
-  grunt.registerTask('test', ['jshint:all', 'karma:continuous']);
-  grunt.registerTask('dist', ['compass:dist', 'requirejs:dist', 'jshint:all']);
+  grunt.registerTask('test', ['karma:continuous', 'jshint:all']);
+  grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
+  grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
 
   // Runs just before a commit. Don't put tasks that generate files here as
   // they won't be included in your commit.
-  grunt.registerTask('precommit', ['jshint:all', 'karma:continuous']);
+  grunt.registerTask('precommit', ['test']);
 
   // Default task (runs when running `grunt` without arguments)
   grunt.registerTask('default', ['test']);

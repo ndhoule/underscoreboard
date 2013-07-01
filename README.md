@@ -36,21 +36,28 @@ don't have interest in either of those, you can stop reading here.
 First, make sure you have installed [Node.js](http://nodejs.org/). Next, clone
 the repo and install its local dependencies (listed in `package.json`):
 
-    git clone https://github.com/ndhoule/underscoreboard.git
-    cd underscoreboard/
-    npm install --production
+```shell
+git clone https://github.com/ndhoule/underscoreboard.git
+cd underscoreboard/
+npm install --production
+```
 
-To run the server, start it using `node`:
+To run the server, build the client-side JavaScript and start the server:
 
-    node app/main.js
+```shell
+grunt dist
+node app/main.js
+```
 
 ### Development
 
 To install all dev dependencies, run:
 
-    gem install sass
-    npm install
-    sudo npm install -g grunt-cli phantomjs karma
+```shell
+gem install sass
+npm install
+sudo npm install -g grunt-cli phantomjs karma
+```
 
 Optionally, run `./git-hooks.sh` to install pre-commit testing hooks. This will
 automatically lint your files and run tests before you're permitted to commit.

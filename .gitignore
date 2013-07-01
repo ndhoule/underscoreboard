@@ -14,3 +14,4 @@ ehthumbs.db
 app/public/js/main.min.js
 node_modules
 server/secrets.js
+coverage

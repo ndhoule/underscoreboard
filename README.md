@@ -55,8 +55,8 @@ To install all dev dependencies, run:
 
 ```shell
 gem install sass
-npm install
 sudo npm install -g grunt-cli phantomjs karma
+npm install
 ```
 
 Optionally, run `./git-hooks.sh` to install pre-commit testing hooks. This will

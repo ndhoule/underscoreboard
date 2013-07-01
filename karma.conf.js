@@ -7,6 +7,10 @@ basePath = '';
 
 
 // list of files / patterns to load in the browser
+var assets = 'assets/js/**/*.js';
+var app = 'app/**/*.js';
+var specs = 'test/unit/**/*Spec.js';
+
 files = [
   MOCHA,
   MOCHA_ADAPTER,
@@ -18,15 +22,20 @@ files = [
   { pattern: 'node_modules/lodash/lodash.js', included: false },
 
   // Load source files
-  { pattern: 'assets/js/**/*.js', included: false },
-  { pattern: 'app/**/*.js', included: false },
+  { pattern: assets, included: false },
+  { pattern: app, included: false },
 
   // Load specs
-  { pattern: 'test/unit/**/*Spec.js', included: false },
+  { pattern: specs, included: false },
 
   // Load the Require.js spec helper
   'test/main-test.js'
 ];
+
+
+preprocessors = {};
+preprocessors[assets] = 'coverage';
+preprocessors[app] = 'coverage';
 
 
 // list of files to exclude
@@ -38,7 +47,13 @@ exclude = [
 
 // test results reporter to use
 // possible values: 'dots', 'progress', 'junit'
-reporters = ['progress'];
+reporters = ['progress', 'coverage'];
+
+
+coverageReporter = {
+  type : 'html',
+  dir: 'coverage/'
+};
 
 
 // web server port

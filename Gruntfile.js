@@ -38,11 +38,13 @@ module.exports = function(grunt) {
     },
 
     karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        background: true
+      },
       continuous: {
         configFile: 'karma.conf.js',
-        singleRun: true,
-        reporters: ['progress'],
-        browsers: ['PhantomJS']
+        singleRun: true
       }
     },
 
@@ -114,15 +116,15 @@ module.exports = function(grunt) {
       },
       app: {
         files: '<%= meta.src.app %>',
-        tasks: ['test']
+        tasks: ['karma:unit:run', 'jshint:all']
       },
       assets: {
         files: '<%= meta.src.assets %>',
-        tasks: ['requirejs:dev', 'test']
+        tasks: ['requirejs:dev', 'karma:unit:run', 'jshint:all']
       },
       tests: {
         files: '<%= meta.src.tests %>',
-        tasks: ['test']
+        tasks: ['karma:unit:run', 'jshint:all']
       }
     },
 

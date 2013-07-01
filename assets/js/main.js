@@ -73,7 +73,7 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
       }
     });
 
-    var messageHandler = function(event) {
+    messageHandler = function(event) {
       if (event.origin !== window.location.origin) {
         return;
       }
@@ -91,7 +91,7 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
       var message = JSON.parse(event.data);
 
       switch(message.type) {
-        case 'beginGame':
+      case 'beginGame':
         console.log('Starting game...');
         // Delay the start of the game by a few seconds to make the transition
         // less jarring
@@ -114,18 +114,18 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
         }, 3000);
         break;
 
-        case 'editorChange':
+      case 'editorChange':
         editors.opponent.setValue(message.data);
         // Fixes annoying highlighting of opponent's editor when its contents changes
         editors.opponent.aceSession.selection.clearSelection();
         break;
 
-        case 'victory':
+      case 'victory':
         // If receiving this message, that means the server has broadcasted a loss.
         modals.loss.modal('show');
         break;
 
-        case 'resetRoom':
+      case 'resetRoom':
         // If the other player disconnects, display a repairing modal and clean up.
         console.info('Opponent disconnected.');
         // Tell the user we're re-pairing them.
@@ -146,7 +146,7 @@ require(['domReady', 'jquery', 'underscore', 'sockjs', 'editorView',  'bootstrap
         modals.loss.modal('hide');
         break;
 
-        default:
+      default:
         console.warn('Unknown message received from server:', message.type);
       }
     };

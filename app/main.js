@@ -2,7 +2,11 @@
   'use strict';
 
   var requirejs = require('requirejs'),
-      path = require('path');
+      path = require('path'),
+      winston = require('winston');
+
+  winston.cli();
+  winston.emitErrs = false;
 
   requirejs.config(require(path.join(__dirname, 'config', 'requirejs')));
 
@@ -17,7 +21,7 @@
 
     // Start the server
     server.listen(app.get('port'), function() {
-      console.log('Express server listening on port ' + app.get('port'));
+      winston.log('info', 'Express server listening on port %d', app.get('port'));
     });
   });
 }).call(this);

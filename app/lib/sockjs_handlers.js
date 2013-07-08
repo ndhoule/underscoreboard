@@ -1,20 +1,18 @@
-define(['sockjs_server', 'websocket-multiplex', 'queue', 'roomModel', 'userModel'], function(sockjs_server, websocket_multiplex, makeQueue, makeRoom, makeUser) {
+define(['winston', 'sockjs_server', 'websocket-multiplex', 'queue', 'roomModel', 'userModel'], function(winston, sockjs_server, websocket_multiplex, makeQueue, makeRoom, makeUser) {
   'use strict';
 
   // Set up sockjs multiplexing; this lets us emulate channels using only a
   // single socket connection
   var multiplexer = new websocket_multiplex.MultiplexServer(sockjs_server);
 
-  // Set up containers for users and rooms.
+  // Set up containers for users and rooms
   var users = Object.create(null);
   var rooms = {
     full: Object.create(null),
     available: makeQueue()
   };
 
-  // TODO: Refactor functionality into smaller functions
   sockjs_server.on('connection', function(conn) {
-    debugger;
     // Create a user and record that user's socket connection's ID
     users[conn.id] = makeUser(conn);
     var user = users[conn.id];
@@ -62,12 +60,12 @@ define(['sockjs_server', 'websocket-multiplex', 'queue', 'roomModel', 'userModel
         break;
 
       default:
-        console.log('Unrecognized message received from client:', message);
+        winston.log('warn', 'Unrecognized message received from client:', message);
       }
     });
 
     conn.on('close', function() {
-      console.info('Player disconnected.');
+      winston.log('info', 'Player disconnected.');
 
       // Get a handle on the user's current room
       var userCurrentRoom = user.room;
@@ -84,7 +82,7 @@ define(['sockjs_server', 'websocket-multiplex', 'queue', 'roomModel', 'userModel
         rooms.available.enqueue(rooms.full[userCurrentRoom.id]);
         delete rooms.full[userCurrentRoom.id];
 
-        console.info('Room ID', rooms.available.peek().id, 'was moved to the available stack.');
+        winston.log('info', 'Room ID', rooms.available.peek().id, 'was moved to the available stack.');
       }
     });
   });

@@ -62,6 +62,7 @@
     "jQuery"       : false,
     "setTimeout"   : false,
     "SockJS"       : false,
+    "winston"      : false,
 
     "it"           : false,
     "xit"          : false,

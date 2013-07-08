@@ -2,14 +2,13 @@ windows:
   - name: "hook"
     clear: true
     root: "~/src/underscoreboard"
-    layout: f42f,270x78,0,0{135x78,0,0,57,134x78,136,0[134x35,136,0,68,134x36,136,36,69,134x5,136,73{67x5,136,73,70,66x5,204,73,72}]}
+    layout: 81ea,238x68,0,0{119x68,0,0,57,118x68,120,0[118x31,120,0,113,118x29,120,32,114,118x3,120,62,118,118x2,120,66,115]}
     filters:
       before:
         - "export NODE_ENV=development"
     panes:
       - cmd:
-          - "sleep 3"
-          - "open -a 'Google Chrome' 'http://0.0.0.0:8080/debug?port=5858' 'http://localhost:5000' 'http://localhost:5000'"
+          - "sleep 5 && open -a 'Google Chrome' 'http://0.0.0.0:8080/debug?port=5858' 'http://localhost:5000' 'http://localhost:5000'"
         focus: true
       - cmd: "nodemon --debug app/main.js"
       - cmd:
@@ -17,6 +16,6 @@ windows:
           - "grunt watch"
       - cmd:
           - "sleep 1"
-          # node-inspector likes to quit often, so auto-restart it if it does
           - "until node-inspector; do sleep 1; done"
-      - cmd: ["karma start &"]
+      - cmd:
+          - "karma start"

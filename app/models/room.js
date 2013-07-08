@@ -17,21 +17,21 @@ define(['lodash', 'node-uuid', '../lib/functions.json'], function(_, uuid, funct
 
   room.initGame = function() {
     if (this.users.length === 2) {
-      console.info('Starting game ID ' + this.id);
+      winston.log('info', 'Starting game ID %s', this.id);
       this.currentFunction = this.generateFunction();
     } else {
-      console.error('Tried to start a game with only ' + this.users.length + ' players.');
+      winston.log('error', 'Tried to start game %s with %d players.', this.id, this.users.length);
     }
   };
 
   room.generateFunction = function() {
     var pool,
-      maxDifficulty = 1;
+        maxDifficulty = 1;
 
     // Always return _.each during the first round. Prevents advanced functions
     // from being presented during the first round.
     if (this.round === 1) {
-      this.round++;
+      this.round += 1;
       return functions.each;
     }
 

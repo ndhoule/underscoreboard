@@ -7,7 +7,7 @@
   ],
   "description": "Underscore-oriented multiplayer competitive coding game",
   "homepage": "http://underscoreboard.com",
-  "version": "0.0.1-8",
+  "version": "0.0.1-13",
   "engines": {
     "node": ">=0.8"
   },
@@ -31,7 +31,8 @@
     "node-uuid": "~1.4.0",
     "requirejs": "~2.1.6",
     "sockjs": "~0.3.7",
-    "websocket-multiplex": "~0.1.0"
+    "websocket-multiplex": "~0.1.0",
+    "winston": "~0.7.2"
   },
   "devDependencies": {
     "chai": "~1.7.2",

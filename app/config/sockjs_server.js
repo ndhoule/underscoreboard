@@ -1,5 +1,5 @@
-define(['sockjs'], function (sockjs) {
-  'use strict';
+'use strict';
 
-  return sockjs.createServer();
-});
+var sockjs = require('sockjs');
+
+module.exports = sockjs.createServer();

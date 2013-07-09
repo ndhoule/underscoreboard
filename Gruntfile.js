@@ -1,16 +1,20 @@
 module.exports = function(grunt) {
   'use strict';
 
+  var src = {
+    assets: ['assets/js/**/*.js', '!assets/js/lib/**'],
+    app: ['app/**/*.js', '!app/public/**'],
+    public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js'],
+  };
+
+  var tests = {
+    server: ['test/server/**/*Spec.js']
+  };
+
   // Project configuration.
   grunt.initConfig({
     meta: {
-      pkg: grunt.file.readJSON('package.json'),
-      src: {
-        assets: ['assets/js/**/*.js', '!assets/js/lib/**'],
-        app: ['app/**/*.js', '!app/public/**'],
-        public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js'],
-        tests: ['test/unit/**/*Spec.js']
-      }
+      pkg: grunt.file.readJSON('package.json')
     },
 
     compass: {
@@ -37,17 +41,25 @@ module.exports = function(grunt) {
       }
     },
 
-    karma: {
-      unit: {
-        configFile: 'karma.conf.js',
-        background: true
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'nyan',
+          require: 'test/server/runner'
+        },
+        src: tests.server
       },
-      continuous: {
-        configFile: 'karma.conf.js',
-        singleRun: true
+      coverage: {
+        options: {
+          reporter: 'html-cov',
+          quiet: true
+        },
+        src: tests.server,
+        dest: 'coverage.html'
       }
     },
 
+    // Build Require.js files (client-side only)
     requirejs: {
       options: {
         baseUrl: 'assets/js',
@@ -103,10 +115,10 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= meta.src.assets %>',
-        '<%= meta.src.app %>',
-        '<%= meta.src.public %>',
-        '<%= meta.src.tests %>'
+        src.assets,
+        src.app,
+        src.public,
+        tests.server
       ]
     },
 
@@ -114,17 +126,24 @@ module.exports = function(grunt) {
       options: {
         livereload: true
       },
+      gruntfile: {
+        files: 'Gruntfile',
+        tasks: ['jshint:all'],
+        options: {
+          livereload: false
+        }
+      },
       app: {
-        files: '<%= meta.src.app %>',
-        tasks: ['karma:unit:run', 'jshint:all']
+        files: src.app,
+        tasks: ['mochaTest', 'jshint:all']
       },
       assets: {
-        files: '<%= meta.src.assets %>',
-        tasks: ['requirejs:dev', 'karma:unit:run', 'jshint:all']
+        files: src.assets,
+        tasks: ['requirejs:dev', 'mochaTest', 'jshint:all']
       },
       tests: {
-        files: '<%= meta.src.tests %>',
-        tasks: ['karma:unit:run', 'jshint:all']
+        files: tests.server,
+        tasks: ['mochaTest', 'jshint:all']
       }
     },
 
@@ -152,12 +171,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-shell');
 
   // Tasks
-  grunt.registerTask('test', ['karma:continuous', 'jshint:all']);
+  grunt.registerTask('test', ['mochaTest', 'jshint:all']);
   grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
   grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
   grunt.registerTask('deploy', ['dist', 'shell:deploy']);

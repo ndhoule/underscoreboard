@@ -35,16 +35,20 @@
     "winston": "~0.7.2"
   },
   "devDependencies": {
+    "blanket": "~1.1.5",
     "chai": "~1.7.2",
+    "dateformat": "~1.0.6-1.2.3",
     "growly": "~1.1.1",
     "grunt": "~0.4.1",
     "grunt-contrib-compass": "~0.3.0",
     "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-rename": "0.0.3",
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4",
+    "grunt-mocha-test": "~0.5.0",
     "grunt-notify": "~0.2.4",
-    "blanket": "~1.1.5",
-    "grunt-mocha-test": "~0.5.0"
+    "grunt-shell": "~0.3.0",
+    "rjs-build-analysis": "0.0.3"
   },
   "licenses": [
     {

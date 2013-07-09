@@ -2,7 +2,7 @@ windows:
   - name: "hook"
     clear: true
     root: "~/src/underscoreboard"
-    layout: 81ea,238x68,0,0{119x68,0,0,57,118x68,120,0[118x31,120,0,113,118x29,120,32,114,118x3,120,62,118,118x2,120,66,115]}
+    layout: c5ab,238x68,0,0{119x68,0,0,0,118x68,120,0[118x31,120,0,1,118x33,120,32,2,118x2,120,66,8]}
     filters:
       before:
         - "export NODE_ENV=development"
@@ -17,5 +17,3 @@ windows:
       - cmd:
           - "sleep 1"
           - "until node-inspector; do sleep 1; done"
-      - cmd:
-          - "karma start"

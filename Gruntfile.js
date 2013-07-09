@@ -1,10 +1,13 @@
+var dateFormat = require('dateformat');
+dateFormat.masks.timestamp = 'yyyy-mm-dd-HH:MM:ss';
+
 module.exports = function(grunt) {
   'use strict';
 
   var src = {
     assets: ['assets/js/**/*.js', '!assets/js/lib/**'],
     app: ['app/**/*.js', '!app/public/**'],
-    public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js'],
+    public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js']
   };
 
   var tests = {
@@ -44,7 +47,7 @@ module.exports = function(grunt) {
     mochaTest: {
       test: {
         options: {
-          reporter: 'nyan',
+          reporter: 'min',
           require: 'test/server/runner'
         },
         src: tests.server
@@ -55,11 +58,22 @@ module.exports = function(grunt) {
           quiet: true
         },
         src: tests.server,
-        dest: 'coverage.html'
+        dest: 'coverage/coverage.html'
       }
     },
 
-    // Build Require.js files (client-side only)
+    rename: {
+      coverage: {
+        files: [
+          {
+            src: __dirname + '/coverage/coverage.html',
+            dest: __dirname + '/coverage/coverage-' + dateFormat('timestamp') + '.html'
+          }
+        ]
+      }
+    },
+
+    // Build client-side Require.js files
     requirejs: {
       options: {
         baseUrl: 'assets/js',
@@ -169,6 +183,7 @@ module.exports = function(grunt) {
   // Load third-party modules
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-rename');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
@@ -176,7 +191,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   // Tasks
-  grunt.registerTask('test', ['mochaTest', 'jshint:all']);
+  grunt.registerTask('test', ['rename:coverage', 'mochaTest',  'jshint:all']);
   grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
   grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
   grunt.registerTask('deploy', ['dist', 'shell:deploy']);

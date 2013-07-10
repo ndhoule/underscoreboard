@@ -10,7 +10,7 @@ windows:
       - cmd:
           - "sleep 5 && open -a 'Google Chrome' 'http://0.0.0.0:8080/debug?port=5858' 'http://localhost:5000' 'http://localhost:5000'"
         focus: true
-      - cmd: "nodemon --debug app/main.js"
+      - cmd: "grunt run"
       - cmd:
           - "sleep 1"
           - "grunt watch"

@@ -153,6 +153,23 @@ module.exports = function(grunt) {
       }
     },
 
+    nodemon: {
+      prod: {
+        options: {
+          file: 'app/main.js',
+          ignoredFiles: ['README.md', 'node_modules/**'],
+          watchedExtensions: ['js', 'json'],
+          watchedFolders: ['test', 'app'],
+          debug: true,
+          delayTime: 1,
+          env: {
+            PORT: '5000'
+          },
+          cwd: __dirname
+        }
+      }
+    },
+
     rename: {
       coverage: {
         files: [
@@ -198,13 +215,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-notify');
   grunt.loadNpmTasks('grunt-shell');
 
+
   // Tasks
+  grunt.registerTask('run', ['nodemon']);
+  grunt.registerTask('test', ['rename:coverage', 'mochaTest', 'shell:cleanCoverage', 'jshint:all']);
   grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
   grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
-  grunt.registerTask('test', ['rename:coverage', 'mochaTest', 'shell:cleanCoverage', 'jshint:all']);
   grunt.registerTask('deploy', ['dist', 'shell:deploy']);
 
   // Runs just before a commit. Don't put tasks that generate files here as

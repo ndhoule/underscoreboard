@@ -44,35 +44,6 @@ module.exports = function(grunt) {
       }
     },
 
-    mochaTest: {
-      test: {
-        options: {
-          reporter: 'min',
-          require: 'test/server/runner'
-        },
-        src: tests.server
-      },
-      coverage: {
-        options: {
-          reporter: 'html-cov',
-          quiet: true
-        },
-        src: tests.server,
-        dest: 'coverage/coverage.html'
-      }
-    },
-
-    rename: {
-      coverage: {
-        files: [
-          {
-            src: __dirname + '/coverage/coverage.html',
-            dest: __dirname + '/coverage/coverage-' + dateFormat('timestamp') + '.html'
-          }
-        ]
-      }
-    },
-
     // Build client-side Require.js files
     requirejs: {
       options: {
@@ -123,6 +94,24 @@ module.exports = function(grunt) {
       }
     },
 
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'min',
+          require: 'test/server/runner'
+        },
+        src: tests.server
+      },
+      coverage: {
+        options: {
+          reporter: 'html-cov',
+          quiet: true
+        },
+        src: tests.server,
+        dest: 'coverage/coverage.html'
+      }
+    },
+
     jshint: {
       options: {
         jshintrc: '.jshintrc'
@@ -149,19 +138,41 @@ module.exports = function(grunt) {
       },
       app: {
         files: src.app,
-        tasks: ['mochaTest', 'jshint:all']
+        tasks: ['test']
       },
       assets: {
         files: src.assets,
-        tasks: ['requirejs:dev', 'mochaTest', 'jshint:all']
+        tasks: ['requirejs:dev', 'test']
       },
       tests: {
         files: tests.server,
-        tasks: ['mochaTest', 'jshint:all']
+        tasks: ['test'],
+        options: {
+          livereload: false
+        }
+      }
+    },
+
+    rename: {
+      coverage: {
+        files: [
+          {
+            src: __dirname + '/coverage/coverage.html',
+            dest: __dirname + '/coverage/coverage-' + dateFormat('timestamp') + '.html'
+          }
+        ]
       }
     },
 
     shell: {
+      cleanCoverage: {
+        command: ['ls -t1', 'tail -n +6', 'xargs rm -r'].join('|'),
+        options: {
+          execOptions: {
+            cwd: 'coverage'
+          }
+        }
+      },
       deploy: {
         command: 'echo \'yes\' | jitsu deploy',
         options: {
@@ -191,9 +202,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-shell');
 
   // Tasks
-  grunt.registerTask('test', ['rename:coverage', 'mochaTest',  'jshint:all']);
   grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
   grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
+  grunt.registerTask('test', ['rename:coverage', 'mochaTest', 'shell:cleanCoverage', 'jshint:all']);
   grunt.registerTask('deploy', ['dist', 'shell:deploy']);
 
   // Runs just before a commit. Don't put tasks that generate files here as

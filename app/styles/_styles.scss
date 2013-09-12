@@ -1,0 +1,60 @@
+nav h1, h2, h3, h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+nav h1 { font-size: 1.6em; line-height: 36px; }
+nav h2 { font-size: 1.4em; line-height: 18px; }
+nav h3 { font-size: 1.2em; line-height: 20px; }
+nav h4 { font-size: 1.0em; line-height: 42px; }
+
+#editor-player {
+  position: absolute;
+  top: 42px;
+  overflow: hidden;
+  right: 50%;
+  bottom: 30%;
+  left: 0;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#editor-opponent {
+  position: absolute;
+  top: 42px;
+  overflow: hidden;
+  right: 0;
+  bottom: 30%;
+  left: 50%;
+}
+
+#tests {
+  position: absolute;
+  top: 70%;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#current-function-label, #current-function-name {
+  display: none;
+}
+
+.center {
+  width: inherit;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.loading-container {
+  margin: 10px;
+}
+
+.loading-img {
+  width: 32px;
+  height: 32px;
+  border: 0 !important;
+}

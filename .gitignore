@@ -9,9 +9,10 @@
 Icon?
 Thumbs.db
 ehthumbs.db
-
 .sass-cache
-app/public/js/main.min.js
+.tmp
 node_modules
-server/secrets.js
 coverage
+app/bower_components
+server/public
+dist

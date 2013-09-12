@@ -1,115 +1,64 @@
-var dateFormat = require('dateformat');
-dateFormat.masks.timestamp = 'yyyy-mm-dd-HH:MM:ss';
+'use strict';
 
-module.exports = function(grunt) {
-  'use strict';
+module.exports = function (grunt) {
+  require('time-grunt')(grunt);
+  require('load-grunt-tasks')(grunt);
 
-  var src = {
-    assets: ['assets/js/**/*.js', '!assets/js/lib/**'],
-    app: ['app/**/*.js', '!app/public/**'],
-    public: ['app/public/js/**/*.js', '!app/public/js/lib/**', '!app/public/js/main.min.js']
+  var yeomanConfig = {
+    app: 'app',
+    dist: 'server/public'
   };
 
-  var tests = {
-    server: ['test/server/**/*Spec.js']
-  };
-
-  // Project configuration.
   grunt.initConfig({
-    meta: {
-      pkg: grunt.file.readJSON('package.json')
+    yeoman: yeomanConfig,
+
+    watch: {
+      compass: {
+        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        tasks: ['compass:server', 'autoprefixer']
+      },
+      styles: {
+        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
+        tasks: ['copy:styles', 'autoprefixer']
+      },
+      livereload: {
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        },
+        files: [
+          '<%= yeoman.app %>/*.html',
+          '.tmp/styles/{,*/}*.css',
+          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+        ]
+      }
     },
 
-    compass: {
-      options: {
-        require: 'bootstrap-sass',
-        sassDir: 'assets/sass',
-        cssDir: 'app/public/css',
-        relativeAssets: true,
-        imagesDir: 'app/public/img',
-        javascriptsDir: 'app/public/js'
-      },
-      dev: {
-        options: {
-          environment: 'development'
-        }
-      },
+    clean: {
       dist: {
-        options: {
-          environment: 'production',
-          outputStyle: 'compressed',
-          noLineComments: true,
-          force: true
-        }
-      }
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.dist %>/*',
+            '!<%= yeoman.dist %>/.git*'
+          ]
+        }]
+      },
+      server: '.tmp'
     },
 
-    // Build client-side Require.js files
-    requirejs: {
+    nodemon: {
       options: {
-        baseUrl: 'assets/js',
-        name: 'main',
-        out: 'app/public/js/main.min.js',
-        paths: {
-          ace: '../../app/public/js/lib/ace',
-          backbone: 'lib/backbone-amd-0.9.10-min',
-          bootstrap: 'lib/bootstrap.min',
-          domReady: 'lib/domReady',
-          jquery: 'lib/require-jquery',
-          sockjs: 'lib/sockjs-0.3.min',
-          underscore: 'lib/underscore.min',
-
-          // Views
-          editorView: 'views/editorView'
+        watchedExtensions: ['js', 'json'],
+        watchedFolders: ['test', 'app'],
+        delayTime: 1,
+        env: {
+          PORT: '5000'
         },
-        shim: {
-          'bootstrap': ['jquery'],
-          'underscore': {
-            exports: '_'
-          }
-        }
+        cwd: __dirname
       },
-      dev: {
-        options: {
-          optimize: 'none'
-        }
-      },
-      dist: {
-        options: {
-          optimize: 'uglify2',
-          mangle: true,
-          preserveLicenseComments: false,
-          done: function(done, output) {
-            var duplicates = require('rjs-build-analysis').duplicates(output);
-
-            if (duplicates.length > 0) {
-              grunt.log.subhead('Duplicates found in requirejs build:');
-              grunt.log.warn(duplicates);
-              done(new Error('r.js built duplicate modules, please check the excludes option.'));
-            }
-
-            done();
-          }
-        }
-      }
-    },
-
-    mochaTest: {
-      test: {
-        options: {
-          reporter: 'min',
-          require: 'test/server/runner'
-        },
-        src: tests.server
-      },
-      coverage: {
-        options: {
-          reporter: 'html-cov',
-          quiet: true
-        },
-        src: tests.server,
-        dest: 'coverage/coverage.html'
-      }
+      dev: {}
     },
 
     jshint: {
@@ -118,119 +67,227 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        src.assets,
-        src.app,
-        src.public,
-        tests.server
+        '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '!<%= yeoman.app %>/scripts/vendor/*',
+        'test/spec/{,*/}*.js'
       ]
     },
 
-    watch: {
+    mocha: {
+      all: {
+        options: {
+          run: true,
+          urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
+        }
+      }
+    },
+
+    compass: {
       options: {
-        livereload: true
+        sassDir: '<%= yeoman.app %>/styles',
+        cssDir: '.tmp/styles',
+        generatedImagesDir: '.tmp/images/generated',
+        imagesDir: '<%= yeoman.app %>/images',
+        javascriptsDir: '<%= yeoman.app %>/scripts',
+        fontsDir: '<%= yeoman.app %>/styles/fonts',
+        importPath: '<%= yeoman.app %>/bower_components',
+        httpImagesPath: '/images',
+        httpGeneratedImagesPath: '/images/generated',
+        httpFontsPath: '/styles/fonts',
+        relativeAssets: false
       },
-      gruntfile: {
-        files: 'Gruntfile',
-        tasks: ['jshint:all'],
+      dist: {
         options: {
-          livereload: false
+          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
         }
       },
-      app: {
-        files: src.app,
-        tasks: ['test']
-      },
-      assets: {
-        files: src.assets,
-        tasks: ['requirejs:dev', 'test']
-      },
-      tests: {
-        files: tests.server,
-        tasks: ['test'],
+      server: {
         options: {
-          livereload: false
+          debugInfo: true
         }
       }
     },
 
-    nodemon: {
-      prod: {
-        options: {
-          file: 'app/main.js',
-          ignoredFiles: ['README.md', 'node_modules/**'],
-          watchedExtensions: ['js', 'json'],
-          watchedFolders: ['test', 'app'],
-          debug: true,
-          delayTime: 1,
-          env: {
-            PORT: '5000'
-          },
-          cwd: __dirname
-        }
-      }
-    },
-
-    rename: {
-      coverage: {
-        files: [
-          {
-            src: __dirname + '/coverage/coverage.html',
-            dest: __dirname + '/coverage/coverage-' + dateFormat('timestamp') + '.html'
-          }
-        ]
-      }
-    },
-
-    shell: {
-      cleanCoverage: {
-        command: ['ls -t1', 'tail -n +6', 'xargs rm -r'].join('|'),
-        options: {
-          execOptions: {
-            cwd: 'coverage'
-          }
-        }
+    autoprefixer: {
+      options: {
+        browsers: ['last 1 version']
       },
-      deploy: {
-        command: 'echo \'yes\' | jitsu deploy',
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '.tmp/styles/',
+          src: '{,*/}*.css',
+          dest: '.tmp/styles/'
+        }]
+      }
+    },
+
+    requirejs: {
+      dist: {
+        // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
         options: {
-          failOnError: true,
-          callback: function(err, stdout, stderr, cb) {
-            console.log('Finished uploading to Nodejitsu.');
-            cb();
-          }
+          // `name` and `out` is set by grunt-usemin
+          baseUrl: yeomanConfig.app + '/scripts',
+          optimize: 'none',
+          // TODO: Figure out how to make sourcemaps work with grunt-usemin
+          // https://github.com/yeoman/grunt-usemin/issues/30
+          //generateSourceMaps: true,
+          // required to support SourceMaps
+          // http://requirejs.org/docs/errors.html#sourcemapcomments
+          preserveLicenseComments: false,
+          // useStrict: true,
+          // wrap: true
+          //uglify2: {} // https://github.com/mishoo/UglifyJS2
         }
+      }
+    },
+
+    useminPrepare: {
+      options: {
+        dest: '<%= yeoman.dist %>'
+      },
+      html: '<%= yeoman.app %>/index.html'
+    },
+
+    usemin: {
+      options: {
+        dirs: ['<%= yeoman.dist %>']
+      },
+      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
+    },
+
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.{png,jpg,jpeg}',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
+
+    cssmin: {
+      // This task is pre-configured if you do not wish to use Usemin
+      // blocks for your CSS. By default, the Usemin block from your
+      // `index.html` will take care of minification, e.g.
+      //
+      //     <!-- build:css({.tmp,app}) styles/main.css -->
+      //
+      // dist: {
+      //     files: {
+      //         '<%= yeoman.dist %>/styles/main.css': [
+      //             '.tmp/styles/{,*/}*.css',
+      //             '<%= yeoman.app %>/styles/{,*/}*.css'
+      //         ]
+      //     }
+      // }
+    },
+
+    // Put files not handled in other tasks here
+    copy: {
+      dist: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          src: [
+            '*.{ico,png,txt}',
+            'images/{,*/}*.{webp,gif}',
+            'styles/fonts/{,*/}*.*',
+            'scripts/test_runner/**/*.*',
+            'bower_components/ace/**/*.*',
+            'bower_components/sass-bootstrap/fonts/*.*'
+          ]
+        }]
+      },
+      styles: {
+        expand: true,
+        dot: true,
+        cwd: '<%= yeoman.app %>/styles',
+        dest: '.tmp/styles/',
+        src: '{,*/}*.css'
+      }
+    },
+
+    modernizr: {
+      devFile: '<%= yeoman.app %>/bower_components/modernizr/modernizr.js',
+      outputFile: '<%= yeoman.dist %>/bower_components/modernizr/modernizr.js',
+      files: [
+        '<%= yeoman.dist %>/scripts/{,*/}*.js',
+        '<%= yeoman.dist %>/styles/{,*/}*.css',
+        '!<%= yeoman.dist %>/scripts/vendor/*'
+      ],
+      uglify: true
+    },
+
+    concurrent: {
+      server: [
+        'nodemon',
+        'compass',
+        'copy:styles'
+      ],
+      test: [
+        'copy:styles'
+      ],
+      dist: [
+        'compass',
+        'copy:styles',
+        'imagemin'
+      ]
+    },
+
+    bower: {
+      options: {
+        exclude: ['modernizr']
+      },
+      all: {
+        rjsConfig: '<%= yeoman.app %>/scripts/main.js'
       }
     }
   });
 
-  // On watch events, configure jshint:all to run only on changed file
-  grunt.event.on('watch', function(action, filepath) {
-    grunt.config(['jshint', 'all'], filepath);
+  grunt.registerTask('server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['build']);
+    }
+
+    grunt.task.run([
+      'clean:server',
+      'concurrent:server',
+      'autoprefixer',
+      // 'connect:livereload',
+      'watch'
+    ]);
   });
 
-  // Load third-party modules
-  grunt.loadNpmTasks('grunt-contrib-compass');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-rename');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-nodemon');
-  grunt.loadNpmTasks('grunt-notify');
-  grunt.loadNpmTasks('grunt-shell');
+  grunt.registerTask('test', [
+    'clean:server',
+    'concurrent:test',
+    'autoprefixer',
+    // 'connect:test',
+    'mocha'
+  ]);
 
+  grunt.registerTask('build', [
+    'clean:dist',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'requirejs',
+    'concat',
+    'cssmin',
+    'uglify',
+    'modernizr',
+    'copy:dist',
+    'usemin'
+  ]);
 
-  // Tasks
-  grunt.registerTask('run', ['nodemon']);
-  grunt.registerTask('test', ['rename:coverage', 'mochaTest', 'shell:cleanCoverage', 'jshint:all']);
-  grunt.registerTask('dev', ['requirejs:dev', 'compass:dev', 'test']);
-  grunt.registerTask('dist', ['requirejs:dist', 'compass:dist', 'test']);
-  grunt.registerTask('deploy', ['dist', 'shell:deploy']);
-
-  // Runs just before a commit. Don't put tasks that generate files here as
-  // they won't be included in your commit.
-  grunt.registerTask('precommit', ['test']);
-
-  // Default task (runs when running `grunt` without arguments)
-  grunt.registerTask('default', ['test']);
+  grunt.registerTask('default', [
+    'jshint',
+    'test',
+    'build'
+  ]);
 };

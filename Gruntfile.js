@@ -10,11 +10,16 @@ module.exports = function (grunt) {
   };
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+
     yeoman: yeomanConfig,
 
     watch: {
       compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+        files: [
+          '<%= yeoman.app %>/styles/{,*/}*.{scss,sass}',
+          '!<%= yeoman.app %>/styles/.sass-cache'
+        ],
         tasks: ['compass:server', 'autoprefixer']
       },
       styles: {
@@ -23,13 +28,13 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: true
         },
         files: [
-          '<%= yeoman.app %>/*.html',
           '.tmp/styles/{,*/}*.css',
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          'server/views/{,*/}*.hbs'
         ]
       }
     },
@@ -50,15 +55,29 @@ module.exports = function (grunt) {
 
     nodemon: {
       options: {
-        watchedExtensions: ['js', 'json'],
-        watchedFolders: ['test', 'app'],
+        watchedExtensions: ['js', 'json', '.handlebars', '.hbs'],
+        watchedFolders: ['test', 'app', 'server'],
         delayTime: 1,
         env: {
           PORT: '5000'
         },
         cwd: __dirname
       },
-      dev: {}
+      dev: {
+        options: {
+          args: ['development'],
+          nodeArgs: ['--debug']
+        }
+      },
+      prod: {
+        options: {
+          args: ['production']
+        }
+      }
+    },
+
+    'node-inspector': {
+      default: {}
     },
 
     jshint: {
@@ -224,10 +243,15 @@ module.exports = function (grunt) {
     },
 
     concurrent: {
+      options: {
+        logConcurrentOutput: true
+      },
       server: [
-        'nodemon',
+        'node-inspector',
+        'nodemon:dev',
         'compass',
-        'copy:styles'
+        'copy:styles',
+        'watch'
       ],
       test: [
         'copy:styles'
@@ -249,17 +273,15 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build']);
     }
 
     grunt.task.run([
       'clean:server',
-      'concurrent:server',
       'autoprefixer',
-      // 'connect:livereload',
-      'watch'
+      'concurrent:server'
     ]);
   });
 
@@ -267,7 +289,6 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    // 'connect:test',
     'mocha'
   ]);
 
@@ -284,6 +305,8 @@ module.exports = function (grunt) {
     'copy:dist',
     'usemin'
   ]);
+
+  grunt.registerTask('precommit', 'test');
 
   grunt.registerTask('default', [
     'jshint',

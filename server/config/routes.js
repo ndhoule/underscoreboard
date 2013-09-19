@@ -1,6 +1,6 @@
 var path = require('path'),
-    root = require(path.join(__dirname, '..', 'routes/root'));
+    home = require(path.join(__dirname, '..', 'routes/home'));
 
 module.exports = function(app) {
-  app.get('/', root.get);
+  app.get('/', home.get);
 };

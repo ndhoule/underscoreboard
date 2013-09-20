@@ -1,28 +1,16 @@
 define(['ace/ace', 'backbone'], function(ace, Backbone) {
-  // Creates an editor and returns it. The first argument, div, is required and is
-  // the element to be transformed into an editor. Optionally, accepts a readOnly
-  // value; unless readOnly is set to false, the editor returned will be read-only.
   return Backbone.View.extend({
-    defaults: {
-      readOnly: false
-    },
+    initialize: function(opts) {
+      this.readOnly = opts.readOnly || false;
 
-    initialize: function(options) {
-      if (!document.getElementById(options.el)) {
-        throw new Error('EditorView needs a div to create an Ace editor instance');
-      }
-
-      // Keep a reference to this view's element and init an Ace session
-      this.el = options.el;
-      options.readOnly && (this.readOnly = options.readOnly);
-      this.initAce(this.el, this.readOnly);
+      this.initAce();
 
       return this;
     },
 
-    initAce: function(elementId) {
+    initAce: function(el) {
       // Set up and paint an editor instance
-      this.aceSession = ace.edit(elementId);
+      this.aceSession = ace.edit(this.el);
 
       // Sessions are writable by default; set read-only if readOnly property
       // passed in

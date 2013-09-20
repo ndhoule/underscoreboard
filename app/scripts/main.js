@@ -8,7 +8,6 @@ require.config({
     jquery: '../bower_components/jquery/jquery',
     underscore: '../bower_components/lodash/dist/lodash.underscore',
     sockjs: '//cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min',
-    bootstrap: '../bower_components/sass-bootstrap/dist/js/bootstrap.min',
     bootstrapAffix: '../bower_components/sass-bootstrap/js/affix',
     bootstrapAlert: '../bower_components/sass-bootstrap/js/alert',
     bootstrapButton: '../bower_components/sass-bootstrap/js/button',
@@ -29,9 +28,6 @@ require.config({
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'
     },
-    bootstrap: {
-      deps: ['jquery']
-    },
     bootstrapAffix: {
       deps: ['jquery']
     },
@@ -49,6 +45,9 @@ require.config({
     },
     bootstrapDropdown: {
       deps: ['jquery']
+    },
+    bootstrapModal: {
+      deps: ['jquery', 'bootstrapTransition']
     },
     bootstrapPopover: {
       deps: ['jquery']
@@ -75,30 +74,34 @@ require([
   'underscore',
   'sockjs',
   'editorView',
-  'bootstrap'
+  'bootstrapModal'
 ], function(domReady, $, _, SockJS, EditorView) {
   'use strict';
 
-  // Namespace for global data
-  window.UNDERSCOREBOARD = Object.create(null);
   var socket = new SockJS(window.location.origin + '/echo');
 
-  // Require's equivalent of $(document).ready()
+  window.UNDERSCOREBOARD = Object.create(null);
+
   domReady(function() {
-    var updateTestsTimer,
-        messageHandler,
+    var updateTestsTimer, messageHandler,
         tests = Object.create(null),
         editors = Object.create(null),
         modals = Object.create(null),
-        childFrame = document.getElementById('tests').contentWindow;
+        childFrame = _.first($('.test-runner')).contentWindow;
 
     modals.pairing = $('#pairing-modal');
     modals.repairing = $('#repairing-modal');
     modals.victory = $('#victory-modal');
     modals.loss = $('#loss-modal');
 
-    editors.player = new EditorView({ el: 'editor-player' });
-    editors.opponent = new EditorView({ el: 'editor-opponent', readOnly: true });
+    editors.player = new EditorView({
+      el: _.first($('.editor-player'))
+    });
+
+    editors.opponent = new EditorView({
+      el: _.first($('.editor-opponent')),
+      readOnly: true
+    });
 
     tests.update = function() {
       console.debug('Updating tests...');
@@ -175,27 +178,31 @@ require([
           modals.loss.modal('hide');
           modals.repairing.modal('hide');
 
-          // Display the current function to the user and load the test URL. This
-          // prevents Mocha from testing any function other than the current function
+          // Display the current function to the user and load the test URL.
+          // This prevents Mocha from testing any function other than the
+          // current function
           modals.pairing.modal('hide');
-          $('#tests').attr({ 'src': 'scripts/test_runner/SpecRunner.html?grep=_.' + message.data.name });
+          $('.test-runner').attr({ 'src': 'scripts/test_runner/SpecRunner.html?grep=_.' + message.data.name });
           console.log('Game started.');
         }, 3000);
         break;
 
       case 'editorChange':
         editors.opponent.setValue(message.data);
-        // Fixes annoying highlighting of opponent's editor when its contents changes
+        // Fixes annoying highlighting of opponent's editor when its contents
+        // changes
         editors.opponent.aceSession.selection.clearSelection();
         break;
 
       case 'victory':
-        // If receiving this message, that means the server has broadcasted a loss.
+        // If receiving this message, that means the server has broadcasted a
+        // loss.
         modals.loss.modal('show');
         break;
 
       case 'resetRoom':
-        // If the other player disconnects, display a repairing modal and clean up.
+        // If the other player disconnects, display a repairing modal and clean
+        // up.
         console.info('Opponent disconnected.');
         // Tell the user we're re-pairing them.
         modals.repairing.modal('show');
@@ -220,9 +227,9 @@ require([
       }
     };
 
-    // When the contents of the player editor change, set a timer (and invalidate
-    // any timers that already exist). This puts intertia behind test refreshes so
-    // they don't happen too often
+    // When the contents of the player editor change, set a timer (and
+    // invalidate any timers that already exist). This puts intertia behind test
+    // refreshes so they don't happen too often
     editors.player.aceSession.on('change', function() {
       if (updateTestsTimer) {
         clearTimeout(updateTestsTimer);

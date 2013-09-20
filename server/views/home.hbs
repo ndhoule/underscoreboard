@@ -9,7 +9,75 @@
 </nav>
 
 <section class="main">
-  <div class="editor-player">dat text</div>
-  <div class="editor-opponent">texty textmaster</div>
+  <div class="editor-player"></div>
+  <div class="editor-opponent"></div>
+</section>
+
+<section>
   <iframe class="test-runner" frameborder="0"></iframe>
 </section>
+
+
+<!-- Modals -->
+
+<div id="pairing-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Welcome to Underscoreboard</h4>
+      </div>
+      <div class="modal-body">
+        <p class="center">Finding you a partner...</p>
+        <div class="loading-container center">
+        <img class="loading-img center" src="images/loading.gif"></img>
+        <hr />
+        <h5>About Underscoreboard</h5>
+        <p>Underscoreboard is a realtime coding game where players try to implement an Underscore (a JavaScript library) function faster than their opponent. Players get realtime feedback in the form of a test suite that updates as they type. Make all the tests pass to win!</p>
+          <p>If you're just here to check it out, click <a href="http://underscoreboard.com", target='_blank'>here</a> to open a second tab to play by yourself. (Spoiler: It's better with friends.)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="victory-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">You Won</h4>
+      </div>
+      <div class="modal-body">
+        <p>Hooray! Starting the next round...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loss-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">You Lost</h4>
+      </div>
+      <div class="modal-body">
+        <p>Better luck next time! Starting the next round...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="repairing-modal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Your Opponent Left</h4>
+      </div>
+      <div class="modal-body">
+        <p>Finding you a new partner...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,20 +1,51 @@
-$navbar_height: 50px;
-$test_runner_height: 320px;
+$navbar_height: 51px;
+$test_runner_height: 270px;
 
-body,html {
+body, html, .viewport {
   height: 100%;
+  width: 100%;
   margin: 0;
 }
 
-section.main {
-  @include calc(height, #{"100% - #{$test_runner_height} - #{$navbar_height}"});
-  margin-top: $navbar_height;
+/*
+ * Helper Classes
+ */
+
+.center {
+  width: inherit;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/*
+ * Flexbox helper classes
+ */
+
+.vbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.hbox {
   display: flex;
   flex-direction: row;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+
+/*
+ * Editors
+ */
+
+.main {
+  margin-top: $navbar_height;
+  flex: 1;
+}
+
 .editor {
-  width: 50%;
+  flex: 1;
 }
 
 .editor-player {
@@ -32,11 +63,9 @@ section.main {
   border-top: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.center {
-  width: inherit;
-  margin: 0 auto;
-  text-align: center;
-}
+/*
+ * Modals
+ */
 
 .loading-container {
   margin: 10px;

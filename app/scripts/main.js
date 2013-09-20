@@ -29,7 +29,10 @@ require.config({
     editorView: 'views/editorView',
 
     // Models
-    editorModel: 'models/editorModel'
+    editor: 'models/editor',
+
+    // Collections
+    editors: 'collections/editors'
   },
 
   shim: {
@@ -85,10 +88,11 @@ require([
   'jquery',
   'underscore',
   'sockjs',
-  'editorModel',
+  'editor',
+  'editors',
   'editorView',
   'bootstrapModal'
-], function(domReady, $, _, SockJS, EditorModel, EditorView) {
+], function(domReady, $, _, SockJS, Editor, Editors, EditorView) {
   'use strict';
 
   var socket = new SockJS(window.location.origin + '/echo');
@@ -96,26 +100,30 @@ require([
   window.UNDERSCOREBOARD = Object.create(null);
 
   domReady(function() {
-    var updateTestsTimer, messageHandler,
+    var updateTestsTimer, messageHandler, editors, playerView, opponentView,
         tests = Object.create(null),
-        editors = Object.create(null),
         modals = Object.create(null),
         childFrame = _.first($('.test-runner')).contentWindow;
+
+    editors = new Editors([
+      new Editor({ player: 'player' }),
+      new Editor({ player: 'opponent' })
+    ]);
+
+    playerView = new EditorView({
+      model: _.first(editors.where({ player: 'player' })),
+      el: _.first($('.editor-player'))
+    });
+
+    opponentView = new EditorView({
+      model: _.first(editors.where({ player: 'opponent' })),
+      el: _.first($('.editor-player'))
+    });
 
     modals.pairing = $('#pairing-modal');
     modals.repairing = $('#repairing-modal');
     modals.victory = $('#victory-modal');
     modals.loss = $('#loss-modal');
-
-    editors.player = new EditorView({
-      el: _.first($('.editor-player')),
-      model: new EditorModel({ player: 'player', readOnly: false })
-    });
-
-    editors.opponent = new EditorView({
-      el: _.first($('.editor-opponent')),
-      model: new EditorModel({ player: 'opponent' })
-    });
 
     tests.update = function() {
       console.debug('Updating tests...');

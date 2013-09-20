@@ -1,29 +1,40 @@
-define(['ace/ace', 'backbone'], function(ace, Backbone) {
-  return Backbone.View.extend({
-    initialize: function(opts) {
-      this.readOnly = opts.readOnly || false;
+define([
+  'ace/ace',
+  'backbone'
+], function(ace, Backbone) {
+  'use strict';
 
-      this.initAce();
+  return Backbone.View.extend({
+    initialize: function() {
+      this.editor = ace.edit(this.el);
+
+      this.setReadOnly(this.model.get('readOnly'));
+      this.setMode(this.model.get('mode'));
+      this.setTheme(this.model.get('theme'));
+      this.setTabSize(this.model.get('tabSize'));
 
       return this;
     },
 
-    initAce: function(el) {
-      // Set up and paint an editor instance
-      this.aceSession = ace.edit(this.el);
+    setReadOnly: function(flag) {
+      this.editor.setReadOnly(flag);
+    },
 
-      // Sessions are writable by default; set read-only if readOnly property
-      // passed in
-      this.aceSession.setReadOnly(this.readOnly);
+    setMode: function(mode) {
+      this.editor.session.setMode('ace/mode/' + mode);
+    },
 
-      // Set some JavaScript-centric settings
-      this.aceSession.getSession().setMode('ace/mode/javascript');
-      this.aceSession.getSession().setTabSize(2);
+    setTheme: function(theme) {
+      this.editor.setTheme('ace/theme/' + theme);
+    },
+
+    setTabSize: function(size) {
+      this.editor.session.setTabSize(size);
     },
 
     // Takes the server-defined placeholder text and inserts it into the editor.
-    // The start point for the text is always the end of the second-to-last line,
-    // so move the cursor there while we're at it
+    // The start point for the text is always the end of the second-to-last
+    // line, so move the cursor there while we're at it
     resetEditor: function() {
       var text,
           fn = window.UNDERSCOREBOARD.currentFunction;
@@ -38,12 +49,12 @@ define(['ace/ace', 'backbone'], function(ace, Backbone) {
     },
 
     setValue: function(text) {
-      this.aceSession.setValue(text);
-      this.aceSession.selection.moveCursorBy(-1, 0);
-      this.aceSession.selection.clearSelection();
+      this.editor.setValue(text);
+      this.editor.selection.moveCursorBy(-1, 0);
+      this.editor.selection.clearSelection();
 
       // Return the editor's current value
-      return this.aceSession.getValue();
+      return this.editor.getValue();
     }
   });
 });

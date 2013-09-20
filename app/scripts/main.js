@@ -2,6 +2,7 @@
 
 require.config({
   paths: {
+    // Third-party libraries
     ace: '../bower_components/ace/lib/ace',
     backbone: '../bower_components/backbone/backbone',
     domReady: '../bower_components/requirejs-domReady/domReady',
@@ -21,8 +22,16 @@ require.config({
     bootstrapTooltip: '../bower_components/sass-bootstrap/js/tooltip',
     bootstrapTransition: '../bower_components/sass-bootstrap/js/transition',
 
-    editorView: 'views/editorView'
+    // User libraries
+    underscoreUtils: 'lib/underscore.utils',
+
+    // Views
+    editorView: 'views/editorView',
+
+    // Models
+    editorModel: 'models/editorModel'
   },
+
   shim: {
     backbone: {
       deps: ['jquery', 'underscore'],
@@ -63,6 +72,9 @@ require.config({
     },
     bootstrapTransition: {
       deps: ['jquery']
+    },
+    underscoreUtils: {
+      deps: ['underscore']
     }
   }
 });
@@ -73,9 +85,10 @@ require([
   'jquery',
   'underscore',
   'sockjs',
+  'editorModel',
   'editorView',
   'bootstrapModal'
-], function(domReady, $, _, SockJS, EditorView) {
+], function(domReady, $, _, SockJS, EditorModel, EditorView) {
   'use strict';
 
   var socket = new SockJS(window.location.origin + '/echo');
@@ -95,18 +108,19 @@ require([
     modals.loss = $('#loss-modal');
 
     editors.player = new EditorView({
-      el: _.first($('.editor-player'))
+      el: _.first($('.editor-player')),
+      model: new EditorModel({ player: 'player', readOnly: false })
     });
 
     editors.opponent = new EditorView({
       el: _.first($('.editor-opponent')),
-      readOnly: true
+      model: new EditorModel({ player: 'opponent' })
     });
 
     tests.update = function() {
       console.debug('Updating tests...');
       childFrame.postMessage({
-        code: editors.player.aceSession.getValue(),
+        code: editors.player.editor.getValue(),
         currentFunction: window.UNDERSCOREBOARD.currentFunction
       }, window.location.origin);
     };
@@ -191,7 +205,7 @@ require([
         editors.opponent.setValue(message.data);
         // Fixes annoying highlighting of opponent's editor when its contents
         // changes
-        editors.opponent.aceSession.selection.clearSelection();
+        editors.opponent.editor.selection.clearSelection();
         break;
 
       case 'victory':
@@ -230,13 +244,13 @@ require([
     // When the contents of the player editor change, set a timer (and
     // invalidate any timers that already exist). This puts intertia behind test
     // refreshes so they don't happen too often
-    editors.player.aceSession.on('change', function() {
+    editors.player.editor.on('change', function() {
       if (updateTestsTimer) {
         clearTimeout(updateTestsTimer);
       }
       socket.send(JSON.stringify({
         type: 'editorChange',
-        data: editors.player.aceSession.getValue()
+        data: editors.player.editor.getValue()
       }));
       updateTestsTimer = setTimeout(tests.update, 1200);
     });

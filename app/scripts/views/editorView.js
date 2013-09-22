@@ -1,7 +1,8 @@
 define([
   'ace/ace',
-  'backbone'
-], function(ace, Backbone) {
+  'backbone',
+  'underscore'
+], function(ace, Backbone, _) {
   'use strict';
 
   return Backbone.View.extend({
@@ -12,6 +13,12 @@ define([
       this.setMode(this.model.get('mode'));
       this.setTheme(this.model.get('theme'));
       this.setTabSize(this.model.get('tabSize'));
+
+      if (this.model.get('player') === 'player') {
+        this.editor.on('change', _.bind(function() {
+          window.Underscoreboard.App.vent.trigger('editor:change', this.editor.getValue());
+        }, this));
+      }
 
       return this;
     },
@@ -37,7 +44,7 @@ define([
     // line, so move the cursor there while we're at it
     resetEditor: function() {
       var text,
-          fn = window.Underscoreboard.App.currentFunction;
+          fn = window.Underscoreboard.App.get('currentFunction');
 
       try {
         text = fn.desc.join('\n') + '\n' + fn.boiler.join('\n');

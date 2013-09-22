@@ -21,6 +21,7 @@ require.config({
     jquery: '../bower_components/jquery/jquery',
     sockjs: '//cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min',
     underscore: '../bower_components/lodash/dist/lodash.underscore',
+    underscoreString: '../bower_components/underscore.string/dist/underscore.string.min',
 
     hbs: '../bower_components/require-handlebars-plugin/hbs',
     json2: '../bower_components/require-handlebars-plugin/hbs/json2',
@@ -30,12 +31,17 @@ require.config({
     // User libraries
     underscoreUtils: 'lib/underscore.utils',
 
+    // Event aggregator
+    vent: 'vent',
+
     // Views
-    appView: 'views/appView',
     editorView: 'views/editorView',
+    modalView: 'views/modalView',
     navbar: 'views/navbar',
+    testRunnerView: 'views/testRunnerView',
 
     // Models
+    appModel: 'models/appModel',
     editor: 'models/editor',
 
     // Collections
@@ -96,14 +102,45 @@ require.config({
 
 require([
   'domReady',
-  'appView',
-  'bootstrapModal' // XXX
-], function(domReady, AppView) {
+  'underscore',
+  'appModel',
+  'editor',
+  'editors',
+  'editorView',
+  'testRunnerView',
+  'modalView',
+  'navbar'
+], function(domReady, _, AppModel, Editor, Editors, EditorView, TestRunnerView, ModalView, Navbar) {
   'use strict';
 
   window.Underscoreboard = (window.Underscoreboard || Object.create(null));
 
   domReady(function() {
-    window.Underscoreboard.App = new AppView();
+    var App = window.Underscoreboard.App = new AppModel();
+
+    App.modalView = new ModalView();
+
+    App.editors = new Editors([
+      new Editor({ player: 'player' }),
+      new Editor({ player: 'opponent' })
+    ]);
+
+    App.playerView = new EditorView({
+      model: App.editors.findWhere({ player: 'player' }),
+      el: _.first(document.getElementsByClassName('editor-player'))
+    });
+
+    App.opponentView = new EditorView({
+      model: App.editors.findWhere({ player: 'opponent' }),
+      el: _.first(document.getElementsByClassName('editor-opponent'))
+    });
+
+    App.testRunnerView = new TestRunnerView({
+      el: _.first(document.getElementsByClassName('test-runner'))
+    });
+
+    App.navbar = new Navbar({
+      el: _.first(document.getElementsByClassName('nav'))
+    });
   });
 });

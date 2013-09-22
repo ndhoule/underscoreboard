@@ -60,7 +60,8 @@
     "grunt-nodemon": "~0.1.1",
     "grunt-notify": "~0.2.4",
     "rjs-build-analysis": "0.0.3",
-    "grunt-node-inspector": "0.0.1"
+    "grunt-node-inspector": "0.0.1",
+    "grunt-contrib-handlebars": "~0.5.10"
   },
   "licenses": [
     {

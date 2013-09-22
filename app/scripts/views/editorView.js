@@ -37,7 +37,7 @@ define([
     // line, so move the cursor there while we're at it
     resetEditor: function() {
       var text,
-          fn = window.UNDERSCOREBOARD.currentFunction;
+          fn = window.Underscoreboard.App.currentFunction;
 
       try {
         text = fn.desc.join('\n') + '\n' + fn.boiler.join('\n');

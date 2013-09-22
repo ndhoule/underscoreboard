@@ -1,0 +1,10 @@
+<button class="queue add"><i class="icon-play-sign"></i></button>
+<button class="queue remove"><i class="icon-remove-sign"></i></button>
+<button>Remove</button>
+<br />
+<span class="album-title">{{title}}</span> &ndash; <span class="artist-name">{{artist}}</span>
+<ol class="tracks">
+  {{#each tracks}}
+    <li>{{title}}</li>
+  {{/each}}
+</ol>

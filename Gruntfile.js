@@ -1,83 +1,32 @@
 'use strict';
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
-
-  var yeomanConfig = {
-    app: 'app',
-    dist: 'server/public'
-  };
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    yeoman: yeomanConfig,
+    config: {
+      grunt: 'Gruntfile.js',
+      assets: 'assets',
+      vendor: '<%= config.assets %>/vendor',
+      server: ['index.js', 'lib/**/*.js', 'config/**/*.js', 'routes/**/*.js'],
+      test: {
+        server: 'test/server',
+        client: 'test/client'
+      },
+      public: '.tmp/public'
+    },
 
-    watch: {
-      compass: {
-        files: [
-          '<%= yeoman.app %>/styles/{,*/}*.{scss,sass}',
-          '!<%= yeoman.app %>/styles/.sass-cache'
-        ],
-        tasks: ['compass:server', 'autoprefixer']
-      },
-      styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['copy:styles', 'autoprefixer']
-      },
-      livereload: {
+    mochaTest: {
+      test: {
         options: {
-          livereload: true
+          reporter: 'spec',
+          require: 'test/server/config'
         },
-        files: [
-          '.tmp/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          'server/views/{,*/}*.hbs'
-        ]
+        src: ['<%= config.test.server %>/**/*Spec.js']
       }
-    },
-
-    clean: {
-      dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*'
-          ]
-        }]
-      },
-      server: '.tmp'
-    },
-
-    nodemon: {
-      options: {
-        watchedExtensions: ['js', 'json', '.handlebars', '.hbs'],
-        watchedFolders: ['test', 'app', 'server'],
-        delayTime: 1,
-        env: {
-          PORT: '5000'
-        },
-        cwd: __dirname
-      },
-      dev: {
-        options: {
-          args: ['development'],
-          nodeArgs: ['--debug']
-        }
-      },
-      prod: {
-        options: {
-          args: ['production']
-        }
-      }
-    },
-
-    'node-inspector': {
-      default: {}
     },
 
     jshint: {
@@ -85,232 +34,198 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc'
       },
       all: [
-        'Gruntfile.js',
-        '<%= yeoman.app %>/scripts/{,*/}*.js',
-        '!<%= yeoman.app %>/scripts/vendor/*',
-        'test/spec/{,*/}*.js'
+        '<%= config.grunt %>',
+        '<%= config.assets %>/scripts/**/*.js',
+        '<%= config.test.client %>/**/*Spec.js',
+        '!<%= config.assets %>/scripts/lib/*',
+        '!<%= config.assets %>/scripts/test_runner/lib/*',
+        '!<%= config.assets %>/vendor/*',
       ]
     },
 
-    mocha: {
-      all: {
+    mkdir: {
+      dev: {
         options: {
-          run: true,
-          urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
+          create: [
+            '<%= config.public %>',
+            '<%= config.public %>/images',
+            '<%= config.public %>/scripts',
+            '<%= config.public %>/styles',
+            '<%= config.public %>/vendor'
+          ]
+        }
+      },
+      dist: {
+        options: {
+          create: [
+            '<%= config.public %>',
+            '<%= config.public %>/images',
+            '<%= config.public %>/scripts',
+            '<%= config.public %>/styles'
+          ]
         }
       }
     },
 
-    compass: {
-      options: {
-        sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
-        generatedImagesDir: '.tmp/images/generated',
-        imagesDir: '<%= yeoman.app %>/images',
-        javascriptsDir: '<%= yeoman.app %>/scripts',
-        fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: '<%= yeoman.app %>/bower_components',
-        httpImagesPath: '/images',
-        httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
-        relativeAssets: false
+    copy: {
+      dev: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.assets %>/',
+            src: '**',
+            dest: '<%= config.public %>/'
+          }
+        ]
       },
       dist: {
-        options: {
-          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
-        }
-      },
-      server: {
-        options: {
-          debugInfo: true
-        }
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: '<%= config.assets %>/vendor/requirejs/require.js',
+            dest: '<%= config.public %>/vendor/requirejs'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: '<%= config.assets %>/favicon.ico',
+            dest: '<%= config.public %>'
+          },
+          {
+            expand: true,
+            flatten: true,
+            src: '<%= config.assets %>/images/**/*',
+            dest: '<%= config.public %>/images'
+          }
+        ]
       }
     },
 
-    autoprefixer: {
-      options: {
-        browsers: ['last 1 version']
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
-      }
+    clean: {
+      dev: ['<%= config.public %>'],
+      dist: ['<%= config.public %>']
     },
+
+    // TODO
+    //imagemin: {
+    //  dist: {
+    //    files: [
+    //      {
+    //        expand: true,
+    //        src: ['<%= config.public %>/images/**/*.{png,jpg,gif}'],
+    //        dest: '.'
+    //      }
+    //    ]
+    //  }
+    //},
 
     requirejs: {
-      dist: {
-        // Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
+      // https://github.com/jrburke/r.js/blob/master/build/example.build.js
+      options: {
+        baseUrl: '<%= config.assets %>',
+        findNestedDependencies: true,
+        mainConfigFile: '<%= config.assets %>/scripts/requirejs-config.js',
+        name: 'scripts/main',
+        out: '<%= config.public %>/scripts/main.js'
+      },
+      dev: {
         options: {
-          // `name` and `out` is set by grunt-usemin
-          baseUrl: yeomanConfig.app + '/scripts',
           optimize: 'none',
-          // TODO: Figure out how to make sourcemaps work with grunt-usemin
-          // https://github.com/yeoman/grunt-usemin/issues/30
-          //generateSourceMaps: true,
-          // required to support SourceMaps
-          // http://requirejs.org/docs/errors.html#sourcemapcomments
+          preserveLicenseComments: true
+        }
+      },
+      dist: {
+        options: {
+          optimize: 'uglify2',
+          out: '<%= config.public %>/scripts/main.js',
           preserveLicenseComments: false,
-          // useStrict: true,
-          // wrap: true
-          //uglify2: {} // https://github.com/mishoo/UglifyJS2
+          uglify2: {
+            output: {
+              beautify: false
+            },
+            compress: {
+              sequences: true
+            }
+          }
         }
       }
     },
 
-    useminPrepare: {
-      options: {
-        dest: '<%= yeoman.dist %>'
-      },
-      html: '<%= yeoman.app %>/index.html'
-    },
+    // TODO
+    //htmlbuild: {},
 
-    usemin: {
+    sass: {
       options: {
-        dirs: ['<%= yeoman.dist %>']
+        includePaths: ['<%= config.assets %>/vendor/sass-bootstrap/lib']
       },
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
-    },
-
-    imagemin: {
+      dev: {
+        options: {
+          sourceComments: 'map'
+        },
+        files: {
+          '<%= config.public %>/styles/main.css': '<%= config.assets %>/styles/main.scss'
+        }
+      },
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
+        options: {
+          sourceComments: 'none'
+        },
+        files: {
+          '<%= config.public %>/styles/main.css': '<%= config.assets %>/styles/main.scss'
+        }
       }
     },
 
     cssmin: {
-      // This task is pre-configured if you do not wish to use Usemin
-      // blocks for your CSS. By default, the Usemin block from your
-      // `index.html` will take care of minification, e.g.
-      //
-      //     <!-- build:css({.tmp,app}) styles/main.css -->
-      //
-      // dist: {
-      //     files: {
-      //         '<%= yeoman.dist %>/styles/main.css': [
-      //             '.tmp/styles/{,*/}*.css',
-      //             '<%= yeoman.app %>/styles/{,*/}*.css'
-      //         ]
-      //     }
-      // }
-    },
-
-    // Put files not handled in other tasks here
-    copy: {
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            'images/{,*/}*.{webp,gif}',
-            'styles/fonts/{,*/}*.*',
-            'scripts/test_runner/**/*.*',
-            'bower_components/ace/**/*.*',
-            'bower_components/sass-bootstrap/fonts/*.*'
-          ]
-        }]
-      },
-      styles: {
-        expand: true,
-        dot: true,
-        cwd: '<%= yeoman.app %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
+        files: {
+          '<%= config.public %>/styles/main.css': '<%= config.public %>/styles/main.css'
+        }
       }
     },
 
-    modernizr: {
-      devFile: '<%= yeoman.app %>/bower_components/modernizr/modernizr.js',
-      outputFile: '<%= yeoman.dist %>/bower_components/modernizr/modernizr.js',
-      files: [
-        '<%= yeoman.dist %>/scripts/{,*/}*.js',
-        '<%= yeoman.dist %>/styles/{,*/}*.css',
-        '!<%= yeoman.dist %>/scripts/vendor/*'
-      ],
-      uglify: true
-    },
-
-    concurrent: {
-      options: {
-        logConcurrentOutput: true
-      },
-      server: [
-        'node-inspector',
-        'nodemon:dev',
-        'compass',
-        'copy:styles',
-        'watch'
-      ],
-      test: [
-        'copy:styles'
-      ],
-      dist: [
-        'compass',
-        'copy:styles',
-        'imagemin'
-      ]
-    },
-
-    bower: {
-      options: {
-        exclude: ['modernizr']
-      },
-      all: {
-        rjsConfig: '<%= yeoman.app %>/scripts/main.js'
+    watch: {
+      // TODO
+      //test: {},
+      dev: {
+        files: [
+          '<%= config.assets %>/**/*',
+          '!<%= config.assets %>/vendor/**/*'
+        ],
+        tasks: ['build']
       }
-    }
+    },
   });
 
-  grunt.registerTask('server', function(target) {
+  grunt.registerTask('build', function(target) {
     if (target === 'dist') {
-      return grunt.task.run(['build']);
+      return grunt.task.run([
+        'clean:dist',
+        'mkdir:dist',
+        'requirejs:dist',
+        'sass:dist',
+        'cssmin:dist',
+        'copy:dist'
+        // TODO
+        //'imagemin:dist'
+      ]);
     }
 
     grunt.task.run([
-      'clean:server',
-      'autoprefixer',
-      'concurrent:server'
+      'clean:dev',
+      'mkdir:dev',
+      'sass:dev',
+      'copy:dev'
     ]);
   });
 
   grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
-    'mocha'
-  ]);
-
-  grunt.registerTask('build', [
-    'clean:dist',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'requirejs',
-    'concat',
-    'cssmin',
-    'uglify',
-    'modernizr',
-    'copy:dist',
-    'usemin'
+    'jshint',
+    'mochaTest:test'
   ]);
 
   grunt.registerTask('precommit', 'test');
 
-  grunt.registerTask('default', [
-    'jshint',
-    'test',
-    'build'
-  ]);
+  grunt.registerTask('default', 'build');
 };

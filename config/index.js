@@ -14,11 +14,12 @@ module.exports = function(app) {
       routes: path.join(rootDir, 'app/routes'),
       views: path.join(rootDir, 'app/views')
     }
-  }, require('./config.json'));
+  }, require(path.join(__dirname, 'env', process.env.NODE_ENV + '.json')));
 
   Underscoreboard.log = require('./logger');
 
-  require('./db');
+  // TODO: Use database
+  //require('./db');
   require('./express')(app);
   require('./routes')(app);
 };

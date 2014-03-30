@@ -19,7 +19,7 @@ require.config({
     bootstrapTab: 'vendor/sass-bootstrap/js/tab',
     bootstrapTooltip: 'vendor/sass-bootstrap/js/tooltip',
     bootstrapTransition: 'vendor/sass-bootstrap/js/transition',
-    domReady: 'vendor/requirejs-domReady/domReady',
+    domReady: 'vendor/requirejs-domready/domReady',
     jquery: 'vendor/jquery/dist/jquery',
     // TODO: Replace with bower package
     sockjs: '//cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min',
@@ -55,6 +55,9 @@ require.config({
   },
 
   shim: {
+    underscore: {
+      exports: '_'
+    },
     backbone: {
       deps: ['jquery', 'underscore'],
       exports: 'Backbone'

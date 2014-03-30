@@ -1,7 +1,7 @@
 {
   "name": "Underscoreboard",
   "description": "Underscore-oriented multiplayer competitive coding game",
-  "version": "0.0.1-14",
+  "version": "0.0.1-19",
   "homepage": "http://underscoreboard.com",
   "subdomain": "Underscoreboard",
   "domains": [
@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "predeploy": "bower install && grunt build:dist"
+    "predeploy": "bower install && grunt build"
   },
   "dependencies": {
     "eventemitter2": "~0.4.13",
@@ -45,8 +45,7 @@
     "winston": "~0.7.2",
     "bookshelf": "~0.6.8",
     "knex": "~0.5.11",
-    "fs-extra": "~0.8.1",
-    "sqlite3": "~2.2.0"
+    "fs-extra": "~0.8.1"
   },
   "devDependencies": {
     "chai": "~1.9.1",
@@ -69,6 +68,7 @@
     "mocha": "~1.18.2",
     "sinon": "~1.9.0",
     "sinon-chai": "~2.5.0",
+    "sqlite3": "~2.2.0",
     "time-grunt": "~0.3.1"
   }
 }

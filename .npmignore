@@ -5,18 +5,13 @@
 .DS_Store?
 .Spotlight-V100
 .Trashes
-._*
 Icon?
 Thumbs.db
 ehthumbs.db
 
+.bin
 .sass-cache
-node_modules
-server/secrets.js
-coverage
-test
-assets
-karma.conf.js
-git-hooks.sh
-Gruntfile
 .teamocil
+assets
+node_modules
+test

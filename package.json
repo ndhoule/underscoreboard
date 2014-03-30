@@ -1,7 +1,7 @@
 {
   "name": "Underscoreboard",
   "description": "Underscore-oriented multiplayer competitive coding game",
-  "version": "0.0.1-13",
+  "version": "0.0.1-14",
   "homepage": "http://underscoreboard.com",
   "subdomain": "Underscoreboard",
   "domains": [
@@ -45,7 +45,8 @@
     "winston": "~0.7.2",
     "bookshelf": "~0.6.8",
     "knex": "~0.5.11",
-    "fs-extra": "~0.8.1"
+    "fs-extra": "~0.8.1",
+    "sqlite3": "~2.2.0"
   },
   "devDependencies": {
     "chai": "~1.9.1",

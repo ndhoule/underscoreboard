@@ -13,6 +13,7 @@ ehthumbs.db
 .tmp
 node_modules
 coverage
-app/bower_components
+assets/vendor
 server/public
 dist
+.tmp

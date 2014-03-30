@@ -27,6 +27,10 @@
   "engines": {
     "node": ">=0.8.0"
   },
+  "scripts": {
+    "start": "node index.js",
+    "predeploy": "bower install"
+  },
   "dependencies": {
     "eventemitter2": "~0.4.13",
     "express": "~3.5.0",

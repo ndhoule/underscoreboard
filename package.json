@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "predeploy": "bower install"
+    "predeploy": "bower install && grunt build:dist"
   },
   "dependencies": {
     "eventemitter2": "~0.4.13",

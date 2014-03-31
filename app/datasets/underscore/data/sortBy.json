@@ -1,0 +1,8 @@
+{
+    "name": "sortBy",
+    "difficulty": 10,
+    "aliases": ["sortBy"],
+    "description": "Sort the object's values by a criterion produced by an iterator.\nIf iterator is a string, sort objects by that property with the name\nof that string. For example, _.sortBy(people, 'name') should sort\nan array of people by their name.",
+    "boilerplate": "var sortBy = function(obj, iterator) {\n  \n};",
+    "set": "underscore"
+}

@@ -1,5 +1,6 @@
 'use strict';
 
+var Promise = require('bluebird');
 var express = require('express');
 var handlebars = require('express3-handlebars');
 var path = require('path');
@@ -24,4 +25,6 @@ module.exports = function(app) {
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(Underscoreboard.config.dirs.assets));
+
+  return Promise.resolve(app);
 };

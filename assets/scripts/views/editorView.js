@@ -44,11 +44,15 @@ define([
     // The start point for the text is always the end of the second-to-last
     // line, so move the cursor there while we're at it
     resetEditor: function() {
-      var text,
-          fn = Underscoreboard.get('currentFunction');
+      var text;
+      var fn = Underscoreboard.get('currentFunction');
+
+      var description = _.map(fn.description.split('\n'), function(text) {
+        return '// ' + text;
+      }).join('\n');
 
       try {
-        text = fn.desc.join('\n') + '\n' + fn.boiler.join('\n');
+        text = description + '\n' + fn.boilerplate;
       } catch (e) {
         text = '';
       }

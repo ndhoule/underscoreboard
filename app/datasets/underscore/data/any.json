@@ -1,0 +1,8 @@
+{
+    "name": "any",
+    "difficulty": 2,
+    "aliases": ["any", "some"],
+    "description": "Determines whether any of the elements in an object matches a truth test.\nReturns boolean true or false.",
+    "boilerplate": "var any = function(obj, iterator) {\n  \n};",
+    "set": "underscore"
+}

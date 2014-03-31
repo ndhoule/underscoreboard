@@ -1,0 +1,8 @@
+{
+    "name": "flatten",
+    "difficulty": 9,
+    "aliases": ["flatten", "all"],
+    "description": "Flattens a multidimensional array to a one-dimensional array that\ncontains all the elements of all the nested arrays.\n\nHint: Use Array.isArray to check if something is an array",
+    "boilerplate": "var flatten = function(nestedArray, result) {\n  \n};",
+    "set": "underscore"
+}

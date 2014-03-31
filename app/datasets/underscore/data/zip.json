@@ -1,0 +1,8 @@
+{
+    "name": "zip",
+    "difficulty": 10,
+    "aliases": ["zip"],
+    "description": "Zip together two or more arrays with elements of the same index\ngoing together.\n\nExample:\n_.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3]]",
+    "boilerplate": "var zip = function() {\n  \n};",
+    "set": "underscore"
+}

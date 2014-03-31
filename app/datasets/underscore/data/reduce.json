@@ -1,0 +1,8 @@
+{
+    "name": "reduce",
+    "difficulty": 5,
+    "aliases": ["reduce", "inject", "foldl"],
+    "description": "Reduces an array or object to a single value by repetitively calling\niterator(previousValue, item) for each item. previousValue should be\nthe return value of the previous iterator call.\n\nOptionally, you may pass in an initialValue that is passed to the first\niterator call. If no value is passed in, initialValue should default to 0.\n\nExample:\n  var numbers = [1,2,3];\n  var sum = _.reduce(numbers, function(previous_value, item) {\n    return previous_value + item;\n  }, 0); should be 6",
+    "boilerplate": "var reduce = function(obj, iterator, initialValue) {\n  \n};",
+    "set": "underscore"
+}

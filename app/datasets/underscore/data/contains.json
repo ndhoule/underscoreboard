@@ -1,0 +1,8 @@
+{
+    "name": "contains",
+    "difficulty": 2,
+    "aliases": ["contains", "include"],
+    "description": "Using `===`, determine if the array or object contains a given value.",
+    "boilerplate": "var contains = function(obj, target) {\n  \n};",
+    "set": "underscore"
+}

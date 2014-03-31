@@ -1,0 +1,8 @@
+{
+    "name": "select",
+    "difficulty": 4,
+    "aliases": ["select", "filter"],
+    "description": "Return all elements of an array that pass a truth test.\nReturns an array.",
+    "boilerplate": "var select = function(arr, iterator) {\n  \n};",
+    "set": "underscore"
+}

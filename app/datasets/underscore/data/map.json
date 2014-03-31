@@ -1,0 +1,8 @@
+{
+    "name": "map",
+    "difficulty": 4,
+    "aliases": ["map", "collect"],
+    "description": "Return the results of applying an iterator to each element of an array.",
+    "boilerplate": "var map = function(arr, iterator) {\n  \n};",
+    "set": "underscore"
+}

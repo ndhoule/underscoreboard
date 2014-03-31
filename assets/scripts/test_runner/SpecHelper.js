@@ -45,6 +45,10 @@
       functionNames = [functionNames];
     }
 
+    if (!functionNames) {
+      functionNames = [];
+    }
+
     // If the user provides a leading var keyword, we need to strip it before
     // we eval their code; otherwise, it won't be executed in the correct
     // context

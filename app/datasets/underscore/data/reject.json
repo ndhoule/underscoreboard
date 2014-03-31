@@ -1,0 +1,8 @@
+{
+    "name": "reject",
+    "difficulty": 4,
+    "aliases": ["reject"],
+    "description": "Return all elements of an array that don't pass a truth test.\nReturns an array.",
+    "boilerplate": "var reject = function(arr, iterator) {\n  \n};",
+    "set": "underscore"
+}

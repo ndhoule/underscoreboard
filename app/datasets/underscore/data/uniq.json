@@ -1,0 +1,8 @@
+{
+    "name": "uniq",
+    "difficulty": 6,
+    "aliases": ["uniq", "unique"],
+    "description": "Produce a duplicate-free version of the input array.\nReturns an array.",
+    "boilerplate": "var uniq = function(array) {\n  \n};",
+    "set": "underscore"
+}

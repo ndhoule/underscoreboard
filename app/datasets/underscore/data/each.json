@@ -1,0 +1,8 @@
+{
+    "name": "each",
+    "difficulty": 1,
+    "aliases": ["each", "forEach"],
+    "description": "Call iterator(value, key, obj) for each element of obj.\nThe end result should provide interface of (value, key, obj).\n\nE.g.:\n_.each(obj, function(value, key, obj) {\n  console.log (value, key, obj);\n};",
+    "boilerplate": "var each = function(obj, iterator) {\n  \n};",
+    "set": "underscore"
+}

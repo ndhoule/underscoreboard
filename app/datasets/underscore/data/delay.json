@@ -1,0 +1,8 @@
+{
+    "name": "delay",
+    "difficulty": 7,
+    "aliases": ["delay"],
+    "description": "Delays a function for the given number of milliseconds, and then calls\nit with the arguments supplied.\n\nThe arguments for the original function are passed after the wait\nparameter. For example _.delay(someFunction, 500, 'a', 'b') will\ncall someFunction('a', 'b') after 500ms.",
+    "boilerplate": "var delay = function(func, wait, optionalParams) {\n  \n};",
+    "set": "underscore"
+}

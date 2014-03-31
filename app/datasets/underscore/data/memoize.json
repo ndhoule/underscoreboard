@@ -1,0 +1,8 @@
+{
+    "name": "memoize",
+    "difficulty": 9,
+    "aliases": ["memoize"],
+    "description": "Memoize an expensive function by storing its results. You may assume\nthat the function takes only one argument and that it is a primitive.\n\nMemoize should return a function that, when called, will check if it has\nalready computed the result for the given argument and return that value\ninstead if possible.",
+    "boilerplate": "var memoize = function(func) {\n  \n};",
+    "set": "underscore"
+}

@@ -1,0 +1,8 @@
+{
+    "name": "default",
+    "difficulty": 6,
+    "aliases": ["default"],
+    "description": "Like extend, but doesn't ever overwrite a key that already\nexists in obj",
+    "boilerplate": "var defaults = function() {\n  \n};",
+    "set": "underscore"
+}

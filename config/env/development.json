@@ -1,8 +1,20 @@
 {
   "db": {
-    "client": "sqlite3",
+    "client": "pg",
     "connection": {
-      "filename": ".tmp/development.sqlite"
+      "host": "127.0.0.1",
+      "user": "ndhoule",
+      "password": "",
+      "database": "underscoreboard",
+      "charset": "utf8"
+    }
+  },
+
+  "log": {
+    "console": {
+      "level": "emerg",
+      "timestamp": false,
+      "colorize": true
     }
   }
 }

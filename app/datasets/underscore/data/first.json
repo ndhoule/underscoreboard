@@ -1,0 +1,8 @@
+{
+    "name": "first",
+    "difficulty": 0,
+    "aliases": ["first", "head", "take"],
+    "description": "Return an array of the first n elements of an array. If n is undefined,\nreturn the first element in the array.",
+    "boilerplate": "var first = function(array, n) {\n  \n};",
+    "set": "underscore"
+}

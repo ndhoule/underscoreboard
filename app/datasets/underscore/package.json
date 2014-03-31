@@ -1,0 +1,11 @@
+{
+  "name": "convert",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Nathan Houle <nathan@nathanhoule.com>",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "jsbeautify": "~0.3.6",
+    "bluebird": "~1.2.0"
+  }
+}

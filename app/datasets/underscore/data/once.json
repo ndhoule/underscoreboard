@@ -1,0 +1,8 @@
+{
+    "name": "once",
+    "difficulty": 8,
+    "aliases": ["once"],
+    "description": "Return a function that can be called at most one time.\nSubsequent calls should return the previously returned value.",
+    "boilerplate": "var once = function(func) {\n  \n};",
+    "set": "underscore"
+}

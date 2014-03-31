@@ -1,0 +1,8 @@
+{
+    "name": "pluck",
+    "difficulty": 6,
+    "aliases": ["pluck"],
+    "description": "Takes an array of objects and a property. Returns an array of values that\nlive at the user-defined key (property).",
+    "boilerplate": "var pluck = function(arr, prop) {\n  \n};",
+    "set": "underscore"
+}

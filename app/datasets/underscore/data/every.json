@@ -1,0 +1,8 @@
+{
+    "name": "every",
+    "difficulty": 3,
+    "aliases": ["every", "all"],
+    "description": "Determines whether all of the elements in an object match a truth test.\nReturns boolean true or false.",
+    "boilerplate": "var every = function(obj, iterator) {\n  \n};",
+    "set": "underscore"
+}

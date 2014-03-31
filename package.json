@@ -45,7 +45,9 @@
     "winston": "~0.7.2",
     "bookshelf": "~0.6.8",
     "knex": "~0.5.11",
-    "fs-extra": "~0.8.1"
+    "fs-extra": "~0.8.1",
+    "bluebird": "~1.2.0",
+    "pg": "~2.11.1"
   },
   "devDependencies": {
     "chai": "~1.9.1",

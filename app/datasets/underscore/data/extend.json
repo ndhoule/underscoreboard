@@ -1,0 +1,8 @@
+{
+    "name": "extend",
+    "difficulty": 6,
+    "aliases": ["extend"],
+    "description": "Extend a given object with all the properties of the passed in object(s).\n\nExample:\n  var obj1 = {key1: 'something'};\n  _.extend(obj1, {\n    key2: 'something new',\n    key3: 'something else new'\n  }, {\n    bla: 'even more stuff'\n  }); obj1 now contains key1, key2, key3 and bla",
+    "boilerplate": "var extend = function() {\n  \n};",
+    "set": "underscore"
+}

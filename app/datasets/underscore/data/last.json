@@ -1,0 +1,8 @@
+{
+    "name": "last",
+    "difficulty": 0,
+    "aliases": ["last"],
+    "description": "Return an array of the last n elements of an array. If n is undefined,\nreturn the last element in the array.",
+    "boilerplate": "var last = function(array, n) {\n  \n};",
+    "set": "underscore"
+}
